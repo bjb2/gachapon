@@ -1,0 +1,64 @@
+/* White plastic frame outer + clear window inner.
+   Box-shell is inset only at top (26px) so the white frame shows behind the
+   orange LEDs, while the canvas stays full-width to match physics geometry. */
+
+html[data-skin="modern"] .box-outer {
+  width: var(--dome-width);
+  height: var(--dome-height);
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(180deg, #F8F5FA 0%, #F0ECF4 100%);
+  border: 3px solid #E0D8E8;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  box-shadow:
+    0 -2px 8px rgba(0,0,0,0.06),
+    inset 0 2px 4px rgba(255,255,255,0.9);
+}
+
+/* Orange LED indicator lights — sit in the white plastic frame area at the top */
+html[data-skin="modern"] .box-outer::before,
+html[data-skin="modern"] .box-outer::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  width: 36px; height: 11px;
+  background: linear-gradient(180deg, #FFBB44, #FF8800);
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(255,140,0,0.45), inset 0 1px 2px rgba(255,255,255,0.4);
+  z-index: 4;
+  pointer-events: none;
+}
+html[data-skin="modern"] .box-outer::before { left: 14px; }
+html[data-skin="modern"] .box-outer::after  { right: 14px; }
+
+/* Transparent window — inset top only so white frame is visible above */
+html[data-skin="modern"] .box-shell {
+  position: absolute;
+  top: 26px; left: 0; right: 0; bottom: 0;
+  border-top: 1.5px solid rgba(200,188,218,0.5);
+  overflow: hidden;
+  background: rgba(222,234,250,0.68);
+  box-shadow:
+    inset 0 6px 18px rgba(255,255,255,0.5),
+    inset 0 0 28px rgba(200,215,240,0.15);
+}
+
+/* Canvas flush to shell — no offset since no border on sides */
+html[data-skin="modern"] .box-shell canvas {
+  position: absolute;
+  top: 0; left: 0;
+  display: block;
+}
+
+/* Glass sheen overlay */
+html[data-skin="modern"] .box-glass {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(130deg,
+    rgba(255,255,255,0.2) 0%,
+    transparent 45%,
+    rgba(255,255,255,0.06) 100%
+  );
+}

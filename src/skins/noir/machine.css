@@ -1,0 +1,104 @@
+html[data-skin="noir"] .machine-body {
+  width: 256px;
+  background: linear-gradient(175deg, #1E2A35 0%, #141E28 50%, #0C1520 100%);
+  border: 2.5px solid rgba(247,183,49,0.32);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  padding: 14px 18px 18px;
+  box-shadow:
+    0 12px 32px rgba(0,0,0,0.65),
+    0 0 14px rgba(247,183,49,0.06),
+    inset 0 1px 0 rgba(247,183,49,0.08);
+  position: relative; z-index: 2;
+}
+
+/* Rivet screws */
+html[data-skin="noir"] .machine-body::before,
+html[data-skin="noir"] .machine-body::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 7px; height: 7px;
+  background: radial-gradient(circle at 35% 30%, #3A4A55, #1A2530);
+  border-radius: 50%;
+  border: 1.5px solid rgba(247,183,49,0.22);
+  box-shadow: 0 0 3px rgba(247,183,49,0.08);
+}
+html[data-skin="noir"] .machine-body::before { left: 10px; }
+html[data-skin="noir"] .machine-body::after  { right: 10px; }
+
+html[data-skin="noir"] .brand-strip { margin-bottom: 12px; }
+html[data-skin="noir"] .brand-label {
+  background: transparent;
+  color: #F7B731;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  padding: 4px 14px;
+  border: 1px solid rgba(247,183,49,0.4);
+  border-radius: 2px;
+  text-shadow: 0 0 8px rgba(247,183,49,0.55);
+  box-shadow: 0 0 6px rgba(247,183,49,0.1), inset 0 0 6px rgba(247,183,49,0.04);
+}
+
+html[data-skin="noir"] .led-display {
+  background: #04080D;
+  border: 1.5px solid rgba(247,183,49,0.28);
+  border-radius: 2px;
+  color: #F7B731;
+  font-family: 'Share Tech Mono', monospace;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.75), 0 0 6px rgba(247,183,49,0.12);
+  text-shadow: 0 0 5px rgba(247,183,49,0.6);
+}
+
+html[data-skin="noir"] .lucky-circle {
+  background: #080E16;
+  border: 1.5px solid rgba(247,183,49,0.22);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(247,183,49,0.08);
+}
+html[data-skin="noir"] .lucky-text {
+  color: rgba(247,183,49,0.65);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 6.5px;
+}
+
+html[data-skin="noir"] .crank-label {
+  color: rgba(247,183,49,0.38);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+}
+
+html[data-skin="noir"] .crank-btn {
+  background: radial-gradient(circle at 33% 28%, #3A4A55, #1E2A35 45%, #0C1520);
+  border: 2.5px solid rgba(247,183,49,0.42);
+  border-radius: 50%;
+  color: rgba(247,183,49,0.75);
+  box-shadow: 0 4px 12px rgba(0,0,0,.55), 0 0 8px rgba(247,183,49,0.12), inset 0 1px 2px rgba(255,255,255,0.04);
+}
+html[data-skin="noir"] .crank-btn:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,.55), 0 0 16px rgba(247,183,49,0.28), inset 0 1px 2px rgba(255,255,255,0.04);
+}
+html[data-skin="noir"] .crank-btn:active { transform: scale(0.94); }
+html[data-skin="noir"] .crank-inner { transition: transform 0.28s ease-out; }
+
+html[data-skin="noir"] .pdot {
+  background: #141E28;
+  border-color: rgba(247,183,49,0.18);
+  border-radius: 2px;
+}
+html[data-skin="noir"] .pdot.lit {
+  background: #F7B731;
+  border-color: #C08800;
+  border-radius: 2px;
+  box-shadow: 0 0 7px rgba(247,183,49,0.7);
+}
+
+@keyframes noir-shake {
+  0%,100% { transform: translateX(0); }
+  15% { transform: translateX(-3px); }
+  35% { transform: translateX(3px); }
+  55% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+html[data-skin="noir"] .machine-wrap.shaking { animation: noir-shake 0.28s ease; }

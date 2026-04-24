@@ -1,0 +1,80 @@
+html[data-skin="forest"] .dome-outer {
+  width: var(--dome-width);
+  height: var(--dome-height);
+  position: relative;
+  z-index: 2;
+}
+
+/* Crystal orb — warm amber tint */
+html[data-skin="forest"] .dome-shell {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--dome-radius) var(--dome-radius) 0 0;
+  border: 3px solid rgba(200,160,40,0.55);
+  border-bottom: none;
+  overflow: hidden;
+  background: linear-gradient(160deg,
+    rgba(100,75,15,0.35) 0%,
+    rgba(60,45,10,0.22) 45%,
+    rgba(35,28,8,0.18) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(200,160,40,0.18),
+    0 0 26px rgba(200,140,30,0.18),
+    inset 0 0 45px rgba(80,50,10,0.22);
+}
+
+html[data-skin="forest"] .dome-shell canvas {
+  position: absolute;
+  top: 3px; left: 3px;
+  display: block;
+}
+
+html[data-skin="forest"] .dome-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+html[data-skin="forest"] .dome-glass::before {
+  content: '';
+  position: absolute;
+  top: 14px; left: 18px;
+  width: 26px; height: 72px;
+  background: rgba(255,230,150,0.1);
+  border-radius: 50%;
+  transform: rotate(-18deg);
+}
+html[data-skin="forest"] .dome-glass::after {
+  content: '';
+  position: absolute;
+  top: 10px; left: 55px;
+  width: 11px; height: 33px;
+  background: rgba(255,210,100,0.06);
+  border-radius: 50%;
+  transform: rotate(-12deg);
+}
+
+/* Wooden collar with grain lines */
+html[data-skin="forest"] .dome-collar {
+  width: 262px;
+  height: 18px;
+  background: linear-gradient(180deg, #5C3D2E, #4A3024);
+  border: 2.5px solid rgba(92,61,46,0.9);
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.45), inset 0 1px 0 rgba(200,160,90,0.12);
+  position: relative;
+  overflow: hidden;
+}
+html[data-skin="forest"] .dome-collar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 9px,
+    rgba(200,140,70,0.06) 9px,
+    rgba(200,140,70,0.06) 10px
+  );
+}

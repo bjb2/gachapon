@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Create Your Own Gachapon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/creator/creator.css">
+</head>
+<body>
+  <header class="creator-header">
+    <div class="creator-title">
+      <span class="creator-kana">ガチャポン</span>
+      <h1>Create Your Own Gachapon</h1>
+    </div>
+    <nav class="creator-nav">
+      <a href="./index.html">← Play</a>
+      <a href="https://github.com/bjb2/gachapon" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <section class="creator-intro">
+    <p>
+      <strong>1.</strong> Set up your rarity tiers. <strong>2.</strong> Fill the
+      prize library. <strong>3.</strong> Pick a machine on the right &mdash; it renders
+      live &mdash; then export it as a single standalone HTML page.
+    </p>
+  </section>
+
+  <main class="creator-main">
+    <section class="panel creator-section" id="rarityList"></section>
+    <section class="panel creator-section" id="prizeList"></section>
+    <section class="panel creator-section selector-panel" id="machineSelector"></section>
+    <section class="panel creator-section" id="prizeForm"></section>
+  </main>
+
+  <div class="footer-bar">
+    <button class="btn ghost" id="exportBtn">Export Data (JSON)</button>
+    <button class="btn ghost" id="importBtn">Import Data</button>
+    <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+    <button class="btn danger" id="resetBtn">Reset to defaults</button>
+  </div>
+
+  <footer class="creator-footer">
+    Built with <a href="https://github.com/bjb2/gachapon" target="_blank" rel="noopener">bjb2/gachapon</a>
+    &middot; MIT licensed
+  </footer>
+
+  <script type="module">
+    // Bust the module cache on every load. Dev-only; remove for production.
+    import(`./src/creator.js?t=${Date.now()}`);
+  </script>
+</body>
+</html>

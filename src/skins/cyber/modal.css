@@ -1,0 +1,64 @@
+html[data-skin="cyber"] .modal-overlay {
+  background: rgba(2, 4, 10, 0.88);
+}
+
+html[data-skin="cyber"] .reveal-card {
+  background: #08101A;
+  border: 2px solid rgba(0,217,255,0.5);
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 32px rgba(0,217,255,0.14);
+}
+
+html[data-skin="cyber"] .reveal-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,217,255,0.07) 0%, transparent 60%);
+}
+
+html[data-skin="cyber"] .rarity-banner {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8.5px;
+  border-radius: 3px;
+}
+html[data-skin="cyber"] .rarity-banner.common {
+  background: #080E18;
+  color: rgba(0,217,255,0.65);
+  border-color: rgba(0,217,255,0.28);
+}
+html[data-skin="cyber"] .rarity-banner.rare {
+  background: #080E18;
+  color: #BF5AF2;
+  border-color: rgba(191,90,242,0.45);
+}
+html[data-skin="cyber"] .rarity-banner.ultra {
+  background: linear-gradient(90deg, rgba(0,217,255,0.12), rgba(191,90,242,0.12));
+  color: #00D9FF;
+  border-color: #00D9FF;
+  box-shadow: 0 0 14px rgba(0,217,255,0.4);
+  animation: none;
+}
+
+html[data-skin="cyber"] .char-name {
+  color: #00D9FF;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(0,217,255,0.4);
+}
+html[data-skin="cyber"] .char-flavor { color: rgba(0,217,255,0.45); font-size: 12px; }
+html[data-skin="cyber"] .rarity-stars { color: rgba(0,217,255,0.65); }
+
+html[data-skin="cyber"] .close-btn {
+  background: transparent;
+  color: #00D9FF;
+  border: 1.5px solid rgba(0,217,255,0.42);
+  border-radius: 4px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  box-shadow: 0 0 7px rgba(0,217,255,0.12);
+}
+html[data-skin="cyber"] .close-btn:hover {
+  background: rgba(0,217,255,0.07);
+  transform: none;
+  box-shadow: 0 0 16px rgba(0,217,255,0.32);
+}
+html[data-skin="cyber"] .close-btn:active { transform: scale(0.97); }

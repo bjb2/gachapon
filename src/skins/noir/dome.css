@@ -1,0 +1,61 @@
+/* Box-shaped container for noir layout. Uses .box-outer / .box-shell / .box-glass
+   instead of .dome-outer / .dome-shell / .dome-glass. */
+
+html[data-skin="noir"] .box-outer {
+  width: var(--dome-width);
+  height: var(--dome-height);
+  position: relative;
+  z-index: 2;
+}
+
+html[data-skin="noir"] .box-shell {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px 4px 0 0;
+  border: 3px solid rgba(247,183,49,0.5);
+  border-bottom: none;
+  overflow: hidden;
+  background: rgba(5,10,16,0.92);
+  box-shadow:
+    0 0 0 1px rgba(247,183,49,0.12),
+    0 0 22px rgba(247,183,49,0.1),
+    inset 0 0 40px rgba(0,0,0,0.6);
+}
+
+html[data-skin="noir"] .box-shell canvas {
+  position: absolute;
+  top: 3px; left: 3px;
+  display: block;
+}
+
+/* Scanline overlay */
+html[data-skin="noir"] .box-glass {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.07) 3px,
+    rgba(0,0,0,0.07) 4px
+  );
+}
+
+/* Corner bracket accents */
+html[data-skin="noir"] .box-shell::before,
+html[data-skin="noir"] .box-shell::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(247,183,49,0.55);
+}
+html[data-skin="noir"] .box-shell::before {
+  left: 7px;
+  border-right: none; border-bottom: none;
+}
+html[data-skin="noir"] .box-shell::after {
+  right: 7px;
+  border-left: none; border-bottom: none;
+}

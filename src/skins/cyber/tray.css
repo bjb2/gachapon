@@ -1,0 +1,48 @@
+html[data-skin="cyber"] .tray {
+  margin-top: 14px;
+  background: linear-gradient(180deg, #0A1020 0%, #060C18 100%);
+  border: 2.5px solid rgba(0,217,255,0.28);
+  border-radius: 4px;
+  height: 72px;
+  box-shadow: inset 0 4px 12px rgba(0,0,0,0.45), 0 0 10px rgba(0,217,255,0.05);
+}
+
+html[data-skin="cyber"] .tray-flap {
+  background: linear-gradient(180deg, #0C1224, #0A1020);
+  border-color: rgba(0,217,255,0.22);
+  border-radius: 0;
+}
+
+html[data-skin="cyber"] .tray-hint {
+  color: rgba(0,217,255,0.38);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: normal;
+}
+
+html[data-skin="cyber"] .tray-ball::before {
+  background: rgba(0,217,255,0.14);
+}
+
+html[data-skin="cyber"] .refill-btn {
+  background: transparent;
+  color: #00D9FF;
+  border: 1.5px solid rgba(0,217,255,0.38);
+  border-radius: 3px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: normal;
+  box-shadow: 0 0 7px rgba(0,217,255,0.12);
+  transition: box-shadow 0.15s, background 0.15s;
+}
+html[data-skin="cyber"] .refill-btn:hover {
+  background: rgba(0,217,255,0.07);
+  transform: none;
+  box-shadow: 0 0 14px rgba(0,217,255,0.3);
+}
+
+html[data-skin="cyber"] .refill-empty {
+  color: rgba(0,217,255,0.3);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+}

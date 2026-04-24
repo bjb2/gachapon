@@ -1,0 +1,70 @@
+html[data-skin="forest"] .modal-overlay {
+  background: rgba(8, 14, 6, 0.82);
+  backdrop-filter: blur(6px);
+}
+
+html[data-skin="forest"] .reveal-card {
+  background: #1C1005;
+  border: 2px solid rgba(139,105,20,0.48);
+  border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.72), 0 0 28px rgba(200,160,40,0.08);
+}
+
+html[data-skin="forest"] .reveal-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(200,160,40,0.07) 0%, transparent 60%);
+}
+
+html[data-skin="forest"] .rarity-banner {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+html[data-skin="forest"] .rarity-banner.common {
+  background: rgba(40,25,8,0.85);
+  color: rgba(200,160,80,0.78);
+  border-color: rgba(139,105,20,0.32);
+}
+html[data-skin="forest"] .rarity-banner.rare {
+  background: rgba(15,35,12,0.85);
+  color: rgba(100,185,70,0.82);
+  border-color: rgba(80,155,40,0.4);
+}
+html[data-skin="forest"] .rarity-banner.ultra {
+  background: linear-gradient(90deg, rgba(139,105,20,0.28), rgba(180,90,15,0.28));
+  color: #F0D9A0;
+  border-color: #C8A028;
+  box-shadow: 0 2px 14px rgba(200,160,40,0.32);
+  animation: none;
+}
+
+html[data-skin="forest"] .char-name {
+  color: #F0D9A0;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+}
+html[data-skin="forest"] .char-flavor {
+  color: rgba(200,165,80,0.58);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+}
+html[data-skin="forest"] .rarity-stars { color: rgba(200,155,40,0.78); }
+
+html[data-skin="forest"] .close-btn {
+  background: rgba(92,61,46,0.48);
+  color: #F0D9A0;
+  border: 1.5px solid rgba(139,105,20,0.38);
+  border-radius: 8px;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+html[data-skin="forest"] .close-btn:hover {
+  background: rgba(92,61,46,0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+}
+html[data-skin="forest"] .close-btn:active { transform: scale(0.97); }

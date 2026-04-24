@@ -1,0 +1,110 @@
+html[data-skin="forest"] .machine-body {
+  width: 280px;
+  background: linear-gradient(175deg, #4A3020 0%, #3D2618 50%, #2C1C0E 100%);
+  border: 2.5px solid rgba(92,61,46,0.92);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  padding: 14px 18px 18px;
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(200,160,90,0.1);
+  position: relative; z-index: 2;
+  overflow: hidden;
+}
+
+/* Wood grain texture */
+html[data-skin="forest"] .machine-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    87deg,
+    transparent 0px, transparent 11px,
+    rgba(200,140,70,0.05) 11px, rgba(200,140,70,0.05) 12px,
+    transparent 12px, transparent 23px,
+    rgba(150,100,50,0.04) 23px, rgba(150,100,50,0.04) 24px
+  );
+  pointer-events: none;
+}
+
+/* Single knot accent on right */
+html[data-skin="forest"] .machine-body::after {
+  content: '';
+  position: absolute;
+  top: 15px; right: 12px;
+  width: 8px; height: 8px;
+  background: radial-gradient(circle at 35% 30%, #8B6914, #4A3020);
+  border-radius: 50%;
+  border: 1.5px solid rgba(200,160,80,0.38);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+
+html[data-skin="forest"] .brand-label {
+  background: rgba(92,61,46,0.55);
+  color: #F0D9A0;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  border-radius: 4px;
+  border: 1px solid rgba(200,160,80,0.28);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+html[data-skin="forest"] .led-display {
+  background: #180E04;
+  border-color: rgba(139,105,20,0.32);
+  border-radius: 3px;
+  color: #C8A028;
+  font-family: 'Crimson Pro', Georgia, serif;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.6), 0 0 5px rgba(200,160,40,0.1);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+html[data-skin="forest"] .lucky-circle {
+  background: #1C1005;
+  border-color: rgba(139,105,20,0.32);
+}
+html[data-skin="forest"] .lucky-text {
+  color: rgba(200,165,80,0.75);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 7.5px;
+}
+
+html[data-skin="forest"] .crank-label {
+  color: rgba(200,155,75,0.45);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 8px;
+  font-style: italic;
+}
+
+html[data-skin="forest"] .crank-btn {
+  background: radial-gradient(circle at 33% 28%, #8B6914, #4A3020 45%, #2C1C0E);
+  border: 3px solid rgba(139,105,20,0.6);
+  color: rgba(200,165,80,0.8);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.5), inset 0 1px 3px rgba(255,220,100,0.1);
+}
+html[data-skin="forest"] .crank-btn:hover {
+  box-shadow: 0 8px 18px rgba(0,0,0,0.55), 0 0 12px rgba(200,160,40,0.2), inset 0 1px 3px rgba(255,220,100,0.1);
+}
+html[data-skin="forest"] .crank-btn:active { transform: scale(0.94); }
+
+html[data-skin="forest"] .pdot {
+  background: #2C1C0E;
+  border-color: rgba(139,105,20,0.22);
+}
+html[data-skin="forest"] .pdot.lit {
+  background: #C8A028;
+  border-color: #8B6914;
+  box-shadow: 0 0 7px rgba(200,160,40,0.58);
+}
+
+@keyframes forest-shake {
+  0%,100% { transform: translateX(0) rotate(0deg); }
+  18% { transform: translateX(-3px) rotate(-0.3deg); }
+  38% { transform: translateX(3px) rotate(0.3deg); }
+  58% { transform: translateX(-2px); }
+  78% { transform: translateX(2px); }
+}
+html[data-skin="forest"] .machine-wrap.shaking { animation: forest-shake 0.38s ease; }

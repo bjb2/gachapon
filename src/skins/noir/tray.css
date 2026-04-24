@@ -1,0 +1,49 @@
+html[data-skin="noir"] .tray {
+  margin-top: 0;
+  background: linear-gradient(180deg, #0C1520 0%, #080E16 100%);
+  border: 2.5px solid rgba(247,183,49,0.32);
+  border-radius: 0 0 4px 4px;
+  height: 68px;
+  box-shadow: inset 0 4px 12px rgba(0,0,0,0.45), 0 0 8px rgba(247,183,49,0.06);
+}
+
+html[data-skin="noir"] .tray-flap {
+  background: linear-gradient(180deg, #1A2530, #141E28);
+  border-color: rgba(247,183,49,0.22);
+  border-radius: 0;
+  width: 40px; height: 12px;
+}
+
+html[data-skin="noir"] .tray-hint {
+  color: rgba(247,183,49,0.38);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  font-weight: normal;
+}
+
+html[data-skin="noir"] .tray-ball::before {
+  background: rgba(247,183,49,0.12);
+}
+
+html[data-skin="noir"] .refill-btn {
+  background: transparent;
+  color: #F7B731;
+  border: 1.5px solid rgba(247,183,49,0.45);
+  border-radius: 2px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  font-weight: normal;
+  box-shadow: 0 0 6px rgba(247,183,49,0.1);
+  transition: box-shadow 0.15s, background 0.15s;
+}
+html[data-skin="noir"] .refill-btn:hover {
+  background: rgba(247,183,49,0.08);
+  transform: none;
+  box-shadow: 0 0 14px rgba(247,183,49,0.28);
+}
+
+html[data-skin="noir"] .refill-empty {
+  color: rgba(247,183,49,0.35);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+}

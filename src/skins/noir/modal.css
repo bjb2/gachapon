@@ -1,0 +1,64 @@
+html[data-skin="noir"] .modal-overlay {
+  background: rgba(4, 8, 14, 0.88);
+}
+
+html[data-skin="noir"] .reveal-card {
+  background: #0C1520;
+  border: 2px solid rgba(247,183,49,0.42);
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75), 0 0 28px rgba(247,183,49,0.08);
+}
+
+html[data-skin="noir"] .reveal-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(247,183,49,0.05) 0%, transparent 60%);
+}
+
+html[data-skin="noir"] .rarity-banner {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  border-radius: 2px;
+}
+html[data-skin="noir"] .rarity-banner.common {
+  background: #131C26;
+  color: rgba(247,183,49,0.65);
+  border-color: rgba(247,183,49,0.22);
+}
+html[data-skin="noir"] .rarity-banner.rare {
+  background: #131C26;
+  color: #88CCFF;
+  border-color: rgba(136,204,255,0.35);
+}
+html[data-skin="noir"] .rarity-banner.ultra {
+  background: rgba(247,183,49,0.1);
+  color: #F7B731;
+  border-color: #F7B731;
+  box-shadow: 0 0 12px rgba(247,183,49,0.35);
+  animation: none;
+}
+
+html[data-skin="noir"] .char-name {
+  color: #F7B731;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 20px;
+  font-weight: normal;
+}
+html[data-skin="noir"] .char-flavor { color: rgba(247,183,49,0.5); font-size: 12px; }
+html[data-skin="noir"] .rarity-stars { color: rgba(247,183,49,0.7); }
+
+html[data-skin="noir"] .close-btn {
+  background: transparent;
+  color: #F7B731;
+  border: 1.5px solid rgba(247,183,49,0.42);
+  border-radius: 2px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: normal;
+  box-shadow: 0 0 6px rgba(247,183,49,0.1);
+}
+html[data-skin="noir"] .close-btn:hover {
+  background: rgba(247,183,49,0.08);
+  transform: none;
+  box-shadow: 0 0 14px rgba(247,183,49,0.28);
+}
+html[data-skin="noir"] .close-btn:active { transform: scale(0.97); }

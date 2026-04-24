@@ -1,0 +1,75 @@
+@import url('./machine.css');
+@import url('./dome.css');
+@import url('./tray.css');
+@import url('./modal.css');
+
+html[data-skin="forest"] body {
+  background: #1A2918;
+  background-image:
+    radial-gradient(ellipse at 22% 5%, rgba(139,105,20,0.16) 0%, transparent 50%),
+    radial-gradient(ellipse at 78% 95%, rgba(45,80,22,0.2) 0%, transparent 55%);
+  font-family: 'Crimson Pro', Georgia, serif;
+}
+
+html[data-skin="forest"] .site-title {
+  font-family: 'Crimson Pro', Georgia, serif;
+  color: #F0D9A0;
+  text-shadow: 0 2px 14px rgba(200,150,40,0.32);
+  letter-spacing: 0.08em;
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  font-weight: 700;
+}
+
+html[data-skin="forest"] .site-sub {
+  color: rgba(160,190,100,0.55);
+  font-family: 'Crimson Pro', Georgia, serif;
+  letter-spacing: 0.22em;
+  font-size: 11px;
+  font-style: italic;
+}
+
+html[data-skin="forest"] .hint-line {
+  color: rgba(200,160,80,0.62);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+html[data-skin="forest"] .collection-label {
+  color: rgba(200,160,80,0.55);
+  font-family: 'Crimson Pro', Georgia, serif;
+  letter-spacing: 0.18em;
+}
+html[data-skin="forest"] .chip {
+  background: #1C2A18;
+  border-color: rgba(139,105,20,0.32);
+  color: rgba(200,160,80,0.75);
+  border-radius: 4px;
+}
+html[data-skin="forest"] .chip.new-chip {
+  border-color: #C8A028;
+  color: #C8A028;
+  box-shadow: 0 0 5px rgba(200,160,40,0.25);
+}
+html[data-skin="forest"] .chip-dot { border-color: rgba(139,105,20,0.28); }
+
+html[data-skin="forest"] .machine-nav .mnav-btn {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 11px;
+  color: rgba(200,160,80,0.45);
+  border-color: rgba(139,105,20,0.18);
+  background: transparent;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+}
+html[data-skin="forest"] .machine-nav .mnav-btn:hover {
+  color: #C8A028;
+  border-color: rgba(200,160,40,0.5);
+  background: rgba(200,160,40,0.06);
+}
+html[data-skin="forest"] .machine-nav .mnav-btn.active {
+  color: #C8A028;
+  background: rgba(200,160,40,0.1);
+  border-color: #C8A028;
+  box-shadow: 0 0 7px rgba(200,160,40,0.25);
+}

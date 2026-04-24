@@ -1,0 +1,79 @@
+@import url('./machine.css');
+@import url('./dome.css');
+@import url('./tray.css');
+@import url('./modal.css');
+
+html[data-skin="cyber"] body {
+  background: #050810;
+  background-image:
+    radial-gradient(ellipse at 18% 18%, rgba(0,217,255,0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 82% 82%, rgba(191,90,242,0.07) 0%, transparent 50%);
+  font-family: 'Orbitron', sans-serif;
+}
+
+html[data-skin="cyber"] .site-title {
+  font-family: 'Orbitron', sans-serif;
+  color: #00D9FF;
+  text-shadow: 0 0 20px rgba(0,217,255,0.6), 0 0 45px rgba(0,217,255,0.25);
+  letter-spacing: 0.18em;
+  animation: cyber-flicker 9s ease-in-out infinite;
+}
+@keyframes cyber-flicker {
+  0%,88%,100% { opacity: 1; }
+  90% { opacity: 0.72; }
+  92% { opacity: 1; }
+  95% { opacity: 0.55; }
+  97% { opacity: 1; }
+}
+
+html[data-skin="cyber"] .site-sub {
+  color: rgba(191,90,242,0.55);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.3em;
+}
+
+html[data-skin="cyber"] .hint-line {
+  color: rgba(0,217,255,0.48);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+}
+
+html[data-skin="cyber"] .collection-label {
+  color: rgba(191,90,242,0.55);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+}
+html[data-skin="cyber"] .chip {
+  background: #080C18;
+  border-color: rgba(0,217,255,0.22);
+  color: rgba(0,217,255,0.75);
+  border-radius: 4px;
+}
+html[data-skin="cyber"] .chip.new-chip {
+  border-color: #00D9FF;
+  color: #00D9FF;
+  box-shadow: 0 0 6px rgba(0,217,255,0.4);
+}
+html[data-skin="cyber"] .chip-dot { border-color: rgba(0,217,255,0.25); }
+
+html[data-skin="cyber"] .machine-nav .mnav-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  color: rgba(0,217,255,0.35);
+  border-color: rgba(0,217,255,0.12);
+  background: transparent;
+  border-radius: 3px;
+  letter-spacing: 0.15em;
+}
+html[data-skin="cyber"] .machine-nav .mnav-btn:hover {
+  color: #00D9FF;
+  border-color: rgba(0,217,255,0.55);
+  background: rgba(0,217,255,0.05);
+}
+html[data-skin="cyber"] .machine-nav .mnav-btn.active {
+  color: #00D9FF;
+  background: rgba(0,217,255,0.08);
+  border-color: #00D9FF;
+  box-shadow: 0 0 8px rgba(0,217,255,0.35);
+}
