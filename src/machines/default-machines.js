@@ -181,5 +181,5 @@ export const DEFAULT_MACHINES = [
   },
 ];
 
-export const MAX_POOL_SIZE = 25;
+export const MAX_POOL_SIZE = 40;
 export const MIN_POOL_SIZE = 3;
