@@ -164,6 +164,27 @@
     flex: 0 0 80px;
   }
 
+  /* Snap + alignment */
+  .align-tools { display: flex; flex-direction: column; gap: 6px; }
+  .snap-toggle {
+    font-size: 11px; color: #555; cursor: pointer;
+    text-transform: none; letter-spacing: 0; font-weight: 400;
+  }
+  .snap-toggle input { vertical-align: middle; margin-right: 4px; }
+  .align-row {
+    display: flex; align-items: center; gap: 4px;
+    flex-wrap: wrap;
+  }
+  .align-label {
+    font-size: 11px; color: #888; margin-right: 4px;
+  }
+  .align-row button {
+    width: 26px; height: 24px; padding: 0;
+    font-size: 14px; line-height: 1; cursor: pointer;
+    background: white; border: 1px solid #DDD; border-radius: 3px;
+  }
+  .align-row button:hover { border-color: #FF6B9D; color: #FF6B9D; }
+
   /* Layers panel */
   .layers-list {
     list-style: none; margin: 0; padding: 0;
@@ -292,8 +313,26 @@
       </div>
       <div class="panel-section toolbar">
         <button id="btnTestDrive" style="background:#FF6B9D;color:white;border-color:#FF6B9D;">▶ Test Drive</button>
+        <button id="btnUndo" title="Ctrl+Z">↶ Undo</button>
+        <button id="btnRedo" title="Ctrl+Shift+Z / Ctrl+Y">↷ Redo</button>
         <button id="btnDuplicate" title="Ctrl+D">Duplicate ⎘</button>
         <button id="btnDelete" class="danger" title="Delete or Backspace">Delete</button>
+      </div>
+      <div class="panel-section align-tools">
+        <label class="snap-toggle">
+          <input type="checkbox" id="toggleSnap"> Snap to 8px grid
+        </label>
+        <div class="align-row" title="Align selected component">
+          <span class="align-label">Align:</span>
+          <button data-align="left"     title="Left edge">⇤</button>
+          <button data-align="h-center" title="Horizontal center">⇔</button>
+          <button data-align="right"    title="Right edge">⇥</button>
+          <button data-align="top"      title="Top edge">⇡</button>
+          <button data-align="v-center" title="Vertical center">⇕</button>
+          <button data-align="bottom"   title="Bottom edge">⇣</button>
+        </div>
+      </div>
+      <div class="panel-section toolbar">
         <button id="btnValidate">Validate</button>
         <button id="btnDumpJson">View JSON</button>
         <button id="btnImportJson">Import JSON ↑</button>
@@ -325,6 +364,6 @@
     </aside>
   </main>
 
-  <script type="module" src="./src/designer/designer.js?t=12"></script>
+  <script type="module" src="./src/designer/designer.js?t=13"></script>
 </body>
 </html>

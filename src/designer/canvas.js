@@ -79,6 +79,13 @@ export class DesignerCanvas {
     this.machine = machine;
     this.onChange = onChange || (() => {});
     this.onSelection = onSelection || (() => {});
+    this.snapEnabled = false;
+    this.snapGrid = 8;
+    // Undo/redo: deep-clone snapshots of components on every change.
+    // History capped at 30; redo cleared on a new edit after an undo.
+    this._history = [this._snapshot()];
+    this._historyIndex = 0;
+    this._historyMax = 30;
     this.canvas = new fabric.Canvas(canvasEl, {
       width: machine.canvas.width,
       height: machine.canvas.height,
@@ -218,8 +225,18 @@ export class DesignerCanvas {
     const sync = (obj) => {
       if (!obj || !obj._component) return;
       const c = obj._component;
-      c.x = Math.round(obj.left);
-      c.y = Math.round(obj.top);
+      let nx = Math.round(obj.left);
+      let ny = Math.round(obj.top);
+      // Snap-to-grid: round to nearest grid step when enabled. Affects the
+      // schema position AND the Fabric object's position so the visual
+      // matches what gets saved.
+      if (this.snapEnabled) {
+        nx = Math.round(nx / this.snapGrid) * this.snapGrid;
+        ny = Math.round(ny / this.snapGrid) * this.snapGrid;
+        obj.set({ left: nx, top: ny });
+      }
+      c.x = nx;
+      c.y = ny;
       c.rotation = Math.round(obj.angle || 0);
       // Resize: Fabric reports scaleX/scaleY relative to original width/height.
       // Bake the scale into the schema width/height and rebuild the Fabric
@@ -269,6 +286,62 @@ export class DesignerCanvas {
     Object.assign(obj._component, patch);
     this._replaceFabricFor(obj._component);
     this.onChange(this.machine);
+  }
+
+  // ── Snap-to-grid + alignment helpers ──────────────────────────────
+  setSnapEnabled(on) { this.snapEnabled = !!on; }
+
+  alignActive(direction) {
+    const obj = this.canvas.getActiveObject();
+    if (!obj || !obj._component) return;
+    const c = obj._component;
+    const w = c.width || c.size || 0;
+    const h = c.height || c.size || 0;
+    const cw = this.machine.canvas.width;
+    const ch = this.machine.canvas.height;
+    if (direction === 'h-center')      c.x = Math.round((cw - w) / 2);
+    else if (direction === 'v-center') c.y = Math.round((ch - h) / 2);
+    else if (direction === 'left')     c.x = 0;
+    else if (direction === 'right')    c.x = cw - w;
+    else if (direction === 'top')      c.y = 0;
+    else if (direction === 'bottom')   c.y = ch - h;
+    this._replaceFabricFor(c);
+    this.onChange(this.machine);
+  }
+
+  // ── Undo / redo ───────────────────────────────────────────────────
+  // Take a snapshot of the components array. Called on every onChange
+  // (triggered after the change so the snapshot reflects the new state).
+  _snapshot() {
+    return JSON.parse(JSON.stringify(this.machine.components || []));
+  }
+  pushHistory() {
+    // Truncate any redo branch then push.
+    this._history.length = this._historyIndex + 1;
+    this._history.push(this._snapshot());
+    if (this._history.length > this._historyMax) {
+      this._history.shift();
+    } else {
+      this._historyIndex++;
+    }
+  }
+  undo() {
+    if (this._historyIndex <= 0) return false;
+    this._historyIndex--;
+    this._restoreFromHistory();
+    return true;
+  }
+  redo() {
+    if (this._historyIndex >= this._history.length - 1) return false;
+    this._historyIndex++;
+    this._restoreFromHistory();
+    return true;
+  }
+  _restoreFromHistory() {
+    this.machine.components = JSON.parse(JSON.stringify(this._history[this._historyIndex]));
+    this.rebuild();
+    // Notify but DON'T push to history (otherwise undo/redo would push new entries).
+    this.onChange(this.machine, { skipHistory: true });
   }
 }
 

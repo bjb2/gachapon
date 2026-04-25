@@ -34,7 +34,11 @@ async function boot() {
   const propsHost = document.getElementById('propertiesPanel');
   const layersHost = document.getElementById('layersPanel');
   const designer = new DesignerCanvas(canvasEl, machine, {
-    onChange: (m) => { save(m); refreshPalette(); refreshProps(); refreshLayers(); },
+    onChange: (m, opts = {}) => {
+      save(m);
+      if (!opts.skipHistory) designer.pushHistory();
+      refreshPalette(); refreshProps(); refreshLayers();
+    },
     onSelection: (component) => { refreshProps(component); refreshLayers(); },
   });
   window.__designer = designer;
@@ -103,17 +107,23 @@ async function boot() {
     designer.addComponent(type, partial);
   });
 
-  // Keyboard shortcuts: Delete/Backspace removes the selected component;
-  // Ctrl+D duplicates it. Skip while typing in a form field.
+  // Keyboard shortcuts. Skip while typing in a form field.
   window.addEventListener('keydown', (e) => {
     const tag = (document.activeElement && document.activeElement.tagName) || '';
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    const mod = e.ctrlKey || e.metaKey;
     if (e.key === 'Delete' || e.key === 'Backspace') {
       e.preventDefault();
       designer.removeActive();
-    } else if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
+    } else if (mod && (e.key === 'd' || e.key === 'D')) {
       e.preventDefault();
       designer.duplicateActive();
+    } else if (mod && !e.shiftKey && (e.key === 'z' || e.key === 'Z')) {
+      e.preventDefault();
+      designer.undo();
+    } else if (mod && (e.shiftKey && (e.key === 'z' || e.key === 'Z') || e.key === 'y' || e.key === 'Y')) {
+      e.preventDefault();
+      designer.redo();
     }
   });
 
@@ -124,6 +134,19 @@ async function boot() {
   // Toolbar
   document.getElementById('btnDelete').addEventListener('click', () => designer.removeActive());
   document.getElementById('btnDuplicate').addEventListener('click', () => designer.duplicateActive());
+  document.getElementById('btnUndo').addEventListener('click', () => designer.undo());
+  document.getElementById('btnRedo').addEventListener('click', () => designer.redo());
+
+  // Snap-to-grid toggle
+  const snapToggle = document.getElementById('toggleSnap');
+  snapToggle.addEventListener('change', (e) => {
+    designer.setSnapEnabled(e.target.checked);
+  });
+
+  // Alignment buttons
+  document.querySelectorAll('[data-align]').forEach(btn => {
+    btn.addEventListener('click', () => designer.alignActive(btn.dataset.align));
+  });
   document.getElementById('btnNew').addEventListener('click', async () => {
     if (!confirm('Discard current draft and start a new machine?')) return;
     const fresh = newCustomMachine();
