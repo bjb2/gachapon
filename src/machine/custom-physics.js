@@ -126,29 +126,43 @@ export class CustomPhysics {
         break;
       }
       case 'half-dome': {
-        // Arch-window walls: a semicircle arch on top + straight vertical
-        // sides connecting the arch to the bottom (open). Bottom is open
-        // so balls fall through into the auto funnel.
-        const archR = Math.min(g.w / 2, g.hh) - 4;
-        const straightH = g.hh - archR - 4;
+        // Rounded-top tombstone walls: vertical sides from y=R to y=hh,
+        // top-left + top-right quarter-circle corner arcs, optional flat
+        // top between them. Bottom is open so balls fall through into
+        // the auto funnel.
+        const R = Math.min(g.w / 2, g.hh);
         // Left straight wall (only if there's a flat-side portion).
-        if (straightH > 0) {
-          walls.push(Bodies.rectangle(3, straightH + (g.hh - straightH) / 2, 8, g.hh - straightH,
+        if (R < g.hh) {
+          const sideH = g.hh - R;
+          walls.push(Bodies.rectangle(3, R + sideH / 2, 8, sideH,
             { isStatic: true, friction: 0.4 }));
-          walls.push(Bodies.rectangle(g.w - 3, straightH + (g.hh - straightH) / 2, 8, g.hh - straightH,
+          walls.push(Bodies.rectangle(g.w - 3, R + sideH / 2, 8, sideH,
             { isStatic: true, friction: 0.4 }));
         }
-        // Semicircle arch on top — center at (w/2, archR + 4 from top), radius archR.
-        const cx = g.w / 2;
-        const cy = g.hh - archR; // arch's flat baseline (bottom of arch)
-        const n = h.wallArcSegments || 24;
-        let prev = { x: cx - archR, y: cy };
-        for (let i = 1; i <= n; i++) {
-          const a = -Math.PI + (Math.PI * i) / n;
-          const x = cx + archR * Math.cos(a);
-          const y = cy + archR * Math.sin(a);
-          this._segmentWall(walls, prev.x, prev.y, x, y, 10);
-          prev = { x, y };
+        // Top-left quarter arc: center (R, R), from (0, R) to (R, 0).
+        // Angles in standard math (cos right, sin down): π → 3π/2 (sweep -π/2 to 0 in y-down).
+        const segs = Math.max(8, Math.floor((h.wallArcSegments || 24) / 2));
+        const arcSeg = (cx, cy, aStart, aEnd) => {
+          const step = (aEnd - aStart) / segs;
+          let prev = { x: cx + R * Math.cos(aStart), y: cy + R * Math.sin(aStart) };
+          for (let i = 1; i <= segs; i++) {
+            const a = aStart + step * i;
+            const x = cx + R * Math.cos(a);
+            const y = cy + R * Math.sin(a);
+            this._segmentWall(walls, prev.x, prev.y, x, y, 10);
+            prev = { x, y };
+          }
+        };
+        // Top-left corner: arc from (0, R) up to (R, 0). In SVG y-down,
+        // (0, R) is angle π (left), (R, 0) is angle 3π/2 (up). Going
+        // from π → 3π/2 sweeps the upper-left quarter.
+        arcSeg(R, R, Math.PI, 1.5 * Math.PI);
+        // Top-right corner: from (g.w - R, 0) (angle 3π/2) to (g.w, R) (angle 0 / 2π).
+        arcSeg(g.w - R, R, 1.5 * Math.PI, 2 * Math.PI);
+        // Flat top between the two corners, only if there is one.
+        if (R < g.w / 2) {
+          walls.push(Bodies.rectangle(g.w / 2, 5, g.w - 2 * R, 8,
+            { isStatic: true, friction: 0.4 }));
         }
         break;
       }

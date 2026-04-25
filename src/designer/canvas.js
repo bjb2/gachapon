@@ -249,15 +249,15 @@ function renderHopper(c) {
       ], { fill, stroke, strokeWidth });
       break;
     case 'half-dome': {
-      // "Arch window" shape: flat vertical sides + semicircle top.
-      // Matches the built-in classic / forest / cyber domes which have
-      // straight side walls before the arch starts (NOT a half-ellipse).
-      // Arch is a true semicircle with radius = width/2; remaining height
-      // is the flat side walls.
-      const archR = Math.min(c.width / 2, c.height);
-      const straightH = c.height - archR;
+      // Rounded-top "tombstone": rectangle with top corners rounded.
+      // Matches the built-in classic / forest / cyber domes (CSS
+      // border-radius on the dome-outer rect). The shape stays within
+      // the declared bbox (0,0)-(W,H) — earlier "arc through both top
+      // points" approach drew a semicircle that overflowed above y=0
+      // when chord >= 2*radius.
+      const R = Math.min(c.width / 2, c.height);
       obj = new fabric.Path(
-        `M 0 ${c.height} L 0 ${straightH} A ${archR} ${archR} 0 0 1 ${c.width} ${straightH} L ${c.width} ${c.height} Z`,
+        `M 0 ${c.height} L 0 ${R} A ${R} ${R} 0 0 1 ${R} 0 L ${c.width - R} 0 A ${R} ${R} 0 0 1 ${c.width} ${R} L ${c.width} ${c.height} Z`,
         { fill, stroke, strokeWidth, originX: 'left', originY: 'top' },
       );
       break;

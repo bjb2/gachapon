@@ -139,10 +139,9 @@ function emitHopper(c, gRef, fRef, machineId) {
       inner = `<polygon points="0,0 ${c.width},0 ${c.width * 0.65},${c.height / 2} ${c.width},${c.height} 0,${c.height} ${c.width * 0.35},${c.height / 2}" ${baseAttrs}/>`;
       break;
     case 'half-dome': {
-      // Arch window: straight vertical sides + semicircle top.
-      const _archR = Math.min(c.width / 2, c.height);
-      const _straightH = c.height - _archR;
-      inner = `<path d="M 0 ${c.height} L 0 ${_straightH} A ${_archR} ${_archR} 0 0 1 ${c.width} ${_straightH} L ${c.width} ${c.height} Z" ${baseAttrs}/>`;
+      // Rounded-top tombstone: rectangle with top corners rounded by R.
+      const _R = Math.min(c.width / 2, c.height);
+      inner = `<path d="M 0 ${c.height} L 0 ${_R} A ${_R} ${_R} 0 0 1 ${_R} 0 L ${c.width - _R} 0 A ${_R} ${_R} 0 0 1 ${c.width} ${_R} L ${c.width} ${c.height} Z" ${baseAttrs}/>`;
       break;
     }
     case 'dome':
@@ -269,9 +268,8 @@ function buildHopperClip(hopper, machineId) {
       shape = `<polygon points="0,0 ${hopper.width},0 ${hopper.width * 0.65},${hopper.height / 2} ${hopper.width},${hopper.height} 0,${hopper.height} ${hopper.width * 0.35},${hopper.height / 2}"/>`;
       break;
     case 'half-dome': {
-      const _archR = Math.min(hopper.width / 2, hopper.height);
-      const _straightH = hopper.height - _archR;
-      shape = `<path d="M 0 ${hopper.height} L 0 ${_straightH} A ${_archR} ${_archR} 0 0 1 ${hopper.width} ${_straightH} L ${hopper.width} ${hopper.height} Z"/>`;
+      const _R = Math.min(hopper.width / 2, hopper.height);
+      shape = `<path d="M 0 ${hopper.height} L 0 ${_R} A ${_R} ${_R} 0 0 1 ${_R} 0 L ${hopper.width - _R} 0 A ${_R} ${_R} 0 0 1 ${hopper.width} ${_R} L ${hopper.width} ${hopper.height} Z"/>`;
       break;
     }
     case 'dome':
