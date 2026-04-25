@@ -906,108 +906,103 @@ const NOIR_DEPOT = {
 //   bezel and cyan/purple highlights, cyan glow crank, cyan dots.
 const CYBER_SYNTH = {
   name: 'SYNTH-X 404',
-  canvas: { width: 360, height: 600, bg: '#050810' },
+  canvas: { width: 360, height: 500, bg: '#050810' },
   components: [
     // ─── Floor glow ──────────────────────────────────────────────────
-    { type: 'decoration', shape: 'ellipse', x: 50, y: 568, width: 260, height: 18,
-      fill: 'rgba(0,217,255,0.12)', opacity: 0.75 },
-    { type: 'decoration', shape: 'ellipse', x: 50, y: 572, width: 260, height: 12,
-      fill: 'rgba(0,0,0,0.6)' },
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 470, width: 260, height: 14,
+      fill: 'rgba(0,217,255,0.14)', opacity: 0.75 },
 
-    // ─── Dome collar (dark with cyan glow border) ────────────────────
-    { type: 'decoration', shape: 'rect', x: 38, y: 218, width: 284, height: 11,
-      fill: '#0A1020', cornerRadius: 0,
-      fillGradient: { type: 'linear', coords: 'topToBottom',
-        stops: [{ offset: 0, color: '#0A1020' }, { offset: 1, color: '#060C18' }] },
-      stroke: 'rgba(0,217,255,0.38)', strokeWidth: 2,
-      shadow: { color: 'rgba(0,217,255,0.18)', blur: 10, offsetY: 3 } },
-
-    // ─── Deep navy chassis ──────────────────────────────────────────
-    { type: 'decoration', shape: 'rect', x: 33, y: 229, width: 294, height: 318,
-      fill: '#0C1224', cornerRadius: 8,
-      fillGradient: { type: 'linear', coords: 'topToBottom',
-        stops: [{ offset: 0, color: '#0C1224' }, { offset: 0.5, color: '#080E1A' }, { offset: 1, color: '#050810' }] },
-      stroke: 'rgba(0,217,255,0.32)', strokeWidth: 3,
-      shadow: { color: 'rgba(0,0,0,0.75)', blur: 22, offsetY: 12 } },
-    // Square the top
-    { type: 'decoration', shape: 'rect', x: 33, y: 229, width: 294, height: 12,
-      fill: '#0C1224' },
-    // Top edge cyan highlight
-    { type: 'decoration', shape: 'rect', x: 36, y: 232, width: 288, height: 1,
-      fill: 'rgba(0,217,255,0.07)' },
-
-    // Cyan corner indicator dots ─ machine-body::before/::after
-    { type: 'decoration', shape: 'circle', x: 43, y: 240, width: 7, height: 7,
-      fill: '#00D9FF',
-      shadow: { color: 'rgba(0,217,255,0.7)', blur: 6 } },
-    { type: 'decoration', shape: 'circle', x: 310, y: 240, width: 7, height: 7,
-      fill: '#00D9FF',
-      shadow: { color: 'rgba(0,217,255,0.7)', blur: 6 } },
-
-    // ─── Glowing dome bezel ──────────────────────────────────────────
-    // Outer cyan glow ring
-    { type: 'decoration', shape: 'ellipse', x: 53, y: 50, width: 254, height: 178,
-      fill: 'rgba(0,217,255,0.06)',
+    // ─── Dome (half-dome cap with glowing cyan rim) ──────────────────
+    // Outer cyan glow ring (decoration behind hopper)
+    { type: 'decoration', shape: 'rect', x: 50, y: 18, width: 240, height: 132,
+      fill: 'rgba(0,217,255,0.05)',
       shadow: { color: 'rgba(0,217,255,0.3)', blur: 18 } },
     // The dome window
-    { type: 'hopper', variant: 'half-dome', x: 55, y: 60, width: 250, height: 168,
-      wallColor: 'rgba(0,217,255,0.7)', wallThickness: 3,
-      windowFill: 'rgba(0,28,48,0.85)' },
-    // Cyan reflection highlight
-    { type: 'decoration', shape: 'ellipse', x: 76, y: 76, width: 22, height: 68,
-      fill: 'rgba(0,217,255,0.18)', opacity: 0.9, rotation: -16 },
-    // Purple reflection highlight
-    { type: 'decoration', shape: 'ellipse', x: 110, y: 70, width: 9, height: 30,
-      fill: 'rgba(191,90,242,0.25)', opacity: 0.9, rotation: -10 },
+    { type: 'hopper', variant: 'half-dome', x: 55, y: 22, width: 230, height: 130,
+      wallColor: 'rgba(0,217,255,0.75)', wallThickness: 3,
+      windowFill: 'rgba(0,28,48,0.65)' },
+    // Cyan + purple highlight reflections (after hopper, on top)
+    { type: 'decoration', shape: 'ellipse', x: 76, y: 38, width: 22, height: 60,
+      fill: 'rgba(0,217,255,0.22)', opacity: 0.9, rotation: -16 },
+    { type: 'decoration', shape: 'ellipse', x: 108, y: 32, width: 9, height: 24,
+      fill: 'rgba(191,90,242,0.3)', opacity: 0.9, rotation: -10 },
 
-    // ─── Glowing cyan brand strip ────────────────────────────────────
-    { type: 'brand-strip', x: 100, y: 256, width: 160, height: 22,
+    // ─── Dome collar (dark band connecting dome to body) ─────────────
+    { type: 'decoration', shape: 'rect', x: 38, y: 148, width: 264, height: 10,
+      fill: '#0A1020',
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#0A1020' }, { offset: 1, color: '#060C18' }] },
+      stroke: 'rgba(0,217,255,0.4)', strokeWidth: 2,
+      shadow: { color: 'rgba(0,217,255,0.18)', blur: 8, offsetY: 2 } },
+
+    // ─── Deep navy chassis ───────────────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 33, y: 158, width: 274, height: 230,
+      fill: '#0C1224', cornerRadius: 8,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#0C1224' }, { offset: 1, color: '#050810' }] },
+      stroke: 'rgba(0,217,255,0.32)', strokeWidth: 3,
+      shadow: { color: 'rgba(0,0,0,0.7)', blur: 18, offsetY: 8 } },
+    // Top edge cyan highlight
+    { type: 'decoration', shape: 'rect', x: 36, y: 161, width: 268, height: 1,
+      fill: 'rgba(0,217,255,0.12)' },
+    // Cyan corner indicator dots
+    { type: 'decoration', shape: 'circle', x: 43, y: 168, width: 7, height: 7,
+      fill: '#00D9FF',
+      shadow: { color: 'rgba(0,217,255,0.7)', blur: 6 } },
+    { type: 'decoration', shape: 'circle', x: 290, y: 168, width: 7, height: 7,
+      fill: '#00D9FF',
+      shadow: { color: 'rgba(0,217,255,0.7)', blur: 6 } },
+
+    // ─── Brand strip ─────────────────────────────────────────────────
+    { type: 'brand-strip', x: 90, y: 182, width: 160, height: 24,
       text: '◈ SYNTH-X 404 ◈', font: 'Orbitron', fontWeight: 'bold',
-      fontSize: 8, fg: '#00D9FF', bg: 'rgba(0,0,0,0)', cornerRadius: 2,
-      stroke: 'rgba(0,217,255,0.38)', strokeWidth: 1,
-      letterSpacing: 0.2,
-      shadow: { color: 'rgba(0,217,255,0.65)', blur: 10 } },
+      fontSize: 9, fg: '#00D9FF', bg: 'rgba(0,0,0,0)', cornerRadius: 3,
+      stroke: 'rgba(0,217,255,0.45)', strokeWidth: 1,
+      letterSpacing: 0.18,
+      shadow: { color: 'rgba(0,217,255,0.6)', blur: 8 } },
 
-    // ─── Cyan LED display ────────────────────────────────────────────
-    { type: 'led', x: 56, y: 296, width: 110, height: 22,
+    // ─── LED display (left side of controls row) ─────────────────────
+    { type: 'led', x: 50, y: 220, width: 110, height: 22,
       color: '#00D9FF', bg: '#020408', cornerRadius: 3,
       shadow: { color: 'rgba(0,217,255,0.18)', blur: 8 } },
 
-    // ─── Purple "404" porthole ───────────────────────────────────────
-    { type: 'decoration', shape: 'circle', x: 56, y: 332, width: 44, height: 44,
-      fill: '#030608', stroke: 'rgba(191,90,242,0.32)', strokeWidth: 1.5,
-      shadow: { color: 'rgba(191,90,242,0.12)', blur: 6 } },
-    { type: 'decoration', shape: 'text', x: 65, y: 348, text: '404',
-      fill: 'rgba(191,90,242,0.85)', font: 'Orbitron', fontWeight: 'bold',
-      fontSize: 12, letterSpacing: 0.08,
-      shadow: { color: 'rgba(191,90,242,0.5)', blur: 4 } },
+    // ─── 404 lucky-ball plate (below LED) ────────────────────────────
+    { type: 'decoration', shape: 'circle', x: 60, y: 264, width: 48, height: 48,
+      fill: '#030608', stroke: 'rgba(191,90,242,0.4)', strokeWidth: 1.5,
+      fillGradient: { type: 'radial', cx: 18, cy: 14, innerR: 0, outerR: 36,
+        stops: [{ offset: 0, color: 'rgba(191,90,242,0.18)' }, { offset: 1, color: '#030608' }] },
+      shadow: { color: 'rgba(191,90,242,0.25)', blur: 8 } },
+    { type: 'decoration', shape: 'text', x: 71, y: 280, text: '404',
+      fill: 'rgba(191,90,242,0.95)', font: 'Orbitron', fontWeight: 'bold',
+      fontSize: 13, letterSpacing: 0.08,
+      shadow: { color: 'rgba(191,90,242,0.6)', blur: 4 } },
 
     // ─── Turn dots (cyan, 4 for SYNTH-X) ─────────────────────────────
-    { type: 'turn-dots', x: 116, y: 340, count: 4, dotSize: 8,
+    { type: 'turn-dots', x: 124, y: 282, count: 4, dotSize: 8,
       litColor: '#00D9FF', dimColor: '#070D18' },
 
-    // ─── Glowing crank ───────────────────────────────────────────────
-    { type: 'crank', x: 226, y: 308, size: 60, accent: '#0A1018',
-      stroke: 'rgba(0,217,255,0.5)', strokeWidth: 3, iconColor: '#00D9FF',
-      fillGradient: { type: 'radial', cx: 20, cy: 16, innerR: 0, outerR: 56,
-        stops: [{ offset: 0, color: 'rgba(0,217,255,0.2)' }, { offset: 0.45, color: '#0A1018' }, { offset: 1, color: '#050810' }] },
-      shadow: { color: 'rgba(0,217,255,0.35)', blur: 16, offsetY: 4 } },
+    // ─── Glowing crank (right side) ──────────────────────────────────
+    { type: 'crank', x: 226, y: 232, size: 56, accent: '#0A1018',
+      stroke: 'rgba(0,217,255,0.55)', strokeWidth: 3, iconColor: '#00D9FF',
+      fillGradient: { type: 'radial', cx: 20, cy: 16, innerR: 0, outerR: 50,
+        stops: [{ offset: 0, color: 'rgba(0,217,255,0.25)' }, { offset: 0.45, color: '#0A1018' }, { offset: 1, color: '#050810' }] },
+      shadow: { color: 'rgba(0,217,255,0.4)', blur: 14, offsetY: 4 } },
 
-    // ─── Chute marker (tucked under the half-dome cap) ───────────────
-    { type: 'chute', x: 150, y: 230, width: 60, height: 20,
+    // ─── Chute marker (tucked under the dome) ────────────────────────
+    { type: 'chute', x: 150, y: 154, width: 60, height: 18,
       openingColor: '#020408', stroke: 'rgba(0,217,255,0.32)', strokeWidth: 2,
       cornerRadius: 4, labelColor: '#00D9FF' },
 
     // ─── Tray (dark with cyan border) ────────────────────────────────
-    { type: 'tray', x: 50, y: 480, width: 260, height: 72,
-      fill: '#0A1020', stroke: 'rgba(0,217,255,0.28)',
+    { type: 'tray', x: 50, y: 348, width: 260, height: 56,
+      fill: '#0A1020', stroke: 'rgba(0,217,255,0.32)',
       fillGradient: { type: 'linear', coords: 'topToBottom',
         stops: [{ offset: 0, color: '#0A1020' }, { offset: 1, color: '#060C18' }] },
-      cornerRadius: 4,
-      shadow: { color: 'rgba(0,217,255,0.05)', blur: 12, offsetY: 4 } },
+      cornerRadius: 6,
+      shadow: { color: 'rgba(0,217,255,0.08)', blur: 10, offsetY: 4 } },
     // Tray flap
-    { type: 'decoration', shape: 'rect', x: 154, y: 476, width: 52, height: 12,
-      fill: '#0C1224', stroke: 'rgba(0,217,255,0.22)', strokeWidth: 1.5,
+    { type: 'decoration', shape: 'rect', x: 154, y: 344, width: 52, height: 10,
+      fill: '#0C1224', stroke: 'rgba(0,217,255,0.25)', strokeWidth: 1.5,
       fillGradient: { type: 'linear', coords: 'topToBottom',
         stops: [{ offset: 0, color: '#0C1224' }, { offset: 1, color: '#0A1020' }] } },
   ],
