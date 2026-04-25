@@ -164,6 +164,21 @@
     flex: 0 0 80px;
   }
 
+  /* Collapsible sections */
+  .section-toggle {
+    cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 6px;
+    margin: 0 0 8px;
+    transition: color 0.1s;
+  }
+  .section-toggle:hover { color: #FF6B9D; }
+  .section-toggle .caret {
+    display: inline-block; font-size: 11px; line-height: 1;
+    transition: transform 0.15s;
+  }
+  .collapsible.is-collapsed .caret { transform: rotate(-90deg); }
+  .collapsible.is-collapsed .section-body { display: none; }
+
   /* Snap + alignment */
   .align-tools { display: flex; flex-direction: column; gap: 6px; }
   .snap-toggle {
@@ -341,9 +356,14 @@
         <button id="btnSaveAs">Rename / Save as…</button>
         <button id="btnNew" class="danger">New machine</button>
       </div>
-      <div class="panel-section">
-        <h2>Layers <span class="muted" style="font-weight:400">(top of stack first)</span></h2>
-        <div id="layersPanel" class="muted">Loading…</div>
+      <div class="panel-section collapsible" data-collapsible>
+        <h2 class="section-toggle" data-toggle>
+          <span class="caret">▾</span>
+          Layers <span class="muted" style="font-weight:400">(top of stack first)</span>
+        </h2>
+        <div class="section-body">
+          <div id="layersPanel" class="muted">Loading…</div>
+        </div>
       </div>
       <div class="panel-section">
         <h2>Start from preset</h2>
@@ -364,6 +384,16 @@
     </aside>
   </main>
 
-  <script type="module" src="./src/designer/designer.js?t=13"></script>
+  <script>
+    // Tiny inline handler — collapsing a panel section doesn't need any
+    // module logic, just toggle a class on click.
+    document.addEventListener('click', (e) => {
+      const toggle = e.target.closest('[data-toggle]');
+      if (!toggle) return;
+      const section = toggle.closest('[data-collapsible]');
+      if (section) section.classList.toggle('is-collapsed');
+    });
+  </script>
+  <script type="module" src="./src/designer/designer.js?t=14"></script>
 </body>
 </html>
