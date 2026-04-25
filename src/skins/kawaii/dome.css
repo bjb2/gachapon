@@ -1,0 +1,68 @@
+/* DOME layout. The dome itself is CSS-rendered (transparency + reflections
+   are unreliable from image gen), and the AI-generated dome-collar.png
+   sits between the glass dome and the machine body. */
+
+html[data-skin="kawaii"] .dome-outer {
+  width: var(--dome-width, 230px);
+  height: var(--dome-height, 155px);
+  position: relative;
+  z-index: 2;
+}
+
+/* Glass dome shell — pastel pink tint, soft border, rounded top */
+html[data-skin="kawaii"] .dome-shell {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--dome-radius, 115px) var(--dome-radius, 115px) 0 0;
+  border: 3px solid rgba(255,200,221,0.55);
+  border-bottom: none;
+  overflow: hidden;
+  background: linear-gradient(160deg,
+    rgba(255,235,245,0.85) 0%,
+    rgba(245,220,235,0.70) 45%,
+    rgba(235,210,225,0.60) 100%);
+}
+html[data-skin="kawaii"] .dome-shell canvas {
+  position: absolute;
+  top: 3px; left: 3px;
+  display: block;
+}
+
+/* Glass reflections — bright pearly highlights */
+html[data-skin="kawaii"] .dome-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+html[data-skin="kawaii"] .dome-glass::before {
+  content: '';
+  position: absolute;
+  top: 14px; left: 18px;
+  width: 30px; height: 80px;
+  background: rgba(255,255,255,0.32);
+  border-radius: 50%;
+  transform: rotate(-18deg);
+}
+html[data-skin="kawaii"] .dome-glass::after {
+  content: '';
+  position: absolute;
+  top: 10px; left: 58px;
+  width: 13px; height: 38px;
+  background: rgba(255,255,255,0.20);
+  border-radius: 50%;
+  transform: rotate(-12deg);
+}
+
+/* Dome collar — AI-generated ribbon strip between dome and body */
+html[data-skin="kawaii"] .dome-collar {
+  width: 256px;
+  height: 28px;
+  background-image: url('./assets/dome-collar.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  box-shadow: 0 2px 4px rgba(255,150,184,0.18);
+  z-index: 3;
+}

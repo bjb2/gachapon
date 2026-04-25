@@ -1,0 +1,55 @@
+html[data-skin="art-deco"] .tray {
+  margin-top: 14px;
+  background-image: url('./assets/tray.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  border-radius: 12px;
+  height: 72px;
+  position: relative;
+}
+
+html[data-skin="art-deco"] .tray-flap {
+  background: transparent;
+  border: none;
+}
+
+html[data-skin="art-deco"] .tray-hint {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C9A04A;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.6);
+}
+
+html[data-skin="art-deco"] .tray-ball::before {
+  background: rgba(244,244,244,0.5);
+}
+
+html[data-skin="art-deco"] .refill-btn {
+  background: #0E0C0F;
+  color: #C9A04A;
+  border: 1px solid #C9A04A;
+  border-radius: 2px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  transition: transform 0.15s;
+}
+html[data-skin="art-deco"] .refill-btn:hover { transform: translateY(-2px); }
+
+html[data-skin="art-deco"] .refill-empty {
+  color: #C9A04A;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}

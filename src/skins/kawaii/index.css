@@ -1,0 +1,78 @@
+@import url('./machine.css');
+@import url('./dome.css');
+@import url('./tray.css');
+@import url('./modal.css');
+
+html[data-skin="kawaii"] body {
+  background: #FFF8F5;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(255,200,221,0.30) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(229,212,255,0.25) 0%, transparent 50%);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #4A3548;
+}
+
+html[data-skin="kawaii"] .site-title {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #FF96B8;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-shadow: 0 2px 4px rgba(255,200,221,0.5);
+}
+
+html[data-skin="kawaii"] .site-sub {
+  color: #B97A8E;
+  letter-spacing: 0.25em;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 700;
+}
+
+html[data-skin="kawaii"] .hint-line {
+  color: #B97A8E;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+html[data-skin="kawaii"] .collection-label {
+  color: #FF96B8;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+}
+
+html[data-skin="kawaii"] .chip {
+  background: #FFFFFF;
+  border: 2px solid #FFC8DD;
+  color: #4A3548;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 700;
+  border-radius: 50px;
+}
+html[data-skin="kawaii"] .chip.new-chip {
+  border-color: #FF96B8;
+  color: #FF96B8;
+  box-shadow: 0 2px 8px rgba(255,150,184,0.35);
+}
+
+html[data-skin="kawaii"] .machine-nav .mnav-btn {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #B97A8E;
+  border: 2px solid #FFC8DD;
+  background: #FFFFFF;
+  border-radius: 50px;
+}
+html[data-skin="kawaii"] .machine-nav .mnav-btn:hover {
+  color: #FF96B8;
+  border-color: #FF96B8;
+  background: rgba(255,200,221,0.15);
+}
+html[data-skin="kawaii"] .machine-nav .mnav-btn.active {
+  background: #FF96B8;
+  color: #FFFFFF;
+  border-color: #FF96B8;
+  box-shadow: 0 2px 8px rgba(255,150,184,0.45);
+}

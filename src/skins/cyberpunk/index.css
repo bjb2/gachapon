@@ -1,0 +1,80 @@
+@import url('./machine.css');
+@import url('./dome.css');
+@import url('./tray.css');
+@import url('./modal.css');
+
+html[data-skin="cyberpunk"] body {
+  background: #0F0C16;
+  background-image:
+    radial-gradient(ellipse at 30% 0%, rgba(225,63,140,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(69,217,232,0.10) 0%, transparent 50%);
+  font-family: 'Share Tech Mono', monospace;
+  color: #E8DDC0;
+}
+
+html[data-skin="cyberpunk"] .site-title {
+  font-family: 'Share Tech Mono', monospace;
+  color: #E13F8C;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-shadow: 0 0 6px rgba(225,63,140,0.6), 0 0 14px rgba(225,63,140,0.3);
+}
+
+html[data-skin="cyberpunk"] .site-sub {
+  color: #45D9E8;
+  letter-spacing: 0.35em;
+  font-family: 'Share Tech Mono', monospace;
+  text-shadow: 0 0 4px rgba(69,217,232,0.5);
+}
+
+html[data-skin="cyberpunk"] .hint-line {
+  color: #45D9E8;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  text-shadow: 0 0 3px rgba(69,217,232,0.4);
+}
+
+html[data-skin="cyberpunk"] .collection-label {
+  color: #FFB347;
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.25em;
+  text-shadow: 0 0 3px rgba(255,179,71,0.4);
+}
+
+html[data-skin="cyberpunk"] .chip {
+  background: rgba(24,24,30,0.8);
+  border: 1px solid #2C2E36;
+  color: #E8DDC0;
+  font-family: 'Share Tech Mono', monospace;
+  border-radius: 2px;
+}
+html[data-skin="cyberpunk"] .chip.new-chip {
+  border-color: #E13F8C;
+  color: #E13F8C;
+  box-shadow: 0 2px 8px rgba(225,63,140,0.3);
+  text-shadow: 0 0 3px rgba(225,63,140,0.5);
+}
+
+html[data-skin="cyberpunk"] .machine-nav .mnav-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #6A6E7A;
+  border: 1px solid #2C2E36;
+  background: rgba(24,24,30,0.85);
+  border-radius: 2px;
+}
+html[data-skin="cyberpunk"] .machine-nav .mnav-btn:hover {
+  color: #45D9E8;
+  border-color: #45D9E8;
+  background: rgba(69,217,232,0.08);
+  box-shadow: 0 0 6px rgba(69,217,232,0.3);
+}
+html[data-skin="cyberpunk"] .machine-nav .mnav-btn.active {
+  background: #E13F8C;
+  color: #18181E;
+  border-color: #E13F8C;
+  box-shadow: 0 2px 10px rgba(225,63,140,0.45);
+}

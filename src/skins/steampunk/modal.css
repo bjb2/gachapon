@@ -1,0 +1,76 @@
+html[data-skin="steampunk"] .modal-overlay {
+  background: rgba(20, 14, 8, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+html[data-skin="steampunk"] .reveal-card {
+  background:
+    linear-gradient(180deg, #2A1F14 0%, #1A1410 100%);
+  border: 2px solid #8C6B3D;
+  border-radius: 8px;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(201,160,89,0.3),
+    0 0 60px rgba(216,138,46,0.15);
+  color: #E8D9B0;
+}
+html[data-skin="steampunk"] .reveal-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(216,138,46,0.18) 0%, transparent 60%);
+}
+
+html[data-skin="steampunk"] .rarity-banner {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+html[data-skin="steampunk"] .rarity-banner.common {
+  background: #2A1F14;
+  color: #C9A059;
+  border: 1px solid #8C6B3D;
+}
+html[data-skin="steampunk"] .rarity-banner.rare {
+  background: #1A1410;
+  color: #D88A2E;
+  border: 1px solid #C9A059;
+  box-shadow: inset 0 0 8px rgba(216,138,46,0.3);
+}
+html[data-skin="steampunk"] .rarity-banner.ultra {
+  background: linear-gradient(90deg, #5A2A2A, #8C4A2A);
+  color: #F2EBD2;
+  border: 1px solid #D88A2E;
+  box-shadow: 0 2px 12px rgba(216,138,46,0.6);
+  animation: steampunkUltraBanner 1.5s ease-in-out infinite alternate;
+}
+@keyframes steampunkUltraBanner {
+  from { box-shadow: 0 2px 12px rgba(216,138,46,0.6); }
+  to   { box-shadow: 0 2px 26px rgba(216,138,46,0.95), 0 0 40px rgba(255,140,40,0.35); }
+}
+
+html[data-skin="steampunk"] .rarity-stars { color: #D88A2E; }
+
+html[data-skin="steampunk"] .char-name {
+  font-family: 'Crimson Pro', serif;
+  color: #E8D9B0;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+html[data-skin="steampunk"] .char-flavor {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  color: #C9A059;
+}
+
+html[data-skin="steampunk"] .close-btn {
+  background: #5A2A2A;
+  color: #E8D9B0;
+  border: 1px solid #8C6B3D;
+  font-family: 'Crimson Pro', serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.6);
+}
+html[data-skin="steampunk"] .close-btn:hover {
+  box-shadow: 0 8px 22px rgba(0,0,0,0.8), 0 0 14px rgba(216,138,46,0.3);
+}

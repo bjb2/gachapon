@@ -1,0 +1,61 @@
+html[data-skin="cyberpunk"] .tray {
+  margin-top: 14px;
+  background-image: url('./assets/tray.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  border-radius: 12px;
+  height: 72px;
+  position: relative;
+}
+
+html[data-skin="cyberpunk"] .tray-flap {
+  background: transparent;
+  border: none;
+}
+
+html[data-skin="cyberpunk"] .tray-hint {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #45D9E8;
+  text-shadow: 0 0 4px rgba(69,217,232,0.5);
+}
+
+html[data-skin="cyberpunk"] .tray-ball::before {
+  background: rgba(255,179,71,0.5);
+}
+
+html[data-skin="cyberpunk"] .refill-btn {
+  background: #18181E;
+  color: #E13F8C;
+  border: 1px solid #E13F8C;
+  border-radius: 2px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.6),
+    0 0 8px rgba(225,63,140,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-shadow: 0 0 3px rgba(225,63,140,0.5);
+}
+html[data-skin="cyberpunk"] .refill-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.7),
+    0 0 14px rgba(225,63,140,0.6);
+}
+
+html[data-skin="cyberpunk"] .refill-empty {
+  color: #FFB347;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 0 3px rgba(255,179,71,0.4);
+}

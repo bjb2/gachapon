@@ -1,0 +1,37 @@
+html[data-skin="apothecary"] .box-outer {
+  width: 256px;
+  height: 216px;
+  position: relative;
+  z-index: 2;
+  background-image: url('./assets/hopper-frame.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+}
+
+html[data-skin="apothecary"] .box-shell {
+  position: absolute;
+  top: 22px; left: 22px; right: 22px; bottom: 26px;
+  overflow: hidden;
+  background: rgba(60, 40, 25, 0.4);
+  box-shadow: inset 0 4px 14px rgba(40,25,15,0.4);
+}
+
+html[data-skin="apothecary"] .box-shell canvas {
+  position: absolute;
+  top: 0; left: 0;
+  display: block;
+}
+
+/* Frosted-amber glass sheen for the apothecary aesthetic */
+html[data-skin="apothecary"] .box-glass {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg,
+      rgba(239,228,204,0.18) 0%,
+      transparent 45%,
+      rgba(185,122,79,0.05) 100%);
+}
