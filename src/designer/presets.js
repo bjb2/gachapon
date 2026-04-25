@@ -98,10 +98,10 @@ const TABBY_CAT = {
     { type: 'turn-dots', x: 200, y: 350, count: 3, dotSize: 10,
       litColor: '#E8839F', dimColor: '#5A3820' },
 
-    // ─── Chute (design-only marker) ──────────────────────────────────
-    { type: 'chute', x: 130, y: 380, width: 100, height: 32,
+    // ─── Chute (design-only marker, tucked right under the hopper) ───
+    { type: 'chute', x: 150, y: 292, width: 60, height: 20,
       openingColor: '#1A0F06', stroke: '#3A2410', strokeWidth: 2,
-      cornerRadius: 6, labelColor: '#FFB347' },
+      cornerRadius: 4, labelColor: '#FFB347' },
 
     // ─── Tray ────────────────────────────────────────────────────────
     { type: 'tray', x: 60, y: 392, width: 240, height: 56,
@@ -197,10 +197,10 @@ const BUNNY_HOP = {
       color: '#FF6EC7', bg: '#1A0612' },
     { type: 'turn-dots', x: 200, y: 350, count: 3, dotSize: 10,
       litColor: '#E87BA0', dimColor: '#F4DCE2' },
-    // Chute (design-only marker)
-    { type: 'chute', x: 130, y: 380, width: 100, height: 32,
+    // Chute (design-only marker, tucked under the hopper)
+    { type: 'chute', x: 150, y: 290, width: 60, height: 20,
       openingColor: '#3A1828', stroke: '#E87BA0', strokeWidth: 2,
-      cornerRadius: 6, labelColor: '#FFC2D4' },
+      cornerRadius: 4, labelColor: '#FFC2D4' },
 
     // Tray with cute scallop look (rounded heavily)
     { type: 'tray', x: 60, y: 388, width: 240, height: 56,
@@ -306,10 +306,10 @@ const BEARS_DEN = {
     { type: 'decoration', shape: 'rect', x: 240, y: 334, width: 28, height: 6,
       fill: '#1A0F06', cornerRadius: 3 },
 
-    // Chute
-    { type: 'chute', x: 130, y: 366, width: 100, height: 32,
+    // Chute (tucked under the hourglass)
+    { type: 'chute', x: 150, y: 274, width: 60, height: 20,
       openingColor: '#1A0F06', stroke: '#3A2010', strokeWidth: 2,
-      cornerRadius: 6, labelColor: '#FFB347' },
+      cornerRadius: 4, labelColor: '#FFB347' },
 
     // Tray
     { type: 'tray', x: 60, y: 388, width: 240, height: 60,
@@ -436,10 +436,10 @@ const NINJA_CAT = {
       ],
       fill: '#1A1F26', stroke: '#5A6470', strokeWidth: 1, rotation: -8 },
 
-    // Chute
-    { type: 'chute', x: 130, y: 384, width: 100, height: 32,
+    // Chute (tucked under the hopper)
+    { type: 'chute', x: 152, y: 286, width: 60, height: 20,
       openingColor: '#0A0608', stroke: '#E04830', strokeWidth: 2,
-      cornerRadius: 6, labelColor: '#E04830' },
+      cornerRadius: 4, labelColor: '#E04830' },
 
     // Tray
     { type: 'tray', x: 60, y: 390, width: 240, height: 60,
@@ -629,8 +629,9 @@ const KENISY = {
     { type: 'decoration', shape: 'rect', x: 68, y: 404, width: 224, height: 4,
       fill: '#E8DDC8', cornerRadius: 2 },
 
-    // ─── Hidden chute marker (positions the dispense exit) ───────────
-    { type: 'chute', x: 130, y: 416, width: 100, height: 26,
+    // ─── Hidden chute marker (positions the dispense exit, tucked
+    // right under the hopper bottom so the queue sits at the viewport edge) ─
+    { type: 'chute', x: 150, y: 286, width: 60, height: 20,
       openingColor: '#000000', cornerRadius: 0 },
 
     // ─── Cream catch tray ────────────────────────────────────────────
@@ -717,7 +718,7 @@ const CLASSIC_LUCKY = {
     { type: 'decoration', shape: 'ellipse', x: 65, y: 50, width: 230, height: 310,
       fill: '#D7EEFF', opacity: 0.2 },
     // Hopper itself (dome window)
-    { type: 'hopper', variant: 'dome', x: 65, y: 50, width: 230, height: 155,
+    { type: 'hopper', variant: 'half-dome', x: 65, y: 50, width: 230, height: 155,
       wallColor: 'rgba(160,200,240,0.75)', wallThickness: 3,
       windowFill: 'rgba(215,238,255,0.55)' },
     // Glass reflection highlights on the dome
@@ -753,8 +754,8 @@ const CLASSIC_LUCKY = {
         stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 0.45, color: '#DDD5CC' }, { offset: 1, color: '#C0B8B0' }] },
       shadow: { color: 'rgba(0,0,0,0.22)', blur: 8, offsetY: 6 } },
 
-    // ─── Chute marker (just below dome exit) ─────────────────────────
-    { type: 'chute', x: 130, y: 380, width: 100, height: 32,
+    // ─── Chute marker (tucked under the half-dome cap) ───────────────
+    { type: 'chute', x: 150, y: 208, width: 60, height: 20,
       openingColor: '#1A0F06', stroke: '#C8BFB5', strokeWidth: 2,
       cornerRadius: 4, labelColor: '#FF6B9D' },
 
@@ -879,8 +880,8 @@ const NOIR_DEPOT = {
         stops: [{ offset: 0, color: '#3A4A55' }, { offset: 0.5, color: '#1E2A35' }, { offset: 1, color: '#0C1520' }] },
       shadow: { color: 'rgba(247,183,49,0.18)', blur: 10, offsetY: 4 } },
 
-    // ─── Chute marker ────────────────────────────────────────────────
-    { type: 'chute', x: 130, y: 410, width: 100, height: 30,
+    // ─── Chute marker (tucked under the box hopper) ──────────────────
+    { type: 'chute', x: 150, y: 240, width: 60, height: 20,
       openingColor: '#04080D', stroke: 'rgba(247,183,49,0.32)', strokeWidth: 2,
       cornerRadius: 0, labelColor: '#F7B731' },
 
@@ -949,7 +950,7 @@ const CYBER_SYNTH = {
       fill: 'rgba(0,217,255,0.06)',
       shadow: { color: 'rgba(0,217,255,0.3)', blur: 18 } },
     // The dome window
-    { type: 'hopper', variant: 'dome', x: 55, y: 60, width: 250, height: 168,
+    { type: 'hopper', variant: 'half-dome', x: 55, y: 60, width: 250, height: 168,
       wallColor: 'rgba(0,217,255,0.7)', wallThickness: 3,
       windowFill: 'rgba(0,28,48,0.85)' },
     // Cyan reflection highlight
@@ -992,8 +993,8 @@ const CYBER_SYNTH = {
         stops: [{ offset: 0, color: 'rgba(0,217,255,0.2)' }, { offset: 0.45, color: '#0A1018' }, { offset: 1, color: '#050810' }] },
       shadow: { color: 'rgba(0,217,255,0.35)', blur: 16, offsetY: 4 } },
 
-    // ─── Chute marker ────────────────────────────────────────────────
-    { type: 'chute', x: 130, y: 412, width: 100, height: 30,
+    // ─── Chute marker (tucked under the half-dome cap) ───────────────
+    { type: 'chute', x: 150, y: 230, width: 60, height: 20,
       openingColor: '#020408', stroke: 'rgba(0,217,255,0.32)', strokeWidth: 2,
       cornerRadius: 4, labelColor: '#00D9FF' },
 
@@ -1013,144 +1014,120 @@ const CYBER_SYNTH = {
 };
 
 // ── 9. Mori no Tama (built-in `forest` chassis replica) ────────────────
-//   Stained dark-walnut wood machine. Deep brown body with wood grain
-//   stripes, single knot accent, amber/gold accents, wooden collar with
-//   horizontal grain, amber crystal ball look in the dome.
+//   Stained walnut chassis with an amber half-dome glass cap sitting flush
+//   on top, just like the real built-in. The dome is a SEMICIRCLE (using
+//   the new half-dome variant) — its flat bottom rests on the wooden
+//   collar, and balls cascade through the open bottom into the chassis.
 const FOREST_MORI = {
   name: 'Mori no Tama',
-  canvas: { width: 360, height: 600, bg: '#1A1208' },
+  canvas: { width: 360, height: 620, bg: '#1A1208' },
   components: [
     // ─── Floor shadow ────────────────────────────────────────────────
-    { type: 'decoration', shape: 'ellipse', x: 50, y: 568, width: 260, height: 18,
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 588, width: 260, height: 18,
       fill: 'rgba(0,0,0,0.55)', opacity: 0.8 },
 
-    // ─── Wooden collar with grain ────────────────────────────────────
-    { type: 'decoration', shape: 'rect', x: 50, y: 210, width: 262, height: 18,
+    // ─── Amber half-dome glass cap (sits flush on top of the collar) ─
+    // Half-dome bottom edge at y=240, peak at y=80 (160 tall, 240 wide,
+    // centered horizontally so its base lines up with the chassis top).
+    { type: 'hopper', variant: 'half-dome', x: 60, y: 80, width: 240, height: 160,
+      wallColor: 'rgba(200,160,40,0.7)', wallThickness: 4,
+      windowFill: 'rgba(160,110,20,0.32)',
+      shadow: { color: 'rgba(0,0,0,0.5)', blur: 10, offsetY: 4 } },
+    // Glass highlight stripes inside the dome (render after hopper so they sit on top of balls)
+    { type: 'decoration', shape: 'ellipse', x: 84, y: 110, width: 26, height: 72,
+      fill: 'rgba(255,235,170,0.18)', rotation: -18 },
+    { type: 'decoration', shape: 'ellipse', x: 124, y: 108, width: 11, height: 36,
+      fill: 'rgba(255,225,130,0.14)', rotation: -12 },
+
+    // ─── Wooden collar — connects the dome to the chassis body ───────
+    { type: 'decoration', shape: 'rect', x: 50, y: 232, width: 260, height: 18,
       fill: '#5C3D2E', cornerRadius: 4,
       fillGradient: { type: 'linear', coords: 'topToBottom',
-        stops: [{ offset: 0, color: '#5C3D2E' }, { offset: 1, color: '#4A3024' }] },
-      stroke: 'rgba(92,61,46,0.9)', strokeWidth: 2,
+        stops: [{ offset: 0, color: '#7A5238' }, { offset: 1, color: '#4A3024' }] },
+      stroke: 'rgba(40,24,12,0.6)', strokeWidth: 2,
       shadow: { color: 'rgba(0,0,0,0.45)', blur: 6, offsetY: 2 } },
     // Collar grain stripes
-    { type: 'decoration', shape: 'rect', x: 60, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
-    { type: 'decoration', shape: 'rect', x: 80, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
-    { type: 'decoration', shape: 'rect', x: 100, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
-    { type: 'decoration', shape: 'rect', x: 140, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
-    { type: 'decoration', shape: 'rect', x: 180, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
-    { type: 'decoration', shape: 'rect', x: 220, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
-    { type: 'decoration', shape: 'rect', x: 260, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
-    { type: 'decoration', shape: 'rect', x: 290, y: 213, width: 1, height: 12,
-      fill: 'rgba(200,140,70,0.06)' },
+    ...[60, 80, 100, 140, 180, 220, 260, 290].map(x => ({
+      type: 'decoration', shape: 'rect', x, y: 234, width: 1, height: 14,
+      fill: 'rgba(200,140,70,0.18)',
+    })),
 
     // ─── Stained walnut body ─────────────────────────────────────────
-    { type: 'decoration', shape: 'rect', x: 40, y: 228, width: 280, height: 320,
+    { type: 'decoration', shape: 'rect', x: 40, y: 248, width: 280, height: 320,
       fill: '#4A3020', cornerRadius: 14,
       fillGradient: { type: 'linear', coords: 'topToBottom',
         stops: [{ offset: 0, color: '#4A3020' }, { offset: 0.5, color: '#3D2618' }, { offset: 1, color: '#2C1C0E' }] },
       stroke: 'rgba(92,61,46,0.92)', strokeWidth: 3,
       shadow: { color: 'rgba(0,0,0,0.55)', blur: 18, offsetY: 10 } },
-    // Square top
-    { type: 'decoration', shape: 'rect', x: 40, y: 228, width: 280, height: 14,
-      fill: '#4A3020' },
     // Top edge highlight
-    { type: 'decoration', shape: 'rect', x: 43, y: 230, width: 274, height: 1,
-      fill: 'rgba(200,160,90,0.1)' },
-    // Wood grain stripes (diagonal-ish, faint) ─ several thin vertical-ish lines
-    { type: 'decoration', shape: 'rect', x: 60, y: 240, width: 1, height: 300,
-      fill: 'rgba(200,140,70,0.05)' },
-    { type: 'decoration', shape: 'rect', x: 96, y: 240, width: 1, height: 300,
-      fill: 'rgba(150,100,50,0.04)' },
-    { type: 'decoration', shape: 'rect', x: 132, y: 240, width: 1, height: 300,
-      fill: 'rgba(200,140,70,0.05)' },
-    { type: 'decoration', shape: 'rect', x: 168, y: 240, width: 1, height: 300,
-      fill: 'rgba(150,100,50,0.04)' },
-    { type: 'decoration', shape: 'rect', x: 204, y: 240, width: 1, height: 300,
-      fill: 'rgba(200,140,70,0.05)' },
-    { type: 'decoration', shape: 'rect', x: 240, y: 240, width: 1, height: 300,
-      fill: 'rgba(150,100,50,0.04)' },
-    { type: 'decoration', shape: 'rect', x: 276, y: 240, width: 1, height: 300,
-      fill: 'rgba(200,140,70,0.05)' },
-
-    // Single knot accent (top right, like ::after)
-    { type: 'decoration', shape: 'circle', x: 296, y: 244, width: 10, height: 10,
+    { type: 'decoration', shape: 'rect', x: 43, y: 250, width: 274, height: 1,
+      fill: 'rgba(200,160,90,0.18)' },
+    // Wood grain stripes
+    ...[60, 96, 132, 168, 204, 240, 276].map((x, i) => ({
+      type: 'decoration', shape: 'rect', x, y: 260, width: 1, height: 300,
+      fill: i % 2 === 0 ? 'rgba(200,140,70,0.08)' : 'rgba(150,100,50,0.06)',
+    })),
+    // Single knot accent on the body
+    { type: 'decoration', shape: 'circle', x: 296, y: 264, width: 10, height: 10,
       fill: '#8B6914', stroke: 'rgba(200,160,80,0.38)', strokeWidth: 1.5,
       fillGradient: { type: 'radial', cx: 3.5, cy: 3, innerR: 0, outerR: 8,
         stops: [{ offset: 0, color: '#8B6914' }, { offset: 1, color: '#4A3020' }] },
       shadow: { color: 'rgba(0,0,0,0.4)', blur: 2 } },
 
     // ─── Amber/gold brand strip ──────────────────────────────────────
-    { type: 'brand-strip', x: 110, y: 260, width: 140, height: 22,
+    { type: 'brand-strip', x: 110, y: 282, width: 140, height: 24,
       text: '✦ 森の玉 ✦', font: 'Crimson Pro', fontWeight: 'bold',
-      fontSize: 11, fg: '#F0D9A0', bg: 'rgba(92,61,46,0.55)', cornerRadius: 4,
-      stroke: 'rgba(200,160,80,0.28)', strokeWidth: 1,
-      letterSpacing: 0.14,
+      fontSize: 13, fg: '#F0D9A0', bg: 'rgba(40,24,12,0.7)', cornerRadius: 12,
+      stroke: 'rgba(200,160,80,0.4)', strokeWidth: 1,
+      letterSpacing: 0.16,
       shadow: { color: 'rgba(0,0,0,0.4)', blur: 4, offsetY: 1 } },
 
-    // ─── Amber crystal-ball dome ─────────────────────────────────────
-    // Amber-tinted backdrop ring
-    { type: 'decoration', shape: 'ellipse', x: 60, y: 60, width: 240, height: 160,
-      fill: 'rgba(100,75,15,0.35)', opacity: 0.9 },
-    // Hopper (amber-tinted dome)
-    { type: 'hopper', variant: 'dome', x: 60, y: 60, width: 240, height: 160,
-      wallColor: 'rgba(200,160,40,0.55)', wallThickness: 3,
-      windowFill: 'rgba(60,45,10,0.5)' },
-    // Amber highlight reflections
-    { type: 'decoration', shape: 'ellipse', x: 78, y: 74, width: 26, height: 72,
-      fill: 'rgba(255,230,150,0.1)', rotation: -18 },
-    { type: 'decoration', shape: 'ellipse', x: 115, y: 70, width: 11, height: 33,
-      fill: 'rgba(255,210,100,0.08)', rotation: -12 },
-
     // ─── Amber LED display ───────────────────────────────────────────
-    { type: 'led', x: 60, y: 296, width: 110, height: 22,
+    { type: 'led', x: 60, y: 322, width: 110, height: 22,
       color: '#C8A028', bg: '#180E04', cornerRadius: 3,
-      shadow: { color: 'rgba(200,160,40,0.1)', blur: 5 } },
+      shadow: { color: 'rgba(200,160,40,0.15)', blur: 5 } },
 
-    // ─── Wooden circle plate ─────────────────────────────────────────
-    { type: 'decoration', shape: 'circle', x: 60, y: 332, width: 48, height: 48,
-      fill: '#1C1005', stroke: 'rgba(139,105,20,0.32)', strokeWidth: 1.5,
-      shadow: { color: 'rgba(0,0,0,0.4)', blur: 3 } },
-    { type: 'decoration', shape: 'text', x: 70, y: 348, text: 'MORI',
-      fill: 'rgba(200,165,80,0.75)', font: 'Crimson Pro', fontWeight: 'bold',
+    // ─── Wooden lucky-ball plate (left of crank) ─────────────────────
+    { type: 'decoration', shape: 'circle', x: 60, y: 360, width: 50, height: 50,
+      fill: '#1C1005', stroke: 'rgba(139,105,20,0.45)', strokeWidth: 1.5,
+      fillGradient: { type: 'radial', cx: 18, cy: 14, innerR: 0, outerR: 36,
+        stops: [{ offset: 0, color: '#3A2410' }, { offset: 1, color: '#0F0804' }] },
+      shadow: { color: 'rgba(0,0,0,0.5)', blur: 4 } },
+    { type: 'decoration', shape: 'text', x: 70, y: 374, text: 'MORI',
+      fill: 'rgba(200,165,80,0.85)', font: 'Crimson Pro', fontWeight: 'bold',
       fontSize: 9, fontStyle: 'italic', letterSpacing: 0.06 },
-    { type: 'decoration', shape: 'text', x: 73, y: 362, text: '森',
-      fill: 'rgba(200,165,80,0.65)', font: 'Crimson Pro', fontWeight: 'bold',
-      fontSize: 12, letterSpacing: 0 },
+    { type: 'decoration', shape: 'text', x: 76, y: 388, text: '森',
+      fill: 'rgba(200,165,80,0.75)', font: 'Crimson Pro', fontWeight: 'bold',
+      fontSize: 13, letterSpacing: 0 },
 
     // ─── Gold turn dots ──────────────────────────────────────────────
-    { type: 'turn-dots', x: 124, y: 340, count: 3, dotSize: 9,
+    { type: 'turn-dots', x: 130, y: 376, count: 3, dotSize: 9,
       litColor: '#C8A028', dimColor: '#2C1C0E' },
 
     // ─── Wood-stained crank ──────────────────────────────────────────
-    { type: 'crank', x: 224, y: 308, size: 60, accent: '#4A3020',
-      stroke: 'rgba(139,105,20,0.6)', strokeWidth: 3, iconColor: '#C8A028',
-      fillGradient: { type: 'radial', cx: 20, cy: 17, innerR: 0, outerR: 56,
-        stops: [{ offset: 0, color: '#8B6914' }, { offset: 0.45, color: '#4A3020' }, { offset: 1, color: '#2C1C0E' }] },
-      shadow: { color: 'rgba(0,0,0,0.5)', blur: 14, offsetY: 6 } },
+    { type: 'crank', x: 220, y: 340, size: 60, accent: '#4A3020',
+      stroke: 'rgba(139,105,20,0.7)', strokeWidth: 3, iconColor: '#C8A028',
+      fillGradient: { type: 'radial', cx: 20, cy: 16, innerR: 0, outerR: 56,
+        stops: [{ offset: 0, color: '#8B6914' }, { offset: 0.45, color: '#4A3020' }, { offset: 1, color: '#1C1005' }] },
+      shadow: { color: 'rgba(0,0,0,0.55)', blur: 14, offsetY: 6 } },
 
-    // ─── Chute marker ────────────────────────────────────────────────
-    { type: 'chute', x: 130, y: 412, width: 100, height: 30,
+    // ─── Chute marker (tucked right under the half-dome's flat bottom) ─
+    { type: 'chute', x: 150, y: 244, width: 60, height: 20,
       openingColor: '#180E04', stroke: 'rgba(139,105,20,0.45)', strokeWidth: 2,
-      cornerRadius: 6, labelColor: '#C8A028' },
+      cornerRadius: 4, labelColor: '#C8A028' },
 
     // ─── Tray (dark wood) ────────────────────────────────────────────
-    { type: 'tray', x: 50, y: 478, width: 260, height: 72,
+    { type: 'tray', x: 50, y: 490, width: 260, height: 70,
       fill: '#2A1808', stroke: 'rgba(92,61,46,0.92)',
       fillGradient: { type: 'linear', coords: 'topToBottom',
-        stops: [{ offset: 0, color: '#2A1808' }, { offset: 1, color: '#1E1005' }] },
+        stops: [{ offset: 0, color: '#3A2410' }, { offset: 1, color: '#1E1005' }] },
       cornerRadius: 10,
       shadow: { color: 'rgba(0,0,0,0.38)', blur: 12, offsetY: 4 } },
-    // Tray flap (small wood lip)
-    { type: 'decoration', shape: 'rect', x: 154, y: 474, width: 52, height: 12,
+    // Tray flap
+    { type: 'decoration', shape: 'rect', x: 154, y: 486, width: 52, height: 12,
       fill: '#4A3020', stroke: 'rgba(92,61,46,0.7)', strokeWidth: 1.5,
       fillGradient: { type: 'linear', coords: 'topToBottom',
-        stops: [{ offset: 0, color: '#4A3020' }, { offset: 1, color: '#3D2618' }] },
+        stops: [{ offset: 0, color: '#5A3820' }, { offset: 1, color: '#3D2618' }] },
       cornerRadius: 4 },
   ],
 };
@@ -1292,8 +1269,8 @@ const MODERN_ISUZU = {
         ] },
       shadow: { color: 'rgba(0,0,0,0.22)', blur: 14, offsetY: 6 } },
 
-    // ─── Chute marker ────────────────────────────────────────────────
-    { type: 'chute', x: 140, y: 414, width: 100, height: 30,
+    // ─── Chute marker (tucked under the box hopper) ──────────────────
+    { type: 'chute', x: 160, y: 240, width: 60, height: 20,
       openingColor: '#1A1A1A', stroke: '#CCCACA', strokeWidth: 2,
       cornerRadius: 4, labelColor: '#CC0000' },
 

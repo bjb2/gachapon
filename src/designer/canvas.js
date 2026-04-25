@@ -248,6 +248,20 @@ function renderHopper(c) {
         { x: 0, y: c.height }, { x: c.width * 0.35, y: c.height / 2 },
       ], { fill, stroke, strokeWidth });
       break;
+    case 'half-dome': {
+      // "Arch window" shape: flat vertical sides + semicircle top.
+      // Matches the built-in classic / forest / cyber domes which have
+      // straight side walls before the arch starts (NOT a half-ellipse).
+      // Arch is a true semicircle with radius = width/2; remaining height
+      // is the flat side walls.
+      const archR = Math.min(c.width / 2, c.height);
+      const straightH = c.height - archR;
+      obj = new fabric.Path(
+        `M 0 ${c.height} L 0 ${straightH} A ${archR} ${archR} 0 0 1 ${c.width} ${straightH} L ${c.width} ${c.height} Z`,
+        { fill, stroke, strokeWidth, originX: 'left', originY: 'top' },
+      );
+      break;
+    }
     case 'dome':
     default:
       obj = new fabric.Ellipse({

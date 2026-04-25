@@ -11,7 +11,12 @@
 // to the hopper's local origin (we transform: hopper.x/.y are subtracted)
 // because the ball <canvas> sits inside the hopper <g> in the SVG.
 
-const MAX_FUNNEL_DROP = 200;   // sanity cap on chute distance from hopper
+// Cap how far below the hopper the funnel extends. Tight (40px) so the
+// queued balls accumulate just barely below the hopper viewport — keeping
+// most of the pool visibly bouncing inside the hopper rather than queued
+// invisibly down a long chute. The chute marker can be placed anywhere
+// the designer likes; physics doesn't follow it down past this cap.
+const MAX_FUNNEL_DROP = 40;
 
 export class CustomPhysics {
   constructor(machine) {
@@ -118,6 +123,33 @@ export class CustomPhysics {
         this._lineWall(walls, g.w * 0.35, g.hh / 2, 0, g.hh, 8);
         this._lineWall(walls, g.w - 3, 0, g.w * 0.65, g.hh / 2, 8);
         this._lineWall(walls, g.w * 0.65, g.hh / 2, g.w, g.hh, 8);
+        break;
+      }
+      case 'half-dome': {
+        // Arch-window walls: a semicircle arch on top + straight vertical
+        // sides connecting the arch to the bottom (open). Bottom is open
+        // so balls fall through into the auto funnel.
+        const archR = Math.min(g.w / 2, g.hh) - 4;
+        const straightH = g.hh - archR - 4;
+        // Left straight wall (only if there's a flat-side portion).
+        if (straightH > 0) {
+          walls.push(Bodies.rectangle(3, straightH + (g.hh - straightH) / 2, 8, g.hh - straightH,
+            { isStatic: true, friction: 0.4 }));
+          walls.push(Bodies.rectangle(g.w - 3, straightH + (g.hh - straightH) / 2, 8, g.hh - straightH,
+            { isStatic: true, friction: 0.4 }));
+        }
+        // Semicircle arch on top — center at (w/2, archR + 4 from top), radius archR.
+        const cx = g.w / 2;
+        const cy = g.hh - archR; // arch's flat baseline (bottom of arch)
+        const n = h.wallArcSegments || 24;
+        let prev = { x: cx - archR, y: cy };
+        for (let i = 1; i <= n; i++) {
+          const a = -Math.PI + (Math.PI * i) / n;
+          const x = cx + archR * Math.cos(a);
+          const y = cy + archR * Math.sin(a);
+          this._segmentWall(walls, prev.x, prev.y, x, y, 10);
+          prev = { x, y };
+        }
         break;
       }
       case 'dome':

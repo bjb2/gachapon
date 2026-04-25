@@ -15,7 +15,7 @@ export const COMPONENT_TYPES = [
   'hopper', 'chute', 'crank', 'brand-strip', 'led', 'turn-dots', 'tray', 'decoration',
 ];
 
-export const HOPPER_VARIANTS = ['dome', 'box', 'funnel', 'cylinder', 'hourglass', 'polygon'];
+export const HOPPER_VARIANTS = ['dome', 'half-dome', 'box', 'funnel', 'cylinder', 'hourglass', 'polygon'];
 
 // Shape any custom-machine record. Phase 1 only persists the fields the
 // canvas needs; engine fields (physics, controls, audio) are filled in by
