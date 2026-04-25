@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Machine Designer · Gachapon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+<style>
+  /* Phase 1 chrome — minimal. Polish lands in phase 6. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    background: #F5F4F6;
+    color: #2D2A26;
+    min-height: 100vh;
+  }
+  .designer-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px; background: #1A1A1A; color: white;
+  }
+  .designer-header h1 {
+    margin: 0; font-size: 14px; font-weight: 900;
+    font-family: 'Orbitron', sans-serif; letter-spacing: 0.18em;
+  }
+  .designer-header nav a {
+    color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px;
+    margin-left: 14px; letter-spacing: 0.1em;
+  }
+  .designer-header nav a:hover { color: white; }
+
+  .designer-main {
+    display: grid;
+    grid-template-columns: 200px 1fr 280px;
+    gap: 14px;
+    padding: 14px;
+    align-items: start;
+  }
+  .panel {
+    background: white;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .panel h2 {
+    margin: 0 0 8px;
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #888;
+  }
+  .panel-section { margin-bottom: 14px; }
+  .panel-section:last-child { margin-bottom: 0; }
+  .panel-section h3 {
+    margin: 0 0 6px;
+    font-size: 10px; letter-spacing: 0.1em; color: #888;
+    font-weight: 700; text-transform: uppercase;
+  }
+
+  .palette-btn {
+    display: block; width: 100%;
+    margin-bottom: 4px; padding: 8px 10px;
+    background: #F8F7F8; border: 1px solid #DDD; border-radius: 4px;
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    text-align: left; cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .palette-btn:hover { background: #FFE8F0; border-color: #FF6B9D; color: #FF6B9D; }
+  .palette-btn .req { color: #CC0000; margin-left: 4px; font-weight: 900; }
+
+  #canvasStage {
+    display: flex; align-items: flex-start; justify-content: center;
+    min-height: 580px;
+    padding: 16px;
+    background:
+      linear-gradient(45deg, #ECECEC 25%, transparent 25%),
+      linear-gradient(-45deg, #ECECEC 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ECECEC 75%),
+      linear-gradient(-45deg, transparent 75%, #ECECEC 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    border-radius: 8px;
+  }
+  #designerCanvas { background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+  .toolbar { display: flex; gap: 6px; flex-wrap: wrap; }
+  .toolbar button {
+    padding: 6px 10px; font-size: 11px; font-weight: 700;
+    background: white; border: 1px solid #DDD; border-radius: 4px;
+    cursor: pointer; font-family: inherit;
+  }
+  .toolbar button:hover { border-color: #FF6B9D; color: #FF6B9D; }
+  .toolbar button.danger:hover { border-color: #CC0000; color: #CC0000; }
+
+  .saved-row {
+    display: flex; gap: 4px; align-items: center;
+    padding: 4px 0; font-size: 12px;
+    border-bottom: 1px solid #EEE;
+  }
+  .saved-row:last-child { border-bottom: none; }
+  .saved-name { flex: 1; }
+  .saved-row button {
+    padding: 3px 6px; font-size: 10px; cursor: pointer;
+    border: 1px solid #DDD; background: white; border-radius: 3px;
+  }
+  .muted { color: #888; font-size: 11px; }
+
+  .help {
+    font-size: 11px; color: #888; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <header class="designer-header">
+    <h1>MACHINE DESIGNER</h1>
+    <nav>
+      <a href="./index.html">← Play</a>
+      <a href="./create.html">Prizes / Skins</a>
+    </nav>
+  </header>
+
+  <main class="designer-main">
+    <!-- Left: component palette -->
+    <aside class="panel" id="palette">
+      <h2>Components</h2>
+      <div class="panel-section">
+        <h3>Hopper <span style="color:#CC0000">required</span></h3>
+        <button class="palette-btn" data-add="hopper" data-variant="dome">+ Dome hopper</button>
+        <button class="palette-btn" data-add="hopper" data-variant="box">+ Box hopper</button>
+        <button class="palette-btn" data-add="hopper" data-variant="funnel">+ Funnel hopper</button>
+        <button class="palette-btn" data-add="hopper" data-variant="cylinder">+ Cylinder hopper</button>
+        <button class="palette-btn" data-add="hopper" data-variant="hourglass">+ Hourglass hopper</button>
+      </div>
+      <div class="panel-section">
+        <h3>Chute <span style="color:#CC0000">exactly 1</span></h3>
+        <button class="palette-btn" data-add="chute">+ Chute marker</button>
+      </div>
+      <div class="panel-section">
+        <h3>Engine parts</h3>
+        <button class="palette-btn" data-add="crank">+ Crank</button>
+        <button class="palette-btn" data-add="brand-strip">+ Brand strip</button>
+        <button class="palette-btn" data-add="led">+ LED display</button>
+        <button class="palette-btn" data-add="turn-dots">+ Turn dots</button>
+        <button class="palette-btn" data-add="tray">+ Tray</button>
+      </div>
+      <div class="panel-section">
+        <h3>Decoration</h3>
+        <button class="palette-btn" data-add="decoration">+ Rectangle</button>
+      </div>
+    </aside>
+
+    <!-- Center: Fabric canvas -->
+    <section class="panel" id="canvasStage">
+      <canvas id="designerCanvas"></canvas>
+    </section>
+
+    <!-- Right: tools, save/load -->
+    <aside class="panel">
+      <h2>Toolbar</h2>
+      <div class="panel-section toolbar">
+        <button id="btnDelete" class="danger">Delete selected</button>
+        <button id="btnValidate">Validate</button>
+        <button id="btnDumpJson">View JSON</button>
+        <button id="btnSaveAs">Rename / Save as…</button>
+        <button id="btnNew" class="danger">New machine</button>
+      </div>
+      <div class="panel-section">
+        <h2>Saved machines</h2>
+        <div id="savedList" class="muted">Loading…</div>
+      </div>
+      <div class="panel-section">
+        <h2>Phase 1 notes</h2>
+        <p class="help">
+          Drag components from the left palette onto the canvas.
+          Click to select, then drag/resize/rotate with the handles.
+          Save your work — phase 2 brings a properties panel for fine control,
+          phase 3 wires the renderer so custom machines actually run physics.
+        </p>
+      </div>
+    </aside>
+  </main>
+
+  <script type="module" src="./src/designer/designer.js?t=1"></script>
+</body>
+</html>

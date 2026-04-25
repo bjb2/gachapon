@@ -12,3 +12,4 @@ images/*.csv.bak
 /*.html
 !/index.html
 !/create.html
+!/design.html
