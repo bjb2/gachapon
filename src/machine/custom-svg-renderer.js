@@ -231,15 +231,14 @@ function emitTray(c, gRef, fRef) {
   const stroke = c.stroke || '#D4D2D2';
   const sw = c.strokeWidth ?? 2;
   const r = c.cornerRadius ?? 8;
-  // Reserve room for the dispensed ball — sized from the ball diameter, not
-  // the tray height, so a thin "lip" tray can still hold a real-looking ball.
-  // Falls back to a sensible default; will be overridden at mount time.
+  // The tray-ball is absolute-positioned so the drop animation (top: -14 ->
+  // resting top) actually moves it; CustomMachine sizes it at mount.
   return `<g transform="${t}" data-tray-group${fRef ? ` filter="${fRef}"` : ''}>
     <rect width="${c.width}" height="${c.height}" rx="${r}" ry="${r}" fill="${escAttr(fill)}" stroke="${escAttr(stroke)}" stroke-width="${sw}" data-tray/>
     <foreignObject x="0" y="0" width="${c.width}" height="${c.height}" overflow="visible">
-      <div xmlns="http://www.w3.org/1999/xhtml" class="cm-tray-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'M PLUS Rounded 1c',monospace;font-size:11px;color:rgba(0,0,0,0.45);pointer-events:none;">
-        <span data-tray-hint>Turn to dispense!</span>
-        <div data-tray-ball style="display:none;border-radius:50%;pointer-events:auto;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.25);"></div>
+      <div xmlns="http://www.w3.org/1999/xhtml" class="cm-tray-inner" style="position:relative;width:100%;height:100%;font-family:'M PLUS Rounded 1c',monospace;font-size:11px;color:rgba(0,0,0,0.45);pointer-events:none;">
+        <span data-tray-hint style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);">Turn to dispense!</span>
+        <div data-tray-ball class="cm-tray-ball" style="display:none;position:absolute;border-radius:50%;pointer-events:auto;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
       </div>
     </foreignObject>
   </g>`;

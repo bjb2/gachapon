@@ -65,12 +65,21 @@ export class CustomMachine {
     this.renderer = new SimpleBallRenderer(this.$.canvas, this.physics);
     this._spawnPool();
 
-    // 3. Size the tray ball from the actual ball diameter so it visually
-    // matches the balls bouncing in the hopper.
+    // 3. Size + position the tray ball from the actual ball diameter so it
+    // visually matches the balls bouncing in the hopper. The resting top is
+    // stored so the drop animation can return to it.
     if (this.$.trayBall) {
       const d = this.physics.geometry().ballR * 2;
       this.$.trayBall.style.width = d + 'px';
       this.$.trayBall.style.height = d + 'px';
+      // Center horizontally; rest at vertical center of the tray.
+      this.$.trayBall.style.left = '50%';
+      this.$.trayBall.style.marginLeft = `-${d / 2}px`;
+      // Resting top relative to the tray container (vertically centered).
+      const trayComp = this.def.components.find(c => c.type === 'tray');
+      const trayH = trayComp ? trayComp.height : 60;
+      this._trayBallRestTop = Math.max(4, (trayH - d) / 2);
+      this.$.trayBall.style.top = this._trayBallRestTop + 'px';
     }
 
     // 3. Reveal modal + state subs.
@@ -149,10 +158,21 @@ export class CustomMachine {
     this.physics.jostle({ xMag: 0.014, yMag: 0.012, yBias: 0 });
 
     if (this.$.trayHint) this.$.trayHint.style.display = 'none';
-    if (this.$.trayBall) {
-      this.$.trayBall.style.display = 'block';
-      applyBallStyle(this.$.trayBall, prize.ballStyle);
-      this.$.trayBall.dataset.prizeId = prize.id;
+    const b = this.$.trayBall;
+    if (b) {
+      b.classList.remove('cm-waiting', 'cm-popping');
+      applyBallStyle(b, prize.ballStyle);
+      b.dataset.prizeId = prize.id;
+      b.style.display = 'block';
+      // Force reflow so the dropping animation restarts on every dispense.
+      b.classList.remove('cm-dropping');
+      void b.offsetWidth;
+      b.style.setProperty('--rest-top', this._trayBallRestTop + 'px');
+      b.classList.add('cm-dropping');
+      b.addEventListener('animationend', () => {
+        b.classList.remove('cm-dropping');
+        b.classList.add('cm-waiting');
+      }, { once: true });
     }
     this.audio.play('dispense');
     this._setHint('Click the ball to open it!');
@@ -166,10 +186,15 @@ export class CustomMachine {
     const prizeId = b.dataset.prizeId;
     if (!prizeId) return;
     this.audio.play('pop');
-    b.style.display = 'none';
-    if (this.$.trayHint) this.$.trayHint.style.display = 'block';
-    const prize = this.prizeById.get(prizeId);
-    if (prize) this.reveal.open(prize);
+    b.classList.remove('cm-waiting', 'cm-dropping');
+    b.classList.add('cm-popping');
+    b.addEventListener('animationend', () => {
+      b.style.display = 'none';
+      b.classList.remove('cm-popping');
+      if (this.$.trayHint) this.$.trayHint.style.display = 'block';
+      const prize = this.prizeById.get(prizeId);
+      if (prize) this.reveal.open(prize);
+    }, { once: true });
   }
 
   // ── Collection persistence (mirrors Machine.js) ─────────────────────
