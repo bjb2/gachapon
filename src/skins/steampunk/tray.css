@@ -1,0 +1,55 @@
+html[data-skin="steampunk"] .tray {
+  margin-top: 14px;
+  background-image: url('./assets/tray.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  border-radius: 12px;
+  height: 72px;
+  position: relative;
+}
+
+/* Tray flap is the chute's inner shadow — the AI image already shows the
+   chute slot, so make this nearly invisible (just keeps the click target). */
+html[data-skin="steampunk"] .tray-flap {
+  background: transparent;
+  border: none;
+}
+
+html[data-skin="steampunk"] .tray-hint {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-weight: 700;
+  font-style: italic;
+  color: #C9A059;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.6);
+}
+
+html[data-skin="steampunk"] .tray-ball::before {
+  background: rgba(255,220,160,0.4);
+}
+
+html[data-skin="steampunk"] .refill-btn {
+  background: #5A2A2A;
+  color: #E8D9B0;
+  border: 1px solid #C9A059;
+  border-radius: 4px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  transition: transform 0.15s;
+}
+html[data-skin="steampunk"] .refill-btn:hover { transform: translateY(-2px); }
+
+html[data-skin="steampunk"] .refill-empty {
+  color: #C9A059;
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}

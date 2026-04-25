@@ -1,0 +1,86 @@
+html[data-skin="cyberpunk"] .modal-overlay {
+  background: rgba(15, 12, 22, 0.78);
+  backdrop-filter: blur(5px);
+}
+
+html[data-skin="cyberpunk"] .reveal-card {
+  background: linear-gradient(180deg, #2C2E36 0%, #18181E 100%);
+  border: 1px solid #E13F8C;
+  border-radius: 4px;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.7),
+    0 0 30px rgba(225,63,140,0.25),
+    0 0 60px rgba(69,217,232,0.12),
+    inset 0 1px 0 rgba(106,110,122,0.4);
+  color: #E8DDC0;
+}
+html[data-skin="cyberpunk"] .reveal-card::before {
+  background:
+    linear-gradient(135deg,
+      rgba(225,63,140,0.15) 0%,
+      transparent 50%,
+      rgba(69,217,232,0.10) 100%);
+}
+
+html[data-skin="cyberpunk"] .rarity-banner {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+html[data-skin="cyberpunk"] .rarity-banner.common {
+  background: #18181E;
+  color: #6A6E7A;
+  border: 1px solid #2C2E36;
+}
+html[data-skin="cyberpunk"] .rarity-banner.rare {
+  background: #18181E;
+  color: #45D9E8;
+  border: 1px solid #45D9E8;
+  box-shadow: 0 0 10px rgba(69,217,232,0.3);
+  text-shadow: 0 0 4px rgba(69,217,232,0.5);
+}
+html[data-skin="cyberpunk"] .rarity-banner.ultra {
+  background: linear-gradient(90deg, #E13F8C, #45D9E8);
+  color: #18181E;
+  border: 1px solid #FFB347;
+  box-shadow: 0 0 12px rgba(225,63,140,0.7), 0 0 24px rgba(69,217,232,0.4);
+  animation: cyberpunkUltra 1.4s ease-in-out infinite alternate;
+}
+@keyframes cyberpunkUltra {
+  from { box-shadow: 0 0 12px rgba(225,63,140,0.7), 0 0 24px rgba(69,217,232,0.4); }
+  to   { box-shadow: 0 0 24px rgba(225,63,140,1.0), 0 0 50px rgba(69,217,232,0.7); }
+}
+
+html[data-skin="cyberpunk"] .rarity-stars { color: #FFB347; }
+
+html[data-skin="cyberpunk"] .char-name {
+  font-family: 'Share Tech Mono', monospace;
+  color: #E8DDC0;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+html[data-skin="cyberpunk"] .char-flavor {
+  font-family: 'Share Tech Mono', monospace;
+  color: #45D9E8;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 3px rgba(69,217,232,0.4);
+}
+
+html[data-skin="cyberpunk"] .close-btn {
+  background: #18181E;
+  color: #E13F8C;
+  border: 1px solid #E13F8C;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.7), 0 0 10px rgba(225,63,140,0.3);
+  text-shadow: 0 0 3px rgba(225,63,140,0.5);
+}
+html[data-skin="cyberpunk"] .close-btn:hover {
+  box-shadow: 0 8px 22px rgba(0,0,0,0.8), 0 0 18px rgba(225,63,140,0.6);
+}

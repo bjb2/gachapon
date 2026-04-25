@@ -1,0 +1,73 @@
+html[data-skin="apothecary"] .modal-overlay {
+  background: rgba(40, 25, 15, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+html[data-skin="apothecary"] .reveal-card {
+  background: linear-gradient(180deg, #EFE4CC 0%, #E5D7B8 100%);
+  border: 2px solid #B97A4F;
+  border-radius: 8px;
+  box-shadow:
+    0 24px 60px rgba(40,25,15,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  color: #4F3823;
+}
+html[data-skin="apothecary"] .reveal-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(185,122,79,0.18) 0%, transparent 60%);
+}
+
+html[data-skin="apothecary"] .rarity-banner {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.08em;
+}
+html[data-skin="apothecary"] .rarity-banner.common {
+  background: #EFE4CC;
+  color: #6E7559;
+  border: 1px solid #6E7559;
+}
+html[data-skin="apothecary"] .rarity-banner.rare {
+  background: #EFE4CC;
+  color: #B97A4F;
+  border: 1px solid #B97A4F;
+}
+html[data-skin="apothecary"] .rarity-banner.ultra {
+  background: linear-gradient(90deg, #B97A4F, #C28F8A);
+  color: #EFE4CC;
+  border: 1px solid #4F3823;
+  box-shadow: 0 2px 12px rgba(185,122,79,0.55);
+  animation: apothecaryUltra 1.5s ease-in-out infinite alternate;
+}
+@keyframes apothecaryUltra {
+  from { box-shadow: 0 2px 12px rgba(185,122,79,0.55); }
+  to   { box-shadow: 0 2px 26px rgba(185,122,79,0.85), 0 0 40px rgba(194,143,138,0.4); }
+}
+
+html[data-skin="apothecary"] .rarity-stars { color: #B97A4F; }
+
+html[data-skin="apothecary"] .char-name {
+  font-family: 'Crimson Pro', serif;
+  color: #4F3823;
+  font-weight: 700;
+}
+html[data-skin="apothecary"] .char-flavor {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  color: #6E7559;
+}
+
+html[data-skin="apothecary"] .close-btn {
+  background: #4F3823;
+  color: #EFE4CC;
+  border: 1px solid #B97A4F;
+  border-radius: 6px;
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  box-shadow: 0 5px 14px rgba(40,25,15,0.4);
+}
+html[data-skin="apothecary"] .close-btn:hover {
+  box-shadow: 0 8px 22px rgba(40,25,15,0.6);
+}

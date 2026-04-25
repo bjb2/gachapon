@@ -1,0 +1,43 @@
+/* Hopper frame uses AI-generated hopper-frame.png as the .box-outer background.
+   The center of that PNG was chroma-keyed to transparency, so the canvas
+   inside .box-shell shows through the frame's window. */
+
+html[data-skin="steampunk"] .box-outer {
+  width: 256px;
+  height: 216px;
+  position: relative;
+  z-index: 2;
+  background-image: url('./assets/hopper-frame.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+}
+
+/* Inset measured from the actual hopper-frame.png transparent hole — the
+   model generated a thicker frame than the 22px the prompt asked for. */
+html[data-skin="steampunk"] .box-shell {
+  position: absolute;
+  top: 38px; left: 38px; right: 38px; bottom: 37px;
+  overflow: hidden;
+  background: rgba(38, 28, 18, 0.55);
+  box-shadow: inset 0 4px 14px rgba(0,0,0,0.5);
+}
+
+html[data-skin="steampunk"] .box-shell canvas {
+  position: absolute;
+  top: 0; left: 0;
+  display: block;
+}
+
+/* Subtle warm glass sheen overlay for atmospheric depth */
+html[data-skin="steampunk"] .box-glass {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg,
+      rgba(255,210,140,0.12) 0%,
+      transparent 45%,
+      rgba(255,210,140,0.04) 100%);
+}

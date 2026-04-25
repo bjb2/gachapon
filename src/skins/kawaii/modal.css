@@ -1,0 +1,72 @@
+html[data-skin="kawaii"] .modal-overlay {
+  background: rgba(255, 200, 221, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+html[data-skin="kawaii"] .reveal-card {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF8F5 100%);
+  border: 2px solid #FFC8DD;
+  border-radius: 22px;
+  box-shadow:
+    0 24px 60px rgba(255,150,184,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+  color: #4A3548;
+}
+html[data-skin="kawaii"] .reveal-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,200,221,0.35) 0%, transparent 60%);
+}
+
+html[data-skin="kawaii"] .rarity-banner {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+html[data-skin="kawaii"] .rarity-banner.common {
+  background: #C7F0DB;
+  color: #4A8A6F;
+  border: 2px solid #A8DDC2;
+}
+html[data-skin="kawaii"] .rarity-banner.rare {
+  background: #E5D4FF;
+  color: #6B4AA0;
+  border: 2px solid #C9A8F0;
+}
+html[data-skin="kawaii"] .rarity-banner.ultra {
+  background: linear-gradient(90deg, #FFC8DD, #FFE5A3);
+  color: #4A3548;
+  border: 2px solid #FF96B8;
+  box-shadow: 0 2px 12px rgba(255,150,184,0.65);
+  animation: kawaiiUltra 1.5s ease-in-out infinite alternate;
+}
+@keyframes kawaiiUltra {
+  from { box-shadow: 0 2px 12px rgba(255,150,184,0.65); }
+  to   { box-shadow: 0 2px 26px rgba(255,150,184,1.0), 0 0 40px rgba(255,229,163,0.5); }
+}
+
+html[data-skin="kawaii"] .rarity-stars { color: #FF96B8; }
+
+html[data-skin="kawaii"] .char-name {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #4A3548;
+  font-weight: 900;
+}
+html[data-skin="kawaii"] .char-flavor {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #B97A8E;
+  font-weight: 400;
+}
+
+html[data-skin="kawaii"] .close-btn {
+  background: #FF96B8;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  border-radius: 50px;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  box-shadow: 0 5px 14px rgba(255,150,184,0.5);
+}
+html[data-skin="kawaii"] .close-btn:hover {
+  box-shadow: 0 8px 22px rgba(255,150,184,0.7);
+}

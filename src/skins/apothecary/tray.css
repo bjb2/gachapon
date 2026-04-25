@@ -1,0 +1,53 @@
+html[data-skin="apothecary"] .tray {
+  margin-top: 14px;
+  background-image: url('./assets/tray.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  border-radius: 12px;
+  height: 72px;
+  position: relative;
+}
+
+html[data-skin="apothecary"] .tray-flap {
+  background: transparent;
+  border: none;
+}
+
+html[data-skin="apothecary"] .tray-hint {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-weight: 700;
+  font-style: italic;
+  color: #EFE4CC;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+}
+
+html[data-skin="apothecary"] .tray-ball::before {
+  background: rgba(239,228,204,0.45);
+}
+
+html[data-skin="apothecary"] .refill-btn {
+  background: #4F3823;
+  color: #EFE4CC;
+  border: 1px solid #B97A4F;
+  border-radius: 6px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  padding: 4px 14px;
+  box-shadow: 0 4px 10px rgba(40,25,15,0.4);
+  transition: transform 0.15s;
+}
+html[data-skin="apothecary"] .refill-btn:hover { transform: translateY(-2px); }
+
+html[data-skin="apothecary"] .refill-empty {
+  color: #EFE4CC;
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}

@@ -1,0 +1,76 @@
+@import url('./machine.css');
+@import url('./dome.css');
+@import url('./tray.css');
+@import url('./modal.css');
+
+html[data-skin="steampunk"] body {
+  background: #1A1410;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(216,138,46,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(63,107,95,0.10) 0%, transparent 50%);
+  font-family: 'Crimson Pro', serif;
+  color: #E8D9B0;
+}
+
+html[data-skin="steampunk"] .site-title {
+  font-family: 'Crimson Pro', serif;
+  color: #E8D9B0;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6), 0 0 12px rgba(216,138,46,0.2);
+}
+
+html[data-skin="steampunk"] .site-sub {
+  color: #C9A059;
+  letter-spacing: 0.3em;
+  font-style: italic;
+}
+
+html[data-skin="steampunk"] .hint-line {
+  color: #C9A059;
+  font-family: 'Crimson Pro', serif;
+  font-size: 12px;
+  font-style: italic;
+}
+
+html[data-skin="steampunk"] .collection-label {
+  color: #C9A059;
+  font-family: 'Crimson Pro', serif;
+  letter-spacing: 0.22em;
+}
+
+html[data-skin="steampunk"] .chip {
+  background: #2A1F14;
+  border: 1px solid #8C6B3D;
+  color: #E8D9B0;
+  font-family: 'Crimson Pro', serif;
+  border-radius: 3px;
+}
+html[data-skin="steampunk"] .chip.new-chip {
+  border-color: #D88A2E;
+  color: #D88A2E;
+  box-shadow: 0 2px 8px rgba(216,138,46,0.3);
+}
+
+html[data-skin="steampunk"] .machine-nav .mnav-btn {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #C9A059;
+  border: 1px solid #5A4028;
+  background: rgba(42,31,20,0.8);
+  border-radius: 3px;
+}
+html[data-skin="steampunk"] .machine-nav .mnav-btn:hover {
+  color: #D88A2E;
+  border-color: #D88A2E;
+  background: rgba(216,138,46,0.1);
+}
+html[data-skin="steampunk"] .machine-nav .mnav-btn.active {
+  background: #5A2A2A;
+  color: #F2EBD2;
+  border-color: #D88A2E;
+  box-shadow: 0 2px 8px rgba(216,138,46,0.4);
+}
