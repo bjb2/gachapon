@@ -371,7 +371,10 @@ function renderDecoration(c) {
       );
       break;
     case 'text':
-      obj = new fabric.Text(c.text || 'TEXT', {
+      // Empty text decorations render as nothing rather than the literal
+      // word "TEXT" (which slips into the canvas when the text field gets
+      // dropped during cloning / save-load).
+      obj = new fabric.Text(c.text != null ? String(c.text) : '', {
         fontSize: c.fontSize || c.height || 16,
         fontFamily: c.font || 'Inter',
         fontWeight: c.fontWeight || 'normal',
