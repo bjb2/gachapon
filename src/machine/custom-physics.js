@@ -111,11 +111,13 @@ export class CustomPhysics {
       }
       case 'hourglass': {
         walls.push(Bodies.rectangle(g.w / 2, 5, g.w - 6, 8, { isStatic: true, friction: 0.4 }));
-        // Top half slopes inward to the waist, bottom half slopes back out.
-        this._lineWall(walls, 3, 0, g.w * 0.45, g.hh / 2, 8);
-        this._lineWall(walls, g.w * 0.45, g.hh / 2, 0, g.hh, 8);
-        this._lineWall(walls, g.w - 3, 0, g.w * 0.55, g.hh / 2, 8);
-        this._lineWall(walls, g.w * 0.55, g.hh / 2, g.w, g.hh, 8);
+        // Waist gap = 30% of width so balls (typical d=28px) actually fit
+        // through. Top half slopes inward to the waist, bottom half slopes
+        // back out.
+        this._lineWall(walls, 3, 0, g.w * 0.35, g.hh / 2, 8);
+        this._lineWall(walls, g.w * 0.35, g.hh / 2, 0, g.hh, 8);
+        this._lineWall(walls, g.w - 3, 0, g.w * 0.65, g.hh / 2, 8);
+        this._lineWall(walls, g.w * 0.65, g.hh / 2, g.w, g.hh, 8);
         break;
       }
       case 'dome':

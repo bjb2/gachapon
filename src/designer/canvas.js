@@ -240,10 +240,12 @@ function renderHopper(c) {
       ], { fill, stroke, strokeWidth });
       break;
     case 'hourglass':
+      // Waist gap = 30% of width so balls (typical d=28px) flow through
+      // even on narrow hoppers.
       obj = new fabric.Polygon([
         { x: 0, y: 0 }, { x: c.width, y: 0 },
-        { x: c.width * 0.55, y: c.height / 2 }, { x: c.width, y: c.height },
-        { x: 0, y: c.height }, { x: c.width * 0.45, y: c.height / 2 },
+        { x: c.width * 0.65, y: c.height / 2 }, { x: c.width, y: c.height },
+        { x: 0, y: c.height }, { x: c.width * 0.35, y: c.height / 2 },
       ], { fill, stroke, strokeWidth });
       break;
     case 'dome':
@@ -274,12 +276,38 @@ function renderChute(c) {
 }
 
 function renderCrank(c) {
-  const obj = new fabric.Circle({
-    radius: c.size / 2, fill: c.accent || '#888090',
+  const half = c.size / 2;
+  const iconColor = c.iconColor || '#FFFFFF';
+  // Group of: round button + 3/4 arc with arrowhead (matches the built-in
+  // crank icon). Scaled to fit inside the button.
+  const button = new fabric.Circle({
+    radius: half, fill: c.accent || '#888090',
     stroke: c.stroke || '#666', strokeWidth: c.strokeWidth ?? 2,
     originX: 'left', originY: 'top',
   });
-  return enhance(obj, c, c.size, c.size);
+  // Apply gradient/shadow to the button itself if present.
+  enhance(button, c, c.size, c.size);
+  const arrowScale = (c.size * 0.65) / 30;
+  const arc = new fabric.Path('M 22 22 A 9.5 9.5 0 1 1 22 8', {
+    stroke: iconColor, strokeWidth: 2.8, fill: '', strokeLineCap: 'round',
+    originX: 'left', originY: 'top',
+  });
+  const head = new fabric.Polygon(
+    [{ x: 22, y: 3 }, { x: 22, y: 13 }, { x: 29, y: 8 }],
+    { fill: iconColor, originX: 'left', originY: 'top' },
+  );
+  const iconGroup = new fabric.Group([arc, head], {
+    originX: 'left', originY: 'top',
+    scaleX: arrowScale, scaleY: arrowScale,
+  });
+  // Center the icon inside the button.
+  iconGroup.set({
+    left: half - (15 * arrowScale),
+    top: half - (15 * arrowScale),
+  });
+  return new fabric.Group([button, iconGroup], {
+    originX: 'left', originY: 'top',
+  });
 }
 
 function renderBrandStrip(c) {

@@ -185,13 +185,25 @@ async function renderSavedList(designer) {
   const host = document.getElementById('savedList');
   const all = await getAllCustomMachines();
   if (all.length === 0) { host.innerHTML = '<p class="muted">No saved machines yet.</p>'; return; }
-  host.innerHTML = all.map(m => `
-    <div class="saved-row" data-id="${m.id}">
-      <span class="saved-name">${escapeHtml(m.name)}</span>
-      <button data-action="load">Load</button>
-      <button data-action="delete">Delete</button>
+  host.innerHTML = `
+    <div class="saved-toolbar">
+      <span class="muted">${all.length} saved</span>
+      <button data-delete-all class="danger-link">Delete all</button>
     </div>
-  `).join('');
+    ${all.map(m => `
+      <div class="saved-row" data-id="${m.id}">
+        <span class="saved-name">${escapeHtml(m.name)}</span>
+        <button data-action="load">Load</button>
+        <button data-action="delete">Delete</button>
+      </div>
+    `).join('')}
+  `;
+  host.querySelector('[data-delete-all]').addEventListener('click', async () => {
+    if (!confirm(`Delete all ${all.length} saved machines? This can't be undone.`)) return;
+    for (const m of all) await deleteCustomMachine(m.id);
+    localStorage.removeItem(DRAFT_ID_KEY);
+    location.reload();
+  });
   host.querySelectorAll('[data-action]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const row = btn.closest('[data-id]');

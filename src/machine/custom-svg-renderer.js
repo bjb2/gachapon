@@ -136,7 +136,7 @@ function emitHopper(c, gRef, fRef, machineId) {
       inner = `<polygon points="0,0 ${c.width},0 ${c.width * 0.65},${c.height} ${c.width * 0.35},${c.height}" ${baseAttrs}/>`;
       break;
     case 'hourglass':
-      inner = `<polygon points="0,0 ${c.width},0 ${c.width * 0.55},${c.height / 2} ${c.width},${c.height} 0,${c.height} ${c.width * 0.45},${c.height / 2}" ${baseAttrs}/>`;
+      inner = `<polygon points="0,0 ${c.width},0 ${c.width * 0.65},${c.height / 2} ${c.width},${c.height} 0,${c.height} ${c.width * 0.35},${c.height / 2}" ${baseAttrs}/>`;
       break;
     case 'dome':
     default:
@@ -167,7 +167,26 @@ function emitCrank(c, gRef, fRef) {
   const fill = gRef || c.accent || '#888090';
   const stroke = c.stroke || '#666';
   const sw = c.strokeWidth ?? 2;
-  return `<circle cx="${c.size / 2}" cy="${c.size / 2}" r="${c.size / 2}" fill="${escAttr(fill)}" stroke="${escAttr(stroke)}" stroke-width="${sw}" transform="${t}"${fRef ? ` filter="${fRef}"` : ''} data-crank/>`;
+  const iconColor = c.iconColor || '#FFFFFF';
+  const half = c.size / 2;
+  const scale = (c.size * 0.65) / 30;
+  // Arrow icon = built-in crank SVG (3/4 arc + arrowhead, 30x30 viewbox).
+  // Three nested transforms so data-crank-inner can hold a clean
+  // rotate(deg) we can update without recomputing scale/translate:
+  //   <g translate(crankCenter)>      -- positions icon over the button
+  //     <g data-crank-inner rotate(0)> -- runtime spins this
+  //       <g scale(s) translate(-15)>   -- maps icon viewbox to button size
+  return `<g transform="${t}" data-crank style="cursor:pointer"${fRef ? ` filter="${fRef}"` : ''}>
+    <circle cx="${half}" cy="${half}" r="${half}" fill="${escAttr(fill)}" stroke="${escAttr(stroke)}" stroke-width="${sw}"/>
+    <g transform="translate(${half} ${half})">
+      <g data-crank-inner transform="rotate(0)" style="transition:transform 0.32s cubic-bezier(0.34,1.4,0.64,1);">
+        <g transform="scale(${scale}) translate(-15 -15)">
+          <path d="M 22 22 A 9.5 9.5 0 1 1 22 8" stroke="${escAttr(iconColor)}" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          <polygon points="22,3 22,13 29,8" fill="${escAttr(iconColor)}"/>
+        </g>
+      </g>
+    </g>
+  </g>`;
 }
 
 function emitBrandStrip(c, gRef, fRef) {
@@ -241,7 +260,7 @@ function buildHopperClip(hopper, machineId) {
       shape = `<polygon points="0,0 ${hopper.width},0 ${hopper.width * 0.65},${hopper.height} ${hopper.width * 0.35},${hopper.height}"/>`;
       break;
     case 'hourglass':
-      shape = `<polygon points="0,0 ${hopper.width},0 ${hopper.width * 0.55},${hopper.height / 2} ${hopper.width},${hopper.height} 0,${hopper.height} ${hopper.width * 0.45},${hopper.height / 2}"/>`;
+      shape = `<polygon points="0,0 ${hopper.width},0 ${hopper.width * 0.65},${hopper.height / 2} ${hopper.width},${hopper.height} 0,${hopper.height} ${hopper.width * 0.35},${hopper.height / 2}"/>`;
       break;
     case 'dome':
     default:

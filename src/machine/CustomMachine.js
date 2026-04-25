@@ -46,6 +46,7 @@ export class CustomMachine {
       svg:        this.host.querySelector('svg.cm-svg'),
       canvas:     this.host.querySelector('[data-dome-canvas]'),
       crank:      this.host.querySelector('[data-crank]'),
+      crankInner: this.host.querySelector('[data-crank-inner]'),
       led:        this.host.querySelector('[data-led]'),
       dots:       [...this.host.querySelectorAll('[data-dots-group] [data-dot]')],
       tray:       this.host.querySelector('[data-tray]'),
@@ -120,7 +121,12 @@ export class CustomMachine {
     if (this.physics.count() === 0) return;
     const ready = this.state.tickCrank();
     this.crankRotation += (this.def.controls && this.def.controls.crankRotationPerTurn) || 120;
-    if (this.$.crank) this.$.crank.setAttribute('transform-origin', 'center');
+    if (this.$.crankInner) {
+      // data-crank-inner carries a pure rotate(deg) transform — we just
+      // overwrite the angle. Surrounding wrapper groups handle position and
+      // scale so this stays composition-free.
+      this.$.crankInner.setAttribute('transform', `rotate(${this.crankRotation})`);
+    }
     this.physics.jostle({ xMag: 0.028, yMag: 0.012, yBias: 0.3 });
     this.audio.play('click');
     if (ready) {

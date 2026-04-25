@@ -108,6 +108,17 @@
     padding: 3px 6px; font-size: 10px; cursor: pointer;
     border: 1px solid #DDD; background: white; border-radius: 3px;
   }
+  .saved-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 6px; margin-bottom: 4px;
+    border-bottom: 1px solid #EEE;
+  }
+  .danger-link {
+    background: none; border: none; color: #CC0000;
+    font-size: 11px; cursor: pointer; padding: 2px 4px;
+    font-family: inherit; text-decoration: underline;
+  }
+  .danger-link:hover { color: #FF1744; }
   .muted { color: #888; font-size: 11px; }
 
   .palette-btn:disabled {
@@ -260,6 +271,6 @@
     </aside>
   </main>
 
-  <script type="module" src="./src/designer/designer.js?t=6"></script>
+  <script type="module" src="./src/designer/designer.js?t=7"></script>
 </body>
 </html>

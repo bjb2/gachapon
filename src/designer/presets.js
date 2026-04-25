@@ -98,11 +98,7 @@ const TABBY_CAT = {
     { type: 'turn-dots', x: 200, y: 350, count: 3, dotSize: 10,
       litColor: '#E8839F', dimColor: '#5A3820' },
 
-    // ─── Coin slot ───────────────────────────────────────────────────
-    { type: 'decoration', shape: 'rect', x: 240, y: 348, width: 28, height: 6,
-      fill: '#1A0F06', cornerRadius: 3 },
-
-    // ─── Chute ───────────────────────────────────────────────────────
+    // ─── Chute (design-only marker) ──────────────────────────────────
     { type: 'chute', x: 130, y: 380, width: 100, height: 32,
       openingColor: '#1A0F06', stroke: '#3A2410', strokeWidth: 2,
       cornerRadius: 6, labelColor: '#FFB347' },
@@ -114,17 +110,17 @@ const TABBY_CAT = {
         stops: [{ offset: 0, color: '#5A3820' }, { offset: 1, color: '#2A1808' }] },
       cornerRadius: 8 },
 
-    // ─── Crank (knob on right) ───────────────────────────────────────
-    { type: 'crank', x: 312, y: 230, size: 36, accent: '#A6724A',
-      stroke: '#3A2410', strokeWidth: 2,
-      fillGradient: { type: 'radial', cx: 14, cy: 10, innerR: 0, outerR: 32,
+    // ─── Crank (inside the body, right of the LED) ───────────────────
+    { type: 'crank', x: 250, y: 332, size: 44, accent: '#A6724A',
+      stroke: '#3A2410', strokeWidth: 2, iconColor: '#FFF4E2',
+      fillGradient: { type: 'radial', cx: 16, cy: 12, innerR: 0, outerR: 40,
         stops: [{ offset: 0, color: '#E8C9A6' }, { offset: 0.6, color: '#A6724A' }, { offset: 1, color: '#5A3820' }] },
       shadow: { color: 'rgba(0,0,0,0.4)', blur: 4, offsetY: 2 } },
 
-    // ─── Cat tail (curling around bottom-right) ──────────────────────
-    { type: 'decoration', shape: 'rect', x: 296, y: 380, width: 8, height: 70,
+    // ─── Cat tail (curling beside the chassis bottom-right) ──────────
+    { type: 'decoration', shape: 'rect', x: 314, y: 388, width: 8, height: 60,
       fill: '#7A4A2A', cornerRadius: 4, rotation: 18 },
-    { type: 'decoration', shape: 'circle', x: 312, y: 442, width: 14, height: 14,
+    { type: 'decoration', shape: 'circle', x: 326, y: 446, width: 14, height: 14,
       fill: '#A6724A' },
   ],
 };
@@ -201,11 +197,7 @@ const BUNNY_HOP = {
       color: '#FF6EC7', bg: '#1A0612' },
     { type: 'turn-dots', x: 200, y: 350, count: 3, dotSize: 10,
       litColor: '#E87BA0', dimColor: '#F4DCE2' },
-    // Coin slot
-    { type: 'decoration', shape: 'rect', x: 240, y: 348, width: 28, height: 6,
-      fill: '#1A0612', cornerRadius: 3 },
-
-    // Chute
+    // Chute (design-only marker)
     { type: 'chute', x: 130, y: 380, width: 100, height: 32,
       openingColor: '#3A1828', stroke: '#E87BA0', strokeWidth: 2,
       cornerRadius: 6, labelColor: '#FFC2D4' },
@@ -215,10 +207,10 @@ const BUNNY_HOP = {
       fill: '#FFFFFF', stroke: '#E87BA0',
       cornerRadius: 18 },
 
-    // Crank (pink with white center)
-    { type: 'crank', x: 314, y: 224, size: 36, accent: '#E87BA0',
-      stroke: '#A04060', strokeWidth: 2,
-      fillGradient: { type: 'radial', cx: 14, cy: 10, innerR: 0, outerR: 32,
+    // Crank (pink with white center) — sits inside the body, right of LED
+    { type: 'crank', x: 250, y: 332, size: 44, accent: '#E87BA0',
+      stroke: '#A04060', strokeWidth: 2, iconColor: '#FFFFFF',
+      fillGradient: { type: 'radial', cx: 16, cy: 12, innerR: 0, outerR: 40,
         stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 0.6, color: '#F49AB6' }, { offset: 1, color: '#A04060' }] },
       shadow: { color: 'rgba(0,0,0,0.3)', blur: 4, offsetY: 2 } },
 
@@ -326,10 +318,10 @@ const BEARS_DEN = {
         stops: [{ offset: 0, color: '#6B4423' }, { offset: 1, color: '#2A1808' }] },
       cornerRadius: 8 },
 
-    // Crank (brass)
-    { type: 'crank', x: 314, y: 220, size: 36, accent: '#C9A14A',
-      stroke: '#7A5F2A', strokeWidth: 2,
-      fillGradient: { type: 'radial', cx: 14, cy: 10, innerR: 0, outerR: 32,
+    // Crank (brass) — sits inside the body, right of the LED
+    { type: 'crank', x: 250, y: 322, size: 44, accent: '#C9A14A',
+      stroke: '#7A5F2A', strokeWidth: 2, iconColor: '#3A2010',
+      fillGradient: { type: 'radial', cx: 16, cy: 12, innerR: 0, outerR: 40,
         stops: [{ offset: 0, color: '#FFE6A3' }, { offset: 0.6, color: '#C9A14A' }, { offset: 1, color: '#7A5F2A' }] },
       shadow: { color: 'rgba(0,0,0,0.35)', blur: 4, offsetY: 2 } },
 
@@ -456,19 +448,140 @@ const NINJA_CAT = {
         stops: [{ offset: 0, color: '#2A323C' }, { offset: 1, color: '#0A0E14' }] },
       cornerRadius: 8 },
 
-    // Cat tail (curling from right side)
-    { type: 'decoration', shape: 'rect', x: 312, y: 200, width: 8, height: 70,
+    // Cat tail (curling from right side, beside chassis)
+    { type: 'decoration', shape: 'rect', x: 314, y: 188, width: 8, height: 60,
       fill: '#5A6470', cornerRadius: 4, rotation: -20 },
-    { type: 'decoration', shape: 'circle', x: 322, y: 200, width: 14, height: 14,
+    { type: 'decoration', shape: 'circle', x: 322, y: 188, width: 14, height: 14,
       fill: '#3A4250' },
 
-    // Crank
-    { type: 'crank', x: 314, y: 320, size: 34, accent: '#3E4854',
-      stroke: '#1A1F26', strokeWidth: 2,
-      fillGradient: { type: 'radial', cx: 12, cy: 10, innerR: 0, outerR: 30,
+    // Crank — sits inside the body, right of the LED
+    { type: 'crank', x: 250, y: 332, size: 44, accent: '#3E4854',
+      stroke: '#1A1F26', strokeWidth: 2, iconColor: '#E04830',
+      fillGradient: { type: 'radial', cx: 16, cy: 12, innerR: 0, outerR: 40,
         stops: [{ offset: 0, color: '#7A8694' }, { offset: 0.6, color: '#3E4854' }, { offset: 1, color: '#1A1F26' }] },
       shadow: { color: 'rgba(0,0,0,0.5)', blur: 4, offsetY: 2 } },
   ],
 };
 
-export const PRESETS = [TABBY_CAT, BUNNY_HOP, BEARS_DEN, NINJA_CAT];
+// ── 5. KENISY-style Capsule Vending Machine ────────────────────────────
+//   Modeled after the real "Kenisy Capsule Vending Machine": cream/white
+//   plastic body, light gray top with a clear box window, red curved
+//   wordmark, prominent white knob crank on the right, small viewer
+//   window on the left, large chute-mouth at the front-bottom.
+const KENISY = {
+  name: 'Kenisy Capsule Vending',
+  canvas: { ...CANVAS, bg: '#E8E5E0' },
+  components: [
+    // ─── Soft floor shadow under the machine ─────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 488, width: 260, height: 18,
+      fill: 'rgba(0,0,0,0.15)', opacity: 0.6 },
+
+    // ─── Light-gray top hood (above the dome window) ─────────────────
+    { type: 'decoration', shape: 'rect', x: 50, y: 30, width: 260, height: 60,
+      fill: '#D4D2CE', cornerRadius: 18,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#E0DED9' }, { offset: 1, color: '#BCB9B3' }] },
+      shadow: { color: 'rgba(0,0,0,0.2)', blur: 8, offsetY: 4 } },
+    // KENISY brand chip on hood
+    { type: 'decoration', shape: 'rect', x: 154, y: 44, width: 52, height: 16,
+      fill: '#1A1A1A', cornerRadius: 2 },
+    { type: 'decoration', shape: 'text', x: 158, y: 47, text: 'KENISY',
+      fill: '#FFFFFF', font: 'Arial', fontWeight: 'bold', fontSize: 10,
+      letterSpacing: 0.1 },
+    // Hood vents
+    { type: 'decoration', shape: 'rect', x: 70, y: 70, width: 60, height: 3,
+      fill: '#A8A6A1', cornerRadius: 1 },
+    { type: 'decoration', shape: 'rect', x: 230, y: 70, width: 60, height: 3,
+      fill: '#A8A6A1', cornerRadius: 1 },
+
+    // ─── White main body ─────────────────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 50, y: 80, width: 260, height: 400,
+      fill: '#FFFFFF', cornerRadius: 16,
+      fillGradient: { type: 'linear', coords: 'leftToRight',
+        stops: [{ offset: 0, color: '#F0EDE6' }, { offset: 0.5, color: '#FFFFFF' }, { offset: 1, color: '#E8E5DE' }] },
+      shadow: { color: 'rgba(0,0,0,0.25)', blur: 14, offsetY: 6 } },
+
+    // ─── Capsule window (box hopper) ─────────────────────────────────
+    // Window inset frame
+    { type: 'decoration', shape: 'rect', x: 64, y: 96, width: 232, height: 184,
+      fill: '#1A1A1A', cornerRadius: 8 },
+    { type: 'hopper', variant: 'box', x: 70, y: 102, width: 220, height: 172,
+      wallColor: '#888', wallThickness: 2, cornerRadius: 6,
+      windowFill: 'rgba(220,230,240,0.35)',
+      shadow: { color: 'rgba(0,0,0,0.3)', blur: 6, offsetY: 3 } },
+    // Glass highlight overlay
+    { type: 'decoration', shape: 'rect', x: 70, y: 106, width: 220, height: 26,
+      fill: '#FFFFFF', opacity: 0.32, cornerRadius: 4 },
+
+    // ─── Curved red CAPSULE wordmark on the window glass ─────────────
+    // Pink halo behind the wordmark
+    { type: 'decoration', shape: 'ellipse', x: 100, y: 154, width: 160, height: 38,
+      fill: '#FFF8F4', opacity: 0.85, rotation: -6 },
+    { type: 'decoration', shape: 'text', x: 110, y: 152, text: 'CAPSULE',
+      fill: '#D8242C', font: 'Crimson Pro', fontStyle: 'italic',
+      fontWeight: 'bold', fontSize: 30, letterSpacing: 0.05, rotation: -6,
+      shadow: { color: 'rgba(0,0,0,0.3)', blur: 2, offsetY: 1 } },
+    { type: 'decoration', shape: 'text', x: 130, y: 188, text: 'VENDING MACHINE',
+      fill: '#D8242C', font: 'Inter', fontWeight: 'bold', fontSize: 9,
+      letterSpacing: 0.18, rotation: -6 },
+
+    // ─── Mid panel: viewer window left, big crank right ──────────────
+    // Inset darker band across mid (separates window area from controls)
+    { type: 'decoration', shape: 'rect', x: 64, y: 290, width: 232, height: 80,
+      fill: '#F4F2EC', cornerRadius: 6 },
+    // Viewer window (small round porthole on the left)
+    { type: 'decoration', shape: 'circle', x: 78, y: 304, width: 50, height: 50,
+      fill: '#1A1A1A',
+      shadow: { color: 'rgba(0,0,0,0.4)', blur: 4, offsetY: 2 } },
+    { type: 'decoration', shape: 'circle', x: 84, y: 310, width: 38, height: 38,
+      fill: '#FFFAF0',
+      fillGradient: { type: 'radial', cx: 14, cy: 12, innerR: 0, outerR: 24,
+        stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 1, color: '#C8C2B6' }] } },
+
+    // Coin slot below viewer
+    { type: 'decoration', shape: 'rect', x: 78, y: 358, width: 50, height: 8,
+      fill: '#1A1A1A', cornerRadius: 2 },
+
+    // Instructions text
+    { type: 'decoration', shape: 'text', x: 142, y: 296, text: 'INSERT 1 COIN',
+      fill: '#666', font: 'Arial', fontWeight: 'bold', fontSize: 8,
+      letterSpacing: 0.18 },
+    { type: 'decoration', shape: 'text', x: 142, y: 312, text: 'TURN HANDLE',
+      fill: '#666', font: 'Arial', fontWeight: 'bold', fontSize: 8,
+      letterSpacing: 0.18 },
+
+    // ─── Big crank knob on the right ─────────────────────────────────
+    { type: 'crank', x: 222, y: 296, size: 70, accent: '#FFFFFF',
+      stroke: '#888', strokeWidth: 3, iconColor: '#444',
+      fillGradient: { type: 'radial', cx: 26, cy: 22, innerR: 4, outerR: 60,
+        stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 0.5, color: '#F0EDE6' }, { offset: 1, color: '#A8A39A' }] },
+      shadow: { color: 'rgba(0,0,0,0.35)', blur: 6, offsetY: 4 } },
+
+    // Small red warning label
+    { type: 'decoration', shape: 'rect', x: 200, y: 372, width: 90, height: 22,
+      fill: '#D8242C', cornerRadius: 2,
+      shadow: { color: 'rgba(0,0,0,0.25)', blur: 3, offsetY: 1 } },
+    { type: 'decoration', shape: 'text', x: 210, y: 376, text: 'NO REFUND',
+      fill: '#FFFFFF', font: 'Arial', fontWeight: 'bold', fontSize: 10,
+      letterSpacing: 0.12 },
+
+    // ─── LED + turn dots strip (between mid panel and chute) ─────────
+    { type: 'led', x: 70, y: 380, width: 100, height: 18,
+      color: '#88FF44', bg: '#0E0E08', cornerRadius: 3 },
+    { type: 'turn-dots', x: 178, y: 384, count: 3, dotSize: 9,
+      litColor: '#D8242C', dimColor: '#D8D5CE' },
+
+    // ─── Chute opening (large rectangular mouth at the front) ────────
+    { type: 'chute', x: 100, y: 400, width: 160, height: 36,
+      openingColor: '#1A1A1A', stroke: '#888', strokeWidth: 1, cornerRadius: 4 },
+
+    // ─── Tray (cream-colored catch tray) ─────────────────────────────
+    { type: 'tray', x: 60, y: 414, width: 240, height: 60,
+      fill: '#E8DDC8', stroke: '#A89E84',
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#F0E6D0' }, { offset: 1, color: '#C8BCA0' }] },
+      cornerRadius: 6 },
+  ],
+};
+
+export const PRESETS = [TABBY_CAT, BUNNY_HOP, BEARS_DEN, NINJA_CAT, KENISY];
