@@ -14,12 +14,11 @@ html[data-skin="steampunk"] .box-outer {
   border: none;
 }
 
-/* Inset matches the frame thickness specified in the steampunk hopper-frame
-   prompt (~22px on top and sides, ~26px on the bottom). Adjust if the
-   generated frame's hole sits at different coordinates. */
+/* Inset measured from the actual hopper-frame.png transparent hole — the
+   model generated a thicker frame than the 22px the prompt asked for. */
 html[data-skin="steampunk"] .box-shell {
   position: absolute;
-  top: 22px; left: 22px; right: 22px; bottom: 26px;
+  top: 38px; left: 38px; right: 38px; bottom: 37px;
   overflow: hidden;
   background: rgba(38, 28, 18, 0.55);
   box-shadow: inset 0 4px 14px rgba(0,0,0,0.5);

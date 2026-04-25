@@ -10,9 +10,10 @@ html[data-skin="cyberpunk"] .box-outer {
   border: none;
 }
 
+/* Inset measured from the actual hopper-frame.png transparent hole. */
 html[data-skin="cyberpunk"] .box-shell {
   position: absolute;
-  top: 22px; left: 22px; right: 22px; bottom: 26px;
+  top: 40px; left: 31px; right: 31px; bottom: 34px;
   overflow: hidden;
   background: rgba(15, 12, 22, 0.7);
   box-shadow:
