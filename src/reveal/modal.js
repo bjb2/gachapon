@@ -36,7 +36,7 @@ export class RevealModal {
     this.banner.className = 'rarity-banner ' + prize.rarity;
     this.stars.textContent = tier.stars;
     this.nameEl.textContent = prize.name;
-    this.flavorEl.textContent = prize.flavor || '';
+    this.flavorEl.innerHTML = linkifyFlavor(prize.flavor || '');
     this.stage.innerHTML = '';
     await renderPrizeArt(this.stage, prize);
     this.stage.classList.remove('popped');
@@ -54,4 +54,25 @@ export class RevealModal {
     clearSparkles(this.card);
     if (this._onClosedCb) this._onClosedCb();
   }
+}
+
+// HTML-escape first, then turn http(s) URLs into <a> tags. Newlines preserved
+// as <br> so multi-paragraph bios render readably.
+function linkifyFlavor(text) {
+  const escaped = String(text).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+  // URL chars can include ! ; , . ) at the end of a sentence — strip common
+  // trailing punctuation back out of the link, otherwise the period after a
+  // URL gets pulled into the href.
+  const linked = escaped.replace(
+    /https?:\/\/[^\s<>"]+/g,
+    (url) => {
+      const m = url.match(/^(.*?)([.,;:!?)\]]+)$/);
+      const href = m ? m[1] : url;
+      const tail = m ? m[2] : '';
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${href}</a>${tail}`;
+    },
+  );
+  return linked.replace(/\n/g, '<br>');
 }

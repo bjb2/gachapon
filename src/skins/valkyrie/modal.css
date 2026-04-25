@@ -54,6 +54,11 @@ html[data-skin="valkyrie"] .char-flavor {
   font-family: 'M PLUS Rounded 1c', sans-serif;
   color: #707070;
 }
+html[data-skin="valkyrie"] .char-flavor a {
+  color: #b8860b;
+  border-bottom-color: rgba(184,134,11,0.45);
+}
+html[data-skin="valkyrie"] .char-flavor a:hover { color: #d97706; }
 
 html[data-skin="valkyrie"] .close-btn {
   background: #CC0000;
