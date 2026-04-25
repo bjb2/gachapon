@@ -660,4 +660,658 @@ function staticCapsules(specs) {
   return out;
 }
 
-export const PRESETS = [TABBY_CAT, BUNNY_HOP, BEARS_DEN, NINJA_CAT, KENISY];
+// ── 6. Lucky Gacha (built-in `classic` chassis replica) ────────────────
+//   Cream/pink kawaii dome machine. Soft beige body with pink brand chip,
+//   teal LED, white chrome crank, pink turn dots, glass dome with two
+//   reflection highlights. Two small "rivet" headlight dots flank the
+//   brand strip just like the CSS ::before/::after.
+const CLASSIC_LUCKY = {
+  name: 'Lucky Gacha',
+  canvas: { width: 360, height: 600, bg: '#FDEEF5' },
+  components: [
+    // ─── Floor shadow ────────────────────────────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 568, width: 260, height: 18,
+      fill: 'rgba(0,0,0,0.18)', opacity: 0.7 },
+
+    // ─── Dome collar (sits behind body, above dome) ──────────────────
+    { type: 'decoration', shape: 'rect', x: 55, y: 198, width: 250, height: 14,
+      fill: '#DDD5C8', cornerRadius: 4,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#DDD5C8' }, { offset: 1, color: '#C8C0B4' }] },
+      stroke: '#C8BFB5', strokeWidth: 2,
+      shadow: { color: 'rgba(0,0,0,0.12)', blur: 4, offsetY: 2 } },
+
+    // ─── Cream body chassis (rounded only at bottom) ─────────────────
+    { type: 'decoration', shape: 'rect', x: 45, y: 210, width: 270, height: 332,
+      fill: '#F2EDE6', cornerRadius: 26,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#F2EDE6' }, { offset: 0.5, color: '#E8E0D5' }, { offset: 1, color: '#DDD4C6' }] },
+      stroke: '#C8BFB5', strokeWidth: 3,
+      shadow: { color: 'rgba(0,0,0,0.16)', blur: 16, offsetY: 10 } },
+    // Square the top of the body so the collar sits flush
+    { type: 'decoration', shape: 'rect', x: 45, y: 210, width: 270, height: 18,
+      fill: '#F2EDE6' },
+    // Top edge highlight
+    { type: 'decoration', shape: 'rect', x: 48, y: 212, width: 264, height: 2,
+      fill: '#FFFFFF', opacity: 0.6 },
+
+    // Two pearl rivet "screws" ─ machine-body::before/::after
+    { type: 'decoration', shape: 'circle', x: 58, y: 226, width: 10, height: 10,
+      fill: '#E8E0D8', stroke: '#999999', strokeWidth: 1.5,
+      fillGradient: { type: 'radial', cx: 3.5, cy: 3, innerR: 0, outerR: 9,
+        stops: [{ offset: 0, color: '#E8E0D8' }, { offset: 1, color: '#B0A8A0' }] } },
+    { type: 'decoration', shape: 'circle', x: 292, y: 226, width: 10, height: 10,
+      fill: '#E8E0D8', stroke: '#999999', strokeWidth: 1.5,
+      fillGradient: { type: 'radial', cx: 3.5, cy: 3, innerR: 0, outerR: 9,
+        stops: [{ offset: 0, color: '#E8E0D8' }, { offset: 1, color: '#B0A8A0' }] } },
+
+    // ─── Pink brand chip (centered between rivets) ───────────────────
+    { type: 'brand-strip', x: 122, y: 222, width: 116, height: 18,
+      text: '★ LUCKY GACHA ★', font: 'DotGothic16', fontWeight: 'bold',
+      fontSize: 9, fg: '#FFFFFF', bg: '#FF6B9D', cornerRadius: 4,
+      letterSpacing: 0.12,
+      shadow: { color: 'rgba(255,107,157,0.45)', blur: 5, offsetY: 2 } },
+
+    // ─── Glass dome (sits ABOVE the collar) ──────────────────────────
+    // Dome backdrop ring (pale glass tint behind hopper)
+    { type: 'decoration', shape: 'ellipse', x: 65, y: 50, width: 230, height: 310,
+      fill: '#D7EEFF', opacity: 0.2 },
+    // Hopper itself (dome window)
+    { type: 'hopper', variant: 'dome', x: 65, y: 50, width: 230, height: 155,
+      wallColor: 'rgba(160,200,240,0.75)', wallThickness: 3,
+      windowFill: 'rgba(215,238,255,0.55)' },
+    // Glass reflection highlights on the dome
+    { type: 'decoration', shape: 'ellipse', x: 84, y: 64, width: 30, height: 80,
+      fill: '#FFFFFF', opacity: 0.22, rotation: -18 },
+    { type: 'decoration', shape: 'ellipse', x: 124, y: 60, width: 13, height: 38,
+      fill: '#FFFFFF', opacity: 0.14, rotation: -12 },
+
+    // ─── LED display (dark with teal text) ───────────────────────────
+    { type: 'led', x: 64, y: 256, width: 110, height: 22,
+      color: '#4ECDC4', bg: '#12112A', cornerRadius: 5,
+      shadow: { color: 'rgba(78,205,196,0.2)', blur: 8 } },
+
+    // ─── "LUCKY" lucky-circle (white with text) ──────────────────────
+    { type: 'decoration', shape: 'circle', x: 64, y: 290, width: 50, height: 50,
+      fill: '#FFFFFF', stroke: '#C0B8B0', strokeWidth: 2,
+      shadow: { color: 'rgba(0,0,0,0.1)', blur: 4, offsetY: 2 } },
+    { type: 'decoration', shape: 'text', x: 76, y: 305, text: 'LUCKY',
+      fill: '#2D2A26', font: 'Arial', fontWeight: 'bold', fontSize: 8,
+      letterSpacing: 0.08 },
+    { type: 'decoration', shape: 'text', x: 79, y: 318, text: 'GACHA',
+      fill: '#2D2A26', font: 'Arial', fontWeight: 'bold', fontSize: 8,
+      letterSpacing: 0.08 },
+
+    // ─── Turn dots (pink) ────────────────────────────────────────────
+    { type: 'turn-dots', x: 130, y: 296, count: 3, dotSize: 9,
+      litColor: '#FF6B9D', dimColor: '#D0C8BE' },
+
+    // ─── Big chrome/white crank ──────────────────────────────────────
+    { type: 'crank', x: 220, y: 282, size: 64, accent: '#FFFFFF',
+      stroke: '#B0A8A0', strokeWidth: 3, iconColor: '#666666',
+      fillGradient: { type: 'radial', cx: 22, cy: 18, innerR: 0, outerR: 60,
+        stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 0.45, color: '#DDD5CC' }, { offset: 1, color: '#C0B8B0' }] },
+      shadow: { color: 'rgba(0,0,0,0.22)', blur: 8, offsetY: 6 } },
+
+    // ─── Chute marker (just below dome exit) ─────────────────────────
+    { type: 'chute', x: 130, y: 380, width: 100, height: 32,
+      openingColor: '#1A0F06', stroke: '#C8BFB5', strokeWidth: 2,
+      cornerRadius: 4, labelColor: '#FF6B9D' },
+
+    // ─── Tray (cream rounded) ────────────────────────────────────────
+    { type: 'tray', x: 60, y: 470, width: 240, height: 72,
+      fill: '#C8C0B6', stroke: '#AAA29A',
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#C8C0B6' }, { offset: 1, color: '#BEB6AC' }] },
+      cornerRadius: 14,
+      shadow: { color: 'rgba(0,0,0,0.22)', blur: 10, offsetY: 4 } },
+    // Tray flap (the small lip above center)
+    { type: 'decoration', shape: 'rect', x: 154, y: 466, width: 52, height: 18,
+      fill: '#C4BDB4', cornerRadius: 5, stroke: '#A8A09A', strokeWidth: 1.5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#C4BDB4' }, { offset: 1, color: '#D0C8BF' }] },
+      shadow: { color: 'rgba(0,0,0,0.12)', blur: 3, offsetY: 3 } },
+  ],
+};
+
+// ── 7. DEPOT No.7 (built-in `noir` chassis replica) ────────────────────
+//   Dark navy noir crate with amber/yellow accents. Square box window
+//   instead of dome, scanline overlay, corner bracket accents (top-L
+//   and top-R), amber rivet bolts, square amber turn-dots. Brand label
+//   uses Share Tech Mono with bracketed text.
+const NOIR_DEPOT = {
+  name: 'DEPOT No.7',
+  canvas: { width: 360, height: 600, bg: '#0A0E14' },
+  components: [
+    // ─── Subtle grid backdrop hint (very faint) ──────────────────────
+    { type: 'decoration', shape: 'rect', x: 0, y: 0, width: 360, height: 600,
+      fill: 'rgba(247,183,49,0.02)' },
+
+    // ─── Floor shadow ────────────────────────────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 568, width: 260, height: 18,
+      fill: 'rgba(0,0,0,0.6)', opacity: 0.75 },
+
+    // ─── Dark navy box-shaped window (top of unit) ───────────────────
+    { type: 'decoration', shape: 'rect', x: 50, y: 36, width: 260, height: 200,
+      fill: 'rgba(5,10,16,0.92)', cornerRadius: 4,
+      stroke: 'rgba(247,183,49,0.5)', strokeWidth: 3,
+      shadow: { color: 'rgba(247,183,49,0.1)', blur: 22 } },
+    // Box hopper (live capsules render here)
+    { type: 'hopper', variant: 'box', x: 52, y: 38, width: 256, height: 200,
+      wallColor: 'rgba(247,183,49,0.0)', wallThickness: 0, cornerRadius: 4,
+      windowFill: 'rgba(5,10,16,0.0)' },
+    // Scanline overlay (top half band)
+    { type: 'decoration', shape: 'rect', x: 50, y: 36, width: 260, height: 100,
+      fill: 'rgba(0,0,0,0.07)', opacity: 0.5 },
+    { type: 'decoration', shape: 'rect', x: 50, y: 140, width: 260, height: 96,
+      fill: 'rgba(0,0,0,0.07)', opacity: 0.5 },
+    // Top-left corner bracket
+    { type: 'decoration', shape: 'rect', x: 57, y: 43, width: 14, height: 2,
+      fill: 'rgba(247,183,49,0.55)' },
+    { type: 'decoration', shape: 'rect', x: 57, y: 43, width: 2, height: 14,
+      fill: 'rgba(247,183,49,0.55)' },
+    // Top-right corner bracket
+    { type: 'decoration', shape: 'rect', x: 289, y: 43, width: 14, height: 2,
+      fill: 'rgba(247,183,49,0.55)' },
+    { type: 'decoration', shape: 'rect', x: 301, y: 43, width: 2, height: 14,
+      fill: 'rgba(247,183,49,0.55)' },
+
+    // ─── Dark navy chassis body (rounded only at bottom) ─────────────
+    { type: 'decoration', shape: 'rect', x: 50, y: 236, width: 260, height: 308,
+      fill: '#1E2A35', cornerRadius: 4,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#1E2A35' }, { offset: 0.5, color: '#141E28' }, { offset: 1, color: '#0C1520' }] },
+      stroke: 'rgba(247,183,49,0.32)', strokeWidth: 3,
+      shadow: { color: 'rgba(0,0,0,0.65)', blur: 18, offsetY: 10 } },
+    // Square the top so it flush-meets the window
+    { type: 'decoration', shape: 'rect', x: 50, y: 236, width: 260, height: 14,
+      fill: '#1E2A35' },
+    // Inner top edge gold highlight
+    { type: 'decoration', shape: 'rect', x: 53, y: 238, width: 254, height: 1,
+      fill: 'rgba(247,183,49,0.08)' },
+
+    // Amber rivet bolts (top-left, top-right at top of body)
+    { type: 'decoration', shape: 'circle', x: 58, y: 244, width: 9, height: 9,
+      fill: '#3A4A55', stroke: 'rgba(247,183,49,0.22)', strokeWidth: 1.5,
+      fillGradient: { type: 'radial', cx: 3, cy: 2.5, innerR: 0, outerR: 7,
+        stops: [{ offset: 0, color: '#3A4A55' }, { offset: 1, color: '#1A2530' }] } },
+    { type: 'decoration', shape: 'circle', x: 293, y: 244, width: 9, height: 9,
+      fill: '#3A4A55', stroke: 'rgba(247,183,49,0.22)', strokeWidth: 1.5,
+      fillGradient: { type: 'radial', cx: 3, cy: 2.5, innerR: 0, outerR: 7,
+        stops: [{ offset: 0, color: '#3A4A55' }, { offset: 1, color: '#1A2530' }] } },
+
+    // ─── Amber-glow brand strip ──────────────────────────────────────
+    { type: 'brand-strip', x: 110, y: 260, width: 140, height: 20,
+      text: '[ DEPOT No.7 ]', font: 'Share Tech Mono', fontWeight: 'normal',
+      fontSize: 9, fg: '#F7B731', bg: 'rgba(0,0,0,0)', cornerRadius: 2,
+      stroke: 'rgba(247,183,49,0.4)', strokeWidth: 1,
+      letterSpacing: 0.22,
+      shadow: { color: 'rgba(247,183,49,0.55)', blur: 8 } },
+
+    // ─── Amber LED display ───────────────────────────────────────────
+    { type: 'led', x: 64, y: 296, width: 110, height: 22,
+      color: '#F7B731', bg: '#04080D', cornerRadius: 2,
+      shadow: { color: 'rgba(247,183,49,0.12)', blur: 6 } },
+
+    // Hex porthole circle (small "lucky" replacement)
+    { type: 'decoration', shape: 'circle', x: 64, y: 332, width: 44, height: 44,
+      fill: '#080E16', stroke: 'rgba(247,183,49,0.22)', strokeWidth: 1.5,
+      shadow: { color: 'rgba(247,183,49,0.08)', blur: 4 } },
+    { type: 'decoration', shape: 'text', x: 73, y: 348, text: 'NO.7',
+      fill: 'rgba(247,183,49,0.65)', font: 'Share Tech Mono', fontWeight: 'bold',
+      fontSize: 9, letterSpacing: 0.06 },
+
+    // ─── Square amber turn-dots ──────────────────────────────────────
+    // turn-dots component renders circles, so layer square decorations to mimic the noir look.
+    { type: 'decoration', shape: 'rect', x: 124, y: 336, width: 8, height: 8,
+      fill: '#F7B731', stroke: '#C08800', strokeWidth: 1,
+      shadow: { color: 'rgba(247,183,49,0.7)', blur: 4 } },
+    { type: 'decoration', shape: 'rect', x: 138, y: 336, width: 8, height: 8,
+      fill: '#141E28', stroke: 'rgba(247,183,49,0.18)', strokeWidth: 1 },
+    // Functional turn-dots component (tucked above for engine wiring)
+    { type: 'turn-dots', x: 124, y: 322, count: 2, dotSize: 8,
+      litColor: '#F7B731', dimColor: '#141E28' },
+
+    // ─── Crank (dark with amber accent) ──────────────────────────────
+    { type: 'crank', x: 224, y: 304, size: 60, accent: '#1E2A35',
+      stroke: 'rgba(247,183,49,0.42)', strokeWidth: 3, iconColor: '#F7B731',
+      fillGradient: { type: 'radial', cx: 20, cy: 16, innerR: 0, outerR: 56,
+        stops: [{ offset: 0, color: '#3A4A55' }, { offset: 0.5, color: '#1E2A35' }, { offset: 1, color: '#0C1520' }] },
+      shadow: { color: 'rgba(247,183,49,0.18)', blur: 10, offsetY: 4 } },
+
+    // ─── Chute marker ────────────────────────────────────────────────
+    { type: 'chute', x: 130, y: 410, width: 100, height: 30,
+      openingColor: '#04080D', stroke: 'rgba(247,183,49,0.32)', strokeWidth: 2,
+      cornerRadius: 0, labelColor: '#F7B731' },
+
+    // ─── Tray (dark with amber border) ───────────────────────────────
+    { type: 'tray', x: 50, y: 478, width: 260, height: 68,
+      fill: '#0C1520', stroke: 'rgba(247,183,49,0.32)',
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#0C1520' }, { offset: 1, color: '#080E16' }] },
+      cornerRadius: 4,
+      shadow: { color: 'rgba(0,0,0,0.45)', blur: 12, offsetY: 4 } },
+    // Tray flap
+    { type: 'decoration', shape: 'rect', x: 160, y: 474, width: 40, height: 12,
+      fill: '#1A2530', stroke: 'rgba(247,183,49,0.22)', strokeWidth: 1.5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#1A2530' }, { offset: 1, color: '#141E28' }] } },
+  ],
+};
+
+// ── 8. SYNTH-X 404 (built-in `cyber` chassis replica) ──────────────────
+//   Synthwave dome machine. Deep navy/black body with cyan glow trim,
+//   purple secondary accents, glowing cyan brand strip, dome with cyan
+//   bezel and cyan/purple highlights, cyan glow crank, cyan dots.
+const CYBER_SYNTH = {
+  name: 'SYNTH-X 404',
+  canvas: { width: 360, height: 600, bg: '#050810' },
+  components: [
+    // ─── Floor glow ──────────────────────────────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 568, width: 260, height: 18,
+      fill: 'rgba(0,217,255,0.12)', opacity: 0.75 },
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 572, width: 260, height: 12,
+      fill: 'rgba(0,0,0,0.6)' },
+
+    // ─── Dome collar (dark with cyan glow border) ────────────────────
+    { type: 'decoration', shape: 'rect', x: 38, y: 218, width: 284, height: 11,
+      fill: '#0A1020', cornerRadius: 0,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#0A1020' }, { offset: 1, color: '#060C18' }] },
+      stroke: 'rgba(0,217,255,0.38)', strokeWidth: 2,
+      shadow: { color: 'rgba(0,217,255,0.18)', blur: 10, offsetY: 3 } },
+
+    // ─── Deep navy chassis ──────────────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 33, y: 229, width: 294, height: 318,
+      fill: '#0C1224', cornerRadius: 8,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#0C1224' }, { offset: 0.5, color: '#080E1A' }, { offset: 1, color: '#050810' }] },
+      stroke: 'rgba(0,217,255,0.32)', strokeWidth: 3,
+      shadow: { color: 'rgba(0,0,0,0.75)', blur: 22, offsetY: 12 } },
+    // Square the top
+    { type: 'decoration', shape: 'rect', x: 33, y: 229, width: 294, height: 12,
+      fill: '#0C1224' },
+    // Top edge cyan highlight
+    { type: 'decoration', shape: 'rect', x: 36, y: 232, width: 288, height: 1,
+      fill: 'rgba(0,217,255,0.07)' },
+
+    // Cyan corner indicator dots ─ machine-body::before/::after
+    { type: 'decoration', shape: 'circle', x: 43, y: 240, width: 7, height: 7,
+      fill: '#00D9FF',
+      shadow: { color: 'rgba(0,217,255,0.7)', blur: 6 } },
+    { type: 'decoration', shape: 'circle', x: 310, y: 240, width: 7, height: 7,
+      fill: '#00D9FF',
+      shadow: { color: 'rgba(0,217,255,0.7)', blur: 6 } },
+
+    // ─── Glowing dome bezel ──────────────────────────────────────────
+    // Outer cyan glow ring
+    { type: 'decoration', shape: 'ellipse', x: 53, y: 50, width: 254, height: 178,
+      fill: 'rgba(0,217,255,0.06)',
+      shadow: { color: 'rgba(0,217,255,0.3)', blur: 18 } },
+    // The dome window
+    { type: 'hopper', variant: 'dome', x: 55, y: 60, width: 250, height: 168,
+      wallColor: 'rgba(0,217,255,0.7)', wallThickness: 3,
+      windowFill: 'rgba(0,28,48,0.85)' },
+    // Cyan reflection highlight
+    { type: 'decoration', shape: 'ellipse', x: 76, y: 76, width: 22, height: 68,
+      fill: 'rgba(0,217,255,0.18)', opacity: 0.9, rotation: -16 },
+    // Purple reflection highlight
+    { type: 'decoration', shape: 'ellipse', x: 110, y: 70, width: 9, height: 30,
+      fill: 'rgba(191,90,242,0.25)', opacity: 0.9, rotation: -10 },
+
+    // ─── Glowing cyan brand strip ────────────────────────────────────
+    { type: 'brand-strip', x: 100, y: 256, width: 160, height: 22,
+      text: '◈ SYNTH-X 404 ◈', font: 'Orbitron', fontWeight: 'bold',
+      fontSize: 8, fg: '#00D9FF', bg: 'rgba(0,0,0,0)', cornerRadius: 2,
+      stroke: 'rgba(0,217,255,0.38)', strokeWidth: 1,
+      letterSpacing: 0.2,
+      shadow: { color: 'rgba(0,217,255,0.65)', blur: 10 } },
+
+    // ─── Cyan LED display ────────────────────────────────────────────
+    { type: 'led', x: 56, y: 296, width: 110, height: 22,
+      color: '#00D9FF', bg: '#020408', cornerRadius: 3,
+      shadow: { color: 'rgba(0,217,255,0.18)', blur: 8 } },
+
+    // ─── Purple "404" porthole ───────────────────────────────────────
+    { type: 'decoration', shape: 'circle', x: 56, y: 332, width: 44, height: 44,
+      fill: '#030608', stroke: 'rgba(191,90,242,0.32)', strokeWidth: 1.5,
+      shadow: { color: 'rgba(191,90,242,0.12)', blur: 6 } },
+    { type: 'decoration', shape: 'text', x: 65, y: 348, text: '404',
+      fill: 'rgba(191,90,242,0.85)', font: 'Orbitron', fontWeight: 'bold',
+      fontSize: 12, letterSpacing: 0.08,
+      shadow: { color: 'rgba(191,90,242,0.5)', blur: 4 } },
+
+    // ─── Turn dots (cyan, 4 for SYNTH-X) ─────────────────────────────
+    { type: 'turn-dots', x: 116, y: 340, count: 4, dotSize: 8,
+      litColor: '#00D9FF', dimColor: '#070D18' },
+
+    // ─── Glowing crank ───────────────────────────────────────────────
+    { type: 'crank', x: 226, y: 308, size: 60, accent: '#0A1018',
+      stroke: 'rgba(0,217,255,0.5)', strokeWidth: 3, iconColor: '#00D9FF',
+      fillGradient: { type: 'radial', cx: 20, cy: 16, innerR: 0, outerR: 56,
+        stops: [{ offset: 0, color: 'rgba(0,217,255,0.2)' }, { offset: 0.45, color: '#0A1018' }, { offset: 1, color: '#050810' }] },
+      shadow: { color: 'rgba(0,217,255,0.35)', blur: 16, offsetY: 4 } },
+
+    // ─── Chute marker ────────────────────────────────────────────────
+    { type: 'chute', x: 130, y: 412, width: 100, height: 30,
+      openingColor: '#020408', stroke: 'rgba(0,217,255,0.32)', strokeWidth: 2,
+      cornerRadius: 4, labelColor: '#00D9FF' },
+
+    // ─── Tray (dark with cyan border) ────────────────────────────────
+    { type: 'tray', x: 50, y: 480, width: 260, height: 72,
+      fill: '#0A1020', stroke: 'rgba(0,217,255,0.28)',
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#0A1020' }, { offset: 1, color: '#060C18' }] },
+      cornerRadius: 4,
+      shadow: { color: 'rgba(0,217,255,0.05)', blur: 12, offsetY: 4 } },
+    // Tray flap
+    { type: 'decoration', shape: 'rect', x: 154, y: 476, width: 52, height: 12,
+      fill: '#0C1224', stroke: 'rgba(0,217,255,0.22)', strokeWidth: 1.5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#0C1224' }, { offset: 1, color: '#0A1020' }] } },
+  ],
+};
+
+// ── 9. Mori no Tama (built-in `forest` chassis replica) ────────────────
+//   Stained dark-walnut wood machine. Deep brown body with wood grain
+//   stripes, single knot accent, amber/gold accents, wooden collar with
+//   horizontal grain, amber crystal ball look in the dome.
+const FOREST_MORI = {
+  name: 'Mori no Tama',
+  canvas: { width: 360, height: 600, bg: '#1A1208' },
+  components: [
+    // ─── Floor shadow ────────────────────────────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 568, width: 260, height: 18,
+      fill: 'rgba(0,0,0,0.55)', opacity: 0.8 },
+
+    // ─── Wooden collar with grain ────────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 50, y: 210, width: 262, height: 18,
+      fill: '#5C3D2E', cornerRadius: 4,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#5C3D2E' }, { offset: 1, color: '#4A3024' }] },
+      stroke: 'rgba(92,61,46,0.9)', strokeWidth: 2,
+      shadow: { color: 'rgba(0,0,0,0.45)', blur: 6, offsetY: 2 } },
+    // Collar grain stripes
+    { type: 'decoration', shape: 'rect', x: 60, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+    { type: 'decoration', shape: 'rect', x: 80, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+    { type: 'decoration', shape: 'rect', x: 100, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+    { type: 'decoration', shape: 'rect', x: 140, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+    { type: 'decoration', shape: 'rect', x: 180, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+    { type: 'decoration', shape: 'rect', x: 220, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+    { type: 'decoration', shape: 'rect', x: 260, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+    { type: 'decoration', shape: 'rect', x: 290, y: 213, width: 1, height: 12,
+      fill: 'rgba(200,140,70,0.06)' },
+
+    // ─── Stained walnut body ─────────────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 40, y: 228, width: 280, height: 320,
+      fill: '#4A3020', cornerRadius: 14,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#4A3020' }, { offset: 0.5, color: '#3D2618' }, { offset: 1, color: '#2C1C0E' }] },
+      stroke: 'rgba(92,61,46,0.92)', strokeWidth: 3,
+      shadow: { color: 'rgba(0,0,0,0.55)', blur: 18, offsetY: 10 } },
+    // Square top
+    { type: 'decoration', shape: 'rect', x: 40, y: 228, width: 280, height: 14,
+      fill: '#4A3020' },
+    // Top edge highlight
+    { type: 'decoration', shape: 'rect', x: 43, y: 230, width: 274, height: 1,
+      fill: 'rgba(200,160,90,0.1)' },
+    // Wood grain stripes (diagonal-ish, faint) ─ several thin vertical-ish lines
+    { type: 'decoration', shape: 'rect', x: 60, y: 240, width: 1, height: 300,
+      fill: 'rgba(200,140,70,0.05)' },
+    { type: 'decoration', shape: 'rect', x: 96, y: 240, width: 1, height: 300,
+      fill: 'rgba(150,100,50,0.04)' },
+    { type: 'decoration', shape: 'rect', x: 132, y: 240, width: 1, height: 300,
+      fill: 'rgba(200,140,70,0.05)' },
+    { type: 'decoration', shape: 'rect', x: 168, y: 240, width: 1, height: 300,
+      fill: 'rgba(150,100,50,0.04)' },
+    { type: 'decoration', shape: 'rect', x: 204, y: 240, width: 1, height: 300,
+      fill: 'rgba(200,140,70,0.05)' },
+    { type: 'decoration', shape: 'rect', x: 240, y: 240, width: 1, height: 300,
+      fill: 'rgba(150,100,50,0.04)' },
+    { type: 'decoration', shape: 'rect', x: 276, y: 240, width: 1, height: 300,
+      fill: 'rgba(200,140,70,0.05)' },
+
+    // Single knot accent (top right, like ::after)
+    { type: 'decoration', shape: 'circle', x: 296, y: 244, width: 10, height: 10,
+      fill: '#8B6914', stroke: 'rgba(200,160,80,0.38)', strokeWidth: 1.5,
+      fillGradient: { type: 'radial', cx: 3.5, cy: 3, innerR: 0, outerR: 8,
+        stops: [{ offset: 0, color: '#8B6914' }, { offset: 1, color: '#4A3020' }] },
+      shadow: { color: 'rgba(0,0,0,0.4)', blur: 2 } },
+
+    // ─── Amber/gold brand strip ──────────────────────────────────────
+    { type: 'brand-strip', x: 110, y: 260, width: 140, height: 22,
+      text: '✦ 森の玉 ✦', font: 'Crimson Pro', fontWeight: 'bold',
+      fontSize: 11, fg: '#F0D9A0', bg: 'rgba(92,61,46,0.55)', cornerRadius: 4,
+      stroke: 'rgba(200,160,80,0.28)', strokeWidth: 1,
+      letterSpacing: 0.14,
+      shadow: { color: 'rgba(0,0,0,0.4)', blur: 4, offsetY: 1 } },
+
+    // ─── Amber crystal-ball dome ─────────────────────────────────────
+    // Amber-tinted backdrop ring
+    { type: 'decoration', shape: 'ellipse', x: 60, y: 60, width: 240, height: 160,
+      fill: 'rgba(100,75,15,0.35)', opacity: 0.9 },
+    // Hopper (amber-tinted dome)
+    { type: 'hopper', variant: 'dome', x: 60, y: 60, width: 240, height: 160,
+      wallColor: 'rgba(200,160,40,0.55)', wallThickness: 3,
+      windowFill: 'rgba(60,45,10,0.5)' },
+    // Amber highlight reflections
+    { type: 'decoration', shape: 'ellipse', x: 78, y: 74, width: 26, height: 72,
+      fill: 'rgba(255,230,150,0.1)', rotation: -18 },
+    { type: 'decoration', shape: 'ellipse', x: 115, y: 70, width: 11, height: 33,
+      fill: 'rgba(255,210,100,0.08)', rotation: -12 },
+
+    // ─── Amber LED display ───────────────────────────────────────────
+    { type: 'led', x: 60, y: 296, width: 110, height: 22,
+      color: '#C8A028', bg: '#180E04', cornerRadius: 3,
+      shadow: { color: 'rgba(200,160,40,0.1)', blur: 5 } },
+
+    // ─── Wooden circle plate ─────────────────────────────────────────
+    { type: 'decoration', shape: 'circle', x: 60, y: 332, width: 48, height: 48,
+      fill: '#1C1005', stroke: 'rgba(139,105,20,0.32)', strokeWidth: 1.5,
+      shadow: { color: 'rgba(0,0,0,0.4)', blur: 3 } },
+    { type: 'decoration', shape: 'text', x: 70, y: 348, text: 'MORI',
+      fill: 'rgba(200,165,80,0.75)', font: 'Crimson Pro', fontWeight: 'bold',
+      fontSize: 9, fontStyle: 'italic', letterSpacing: 0.06 },
+    { type: 'decoration', shape: 'text', x: 73, y: 362, text: '森',
+      fill: 'rgba(200,165,80,0.65)', font: 'Crimson Pro', fontWeight: 'bold',
+      fontSize: 12, letterSpacing: 0 },
+
+    // ─── Gold turn dots ──────────────────────────────────────────────
+    { type: 'turn-dots', x: 124, y: 340, count: 3, dotSize: 9,
+      litColor: '#C8A028', dimColor: '#2C1C0E' },
+
+    // ─── Wood-stained crank ──────────────────────────────────────────
+    { type: 'crank', x: 224, y: 308, size: 60, accent: '#4A3020',
+      stroke: 'rgba(139,105,20,0.6)', strokeWidth: 3, iconColor: '#C8A028',
+      fillGradient: { type: 'radial', cx: 20, cy: 17, innerR: 0, outerR: 56,
+        stops: [{ offset: 0, color: '#8B6914' }, { offset: 0.45, color: '#4A3020' }, { offset: 1, color: '#2C1C0E' }] },
+      shadow: { color: 'rgba(0,0,0,0.5)', blur: 14, offsetY: 6 } },
+
+    // ─── Chute marker ────────────────────────────────────────────────
+    { type: 'chute', x: 130, y: 412, width: 100, height: 30,
+      openingColor: '#180E04', stroke: 'rgba(139,105,20,0.45)', strokeWidth: 2,
+      cornerRadius: 6, labelColor: '#C8A028' },
+
+    // ─── Tray (dark wood) ────────────────────────────────────────────
+    { type: 'tray', x: 50, y: 478, width: 260, height: 72,
+      fill: '#2A1808', stroke: 'rgba(92,61,46,0.92)',
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#2A1808' }, { offset: 1, color: '#1E1005' }] },
+      cornerRadius: 10,
+      shadow: { color: 'rgba(0,0,0,0.38)', blur: 12, offsetY: 4 } },
+    // Tray flap (small wood lip)
+    { type: 'decoration', shape: 'rect', x: 154, y: 474, width: 52, height: 12,
+      fill: '#4A3020', stroke: 'rgba(92,61,46,0.7)', strokeWidth: 1.5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#4A3020' }, { offset: 1, color: '#3D2618' }] },
+      cornerRadius: 4 },
+  ],
+};
+
+// ── 10. Capsule World — ISUZU truck (built-in `modern` chassis replica) ─
+//   White plastic body box-window machine. Black ISUZU brand band spans
+//   edge-to-edge with two black "headlight" circles flanking it. White
+//   plastic frame box with two orange LED indicator lights at the top,
+//   green LED display, big chrome crank, red turn dots.
+const MODERN_ISUZU = {
+  name: 'Capsule World (ISUZU)',
+  canvas: { width: 380, height: 600, bg: '#FFFFFF' },
+  components: [
+    // ─── Floor shadow ────────────────────────────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 60, y: 568, width: 260, height: 18,
+      fill: 'rgba(0,0,0,0.18)', opacity: 0.7 },
+
+    // ─── White plastic frame around the box window ───────────────────
+    { type: 'decoration', shape: 'rect', x: 56, y: 36, width: 268, height: 200,
+      fill: '#F8F5FA', cornerRadius: 10,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#F8F5FA' }, { offset: 1, color: '#F0ECF4' }] },
+      stroke: '#E0D8E8', strokeWidth: 3,
+      shadow: { color: 'rgba(0,0,0,0.06)', blur: 8, offsetY: -2 } },
+    // Inner top-edge highlight
+    { type: 'decoration', shape: 'rect', x: 58, y: 38, width: 264, height: 2,
+      fill: '#FFFFFF', opacity: 0.9 },
+
+    // ─── Two orange LED indicator lights (on the white frame) ────────
+    { type: 'decoration', shape: 'rect', x: 70, y: 43, width: 36, height: 11,
+      fill: '#FFBB44', cornerRadius: 5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#FFBB44' }, { offset: 1, color: '#FF8800' }] },
+      shadow: { color: 'rgba(255,140,0,0.45)', blur: 6, offsetY: 2 } },
+    { type: 'decoration', shape: 'rect', x: 72, y: 44, width: 32, height: 3,
+      fill: '#FFFFFF', opacity: 0.4, cornerRadius: 2 },
+    { type: 'decoration', shape: 'rect', x: 274, y: 43, width: 36, height: 11,
+      fill: '#FFBB44', cornerRadius: 5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#FFBB44' }, { offset: 1, color: '#FF8800' }] },
+      shadow: { color: 'rgba(255,140,0,0.45)', blur: 6, offsetY: 2 } },
+    { type: 'decoration', shape: 'rect', x: 276, y: 44, width: 32, height: 3,
+      fill: '#FFFFFF', opacity: 0.4, cornerRadius: 2 },
+
+    // ─── The actual box window (transparent blue glass) ──────────────
+    // Glass backdrop visible behind capsules
+    { type: 'decoration', shape: 'rect', x: 56, y: 62, width: 268, height: 174,
+      fill: 'rgba(222,234,250,0.68)', cornerRadius: 0,
+      shadow: { color: 'rgba(255,255,255,0.5)', blur: 8 } },
+    // Static capsules behind hopper (live balls cover these in play)
+    ...staticCapsules([
+      [80, 80, 24, '#FFB6C1', '#E08CA0'],
+      [120, 100, 24, '#FFD966', '#C8A030'],
+      [180, 90, 24, '#87CEEB', '#5BA8D0'],
+      [240, 110, 24, '#C8A2C8', '#A075A0'],
+      [78, 160, 24, '#FFFFFF', '#C0C0C0'],
+      [128, 170, 24, '#98FB98', '#6FCC6F'],
+      [180, 165, 24, '#FFA07A', '#D8704A'],
+      [240, 180, 24, '#E6E6FA', '#B0B0E0'],
+    ]),
+    // Box hopper (live capsules render here, clipped to box window)
+    { type: 'hopper', variant: 'box', x: 56, y: 62, width: 268, height: 174,
+      wallColor: 'rgba(200,188,218,0.5)', wallThickness: 1.5, cornerRadius: 0,
+      windowFill: 'rgba(0,0,0,0)' },
+    // Glass sheen overlay (renders on top)
+    { type: 'decoration', shape: 'rect', x: 56, y: 62, width: 268, height: 30,
+      fill: '#FFFFFF', opacity: 0.2 },
+    { type: 'decoration', shape: 'rect', x: 56, y: 92, width: 90, height: 4,
+      fill: '#FFFFFF', opacity: 0.12 },
+
+    // ─── White plastic main body (rounded only at bottom) ────────────
+    { type: 'decoration', shape: 'rect', x: 50, y: 236, width: 280, height: 308,
+      fill: '#FAF9FA', cornerRadius: 18,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#FAF9FA' }, { offset: 0.5, color: '#F5F4F6' }, { offset: 1, color: '#EEECEF' }] },
+      stroke: '#DCDADE', strokeWidth: 3,
+      shadow: { color: 'rgba(0,0,0,0.12)', blur: 18, offsetY: 10 } },
+    // Square the top
+    { type: 'decoration', shape: 'rect', x: 50, y: 236, width: 280, height: 14,
+      fill: '#FAF9FA' },
+    // Top inner highlight
+    { type: 'decoration', shape: 'rect', x: 53, y: 238, width: 274, height: 1,
+      fill: '#FFFFFF', opacity: 0.95 },
+
+    // ─── Two black "headlight" circles flanking brand band ───────────
+    { type: 'decoration', shape: 'circle', x: 59, y: 249, width: 20, height: 20,
+      fill: '#111111', cornerRadius: 10,
+      fillGradient: { type: 'radial', cx: 7, cy: 6, innerR: 0, outerR: 16,
+        stops: [{ offset: 0, color: '#666666' }, { offset: 1, color: '#111111' }] },
+      shadow: { color: 'rgba(0,0,0,0.28)', blur: 5, offsetY: 2 } },
+    { type: 'decoration', shape: 'circle', x: 301, y: 249, width: 20, height: 20,
+      fill: '#111111', cornerRadius: 10,
+      fillGradient: { type: 'radial', cx: 7, cy: 6, innerR: 0, outerR: 16,
+        stops: [{ offset: 0, color: '#666666' }, { offset: 1, color: '#111111' }] },
+      shadow: { color: 'rgba(0,0,0,0.28)', blur: 5, offsetY: 2 } },
+
+    // ─── Full-width black ISUZU brand band ───────────────────────────
+    { type: 'brand-strip', x: 50, y: 250, width: 280, height: 30,
+      text: 'ISUZU', font: 'Orbitron', fontWeight: 'bold',
+      fontSize: 13, fg: '#FFFFFF', bg: '#111111', cornerRadius: 0,
+      letterSpacing: 0.45,
+      shadow: { color: 'rgba(0,0,0,0.4)', blur: 0, offsetY: 1 } },
+    // Inner top highlight on the band
+    { type: 'decoration', shape: 'rect', x: 50, y: 250, width: 280, height: 1,
+      fill: 'rgba(255,255,255,0.08)' },
+    // Inner bottom shadow on the band
+    { type: 'decoration', shape: 'rect', x: 50, y: 279, width: 280, height: 1,
+      fill: 'rgba(0,0,0,0.4)' },
+
+    // ─── Green-pixel LED display ─────────────────────────────────────
+    { type: 'led', x: 64, y: 300, width: 110, height: 22,
+      color: '#88FF44', bg: '#12110E', cornerRadius: 4,
+      stroke: '#2A261E', strokeWidth: 2,
+      shadow: { color: 'rgba(136,255,68,0.12)', blur: 5 } },
+
+    // ─── Lucky-circle (white with text) ──────────────────────────────
+    { type: 'decoration', shape: 'circle', x: 64, y: 334, width: 50, height: 50,
+      fill: '#FFFFFF', stroke: '#E0DEDE', strokeWidth: 2,
+      shadow: { color: 'rgba(0,0,0,0.08)', blur: 4, offsetY: 2 } },
+    { type: 'decoration', shape: 'text', x: 75, y: 350, text: 'PUSH',
+      fill: '#808080', font: 'Arial', fontWeight: 'bold', fontSize: 8 },
+    { type: 'decoration', shape: 'text', x: 76, y: 363, text: 'COIN',
+      fill: '#808080', font: 'Arial', fontWeight: 'bold', fontSize: 8 },
+
+    // ─── Red turn dots ───────────────────────────────────────────────
+    { type: 'turn-dots', x: 130, y: 340, count: 3, dotSize: 9,
+      litColor: '#CC0000', dimColor: '#E4E0E0' },
+
+    // ─── Big chrome crank ────────────────────────────────────────────
+    { type: 'crank', x: 226, y: 304, size: 72, accent: '#D8D0DC',
+      stroke: '#C0B8C8', strokeWidth: 3, iconColor: '#555555',
+      fillGradient: { type: 'radial', cx: 26, cy: 22, innerR: 0, outerR: 68,
+        stops: [
+          { offset: 0, color: '#FFFFFF' },
+          { offset: 0.25, color: '#D8D0DC' },
+          { offset: 0.5, color: '#B8B0BC' },
+          { offset: 0.75, color: '#A0989E' },
+          { offset: 1, color: '#888090' },
+        ] },
+      shadow: { color: 'rgba(0,0,0,0.22)', blur: 14, offsetY: 6 } },
+
+    // ─── Chute marker ────────────────────────────────────────────────
+    { type: 'chute', x: 140, y: 414, width: 100, height: 30,
+      openingColor: '#1A1A1A', stroke: '#CCCACA', strokeWidth: 2,
+      cornerRadius: 4, labelColor: '#CC0000' },
+
+    // ─── Tray (light gray, rounded) ──────────────────────────────────
+    { type: 'tray', x: 60, y: 478, width: 260, height: 72,
+      fill: '#EDECEC', stroke: '#D4D2D2',
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#EDECEC' }, { offset: 1, color: '#E6E4E4' }] },
+      cornerRadius: 12,
+      shadow: { color: 'rgba(0,0,0,0.08)', blur: 10, offsetY: 4 } },
+    // Tray flap
+    { type: 'decoration', shape: 'rect', x: 164, y: 474, width: 52, height: 12,
+      fill: '#EEECEA', stroke: '#CCCACA', strokeWidth: 1.5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#EEECEA' }, { offset: 1, color: '#E6E4E4' }] },
+      cornerRadius: 4 },
+  ],
+};
+
+export const PRESETS = [TABBY_CAT, BUNNY_HOP, BEARS_DEN, NINJA_CAT, KENISY,
+  CLASSIC_LUCKY, NOIR_DEPOT, CYBER_SYNTH, FOREST_MORI, MODERN_ISUZU];

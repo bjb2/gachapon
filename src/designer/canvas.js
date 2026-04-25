@@ -300,11 +300,14 @@ function renderCrank(c) {
     originX: 'left', originY: 'top',
     scaleX: arrowScale, scaleY: arrowScale,
   });
-  // Center the icon's visual bounding box (≈17.5, 13.75 in viewbox coords),
-  // not the viewbox midpoint — arc bulges left, arrowhead extends right.
+  // Fabric Group.left/.top points at the bbox top-left, NOT the viewbox
+  // origin. Path bbox starts at ~(6, 3) (arc bulges left to x=6, arrowhead
+  // tip at y=3). The icon's visual center is at viewbox (17.5, 13.75), so
+  // the offset from bbox top-left to visual center is (11.5, 10.75).
+  // To center that visual center inside the button: button-half - that.
   iconGroup.set({
-    left: half - (17.5 * arrowScale),
-    top: half - (13.75 * arrowScale),
+    left: half - (11.5 * arrowScale),
+    top: half - (10.75 * arrowScale),
   });
   return new fabric.Group([button, iconGroup], {
     originX: 'left', originY: 'top',
