@@ -36,7 +36,7 @@
 
   .designer-main {
     display: grid;
-    grid-template-columns: 200px 1fr 280px;
+    grid-template-columns: 200px 1fr 320px;
     gap: 14px;
     padding: 14px;
     align-items: start;
@@ -110,6 +110,49 @@
   }
   .muted { color: #888; font-size: 11px; }
 
+  .palette-btn:disabled {
+    opacity: 0.4; cursor: not-allowed;
+    background: #F0F0F0;
+  }
+  .palette-btn:disabled:hover { background: #F0F0F0; border-color: #DDD; color: inherit; }
+
+  .props-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 8px; margin-bottom: 8px;
+    border-bottom: 1px solid #EEE;
+  }
+  .props-type {
+    font-size: 11px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: #FF6B9D;
+  }
+  .props-id {
+    font-size: 9px; font-family: monospace; color: #BBB;
+  }
+  .props-field {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .props-field > span {
+    flex: 0 0 110px;
+    font-size: 11px; color: #555;
+    text-transform: none; letter-spacing: 0;
+    font-weight: 400;
+  }
+  .props-field > input,
+  .props-field > select {
+    flex: 1; min-width: 0;
+    padding: 4px 6px; font-size: 12px;
+    border: 1px solid #DDD; border-radius: 3px;
+    font-family: inherit;
+  }
+  .props-field > input[type="color"] {
+    padding: 0; height: 28px; cursor: pointer;
+  }
+  .props-field > input[type="number"] {
+    flex: 0 0 80px;
+  }
+
   .help {
     font-size: 11px; color: #888; line-height: 1.5;
   }
@@ -159,9 +202,12 @@
       <canvas id="designerCanvas"></canvas>
     </section>
 
-    <!-- Right: tools, save/load -->
+    <!-- Right: properties + tools + save/load -->
     <aside class="panel">
-      <h2>Toolbar</h2>
+      <h2>Properties</h2>
+      <div class="panel-section" id="propertiesPanel">
+        <p class="muted">Select a component on the canvas to edit its properties.</p>
+      </div>
       <div class="panel-section toolbar">
         <button id="btnDelete" class="danger">Delete selected</button>
         <button id="btnValidate">Validate</button>
@@ -174,17 +220,16 @@
         <div id="savedList" class="muted">Loading…</div>
       </div>
       <div class="panel-section">
-        <h2>Phase 1 notes</h2>
+        <h2>Tips</h2>
         <p class="help">
-          Drag components from the left palette onto the canvas.
-          Click to select, then drag/resize/rotate with the handles.
-          Save your work — phase 2 brings a properties panel for fine control,
-          phase 3 wires the renderer so custom machines actually run physics.
+          Click a component to select it. Drag corner handles to resize,
+          rotation handle to spin. <kbd>Delete</kbd> or <kbd>Backspace</kbd>
+          removes the selection. Hopper button swaps the variant in place.
         </p>
       </div>
     </aside>
   </main>
 
-  <script type="module" src="./src/designer/designer.js?t=1"></script>
+  <script type="module" src="./src/designer/designer.js?t=2"></script>
 </body>
 </html>

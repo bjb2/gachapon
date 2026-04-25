@@ -2,7 +2,7 @@
 // later phases) the runtime renderer + standalone exporter.
 //
 // Component types:
-//   hopper      — required, >= 1; the ball container. variant picks the shape.
+//   hopper      — required, exactly 1; the ball container. variant picks the shape.
 //   chute       — required, exactly 1; the dispense location.
 //   crank       — optional, <= 1; clickable, rotates each turn.
 //   brand-strip — optional, <= 1; text band.
@@ -99,6 +99,11 @@ export function newComponent(type, partial = {}) {
 }
 
 // Validation — used by save / export to refuse invalid machines.
+// Singleton component types — at most one of each per machine.
+export const SINGLETON_TYPES = new Set([
+  'hopper', 'chute', 'crank', 'brand-strip', 'led', 'turn-dots', 'tray',
+]);
+
 export function validateCustomMachine(m) {
   const errors = [];
   if (!m || typeof m !== 'object') return ['machine must be an object'];
@@ -106,10 +111,13 @@ export function validateCustomMachine(m) {
   if (!m.name) errors.push('missing name');
   if (!Array.isArray(m.components)) errors.push('components must be an array');
   else {
-    const hoppers = m.components.filter(c => c.type === 'hopper');
-    const chutes = m.components.filter(c => c.type === 'chute');
-    if (hoppers.length < 1) errors.push('machine must have at least one hopper');
-    if (chutes.length !== 1) errors.push('machine must have exactly one chute');
+    const counts = {};
+    for (const c of m.components) counts[c.type] = (counts[c.type] || 0) + 1;
+    if ((counts.hopper || 0) !== 1) errors.push('machine must have exactly one hopper');
+    if ((counts.chute || 0) !== 1) errors.push('machine must have exactly one chute');
+    for (const t of SINGLETON_TYPES) {
+      if ((counts[t] || 0) > 1) errors.push(`only one ${t} allowed`);
+    }
   }
   return errors;
 }

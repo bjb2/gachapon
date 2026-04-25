@@ -5,11 +5,12 @@
 // physics tuning + preset gallery + standalone export integration land in
 // later phases.
 
-import { newCustomMachine, validateCustomMachine } from './schema.js';
+import { newCustomMachine, validateCustomMachine, SINGLETON_TYPES } from './schema.js';
 import { DesignerCanvas } from './canvas.js';
 import {
   getCustomMachine, putCustomMachine, getAllCustomMachines, deleteCustomMachine,
 } from './custom-machine-store.js';
+import { renderPropertiesPanel } from './properties-panel.js';
 
 const DRAFT_ID_KEY = 'gachapon:designer:draftId';
 
@@ -28,24 +29,83 @@ async function boot() {
 
   // Mount canvas.
   const canvasEl = document.getElementById('designerCanvas');
+  const propsHost = document.getElementById('propertiesPanel');
   const designer = new DesignerCanvas(canvasEl, machine, {
-    onChange: (m) => save(m),
+    onChange: (m) => { save(m); refreshPalette(); refreshProps(); },
+    onSelection: (component) => refreshProps(component),
   });
   window.__designer = designer;
 
-  // Palette: each button drags-or-clicks to add a component at canvas center.
+  function refreshProps(component) {
+    if (component === undefined) {
+      const obj = designer.canvas.getActiveObject();
+      component = obj && obj._component ? obj._component : null;
+    }
+    renderPropertiesPanel(propsHost, component, (patch) => designer.updateActive(patch));
+  }
+
+  // Disable palette buttons for singleton types whose slot is taken.
+  function refreshPalette() {
+    const counts = {};
+    for (const c of machine.components) counts[c.type] = (counts[c.type] || 0) + 1;
+    document.querySelectorAll('#palette [data-add]').forEach(btn => {
+      const type = btn.dataset.add;
+      const isHopperVariant = type === 'hopper';
+      // Hopper buttons are always enabled — clicking swaps the variant.
+      if (isHopperVariant) {
+        btn.disabled = false;
+        btn.title = counts.hopper ? 'Swap to this hopper variant' : 'Add hopper';
+      } else if (SINGLETON_TYPES.has(type) && counts[type]) {
+        btn.disabled = true;
+        btn.title = `Only one ${type} allowed`;
+      } else {
+        btn.disabled = false;
+        btn.title = '';
+      }
+    });
+  }
+
+  // Palette: each button adds (or swaps, for hopper) a component at canvas center.
   const palette = document.getElementById('palette');
   palette.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-add]');
-    if (!btn) return;
+    if (!btn || btn.disabled) return;
     const type = btn.dataset.add;
     const variant = btn.dataset.variant;
+
+    // Hopper: replace the existing one (preserving x/y/size) so the user
+    // can swap variants without losing placement.
+    if (type === 'hopper') {
+      const existing = machine.components.find(c => c.type === 'hopper');
+      if (existing) {
+        designer.updateActive({}); // clear any in-flight edits — no-op if none
+        existing.variant = variant;
+        designer._replaceFabricFor(existing);
+        designer.canvas.setActiveObject(designer.canvas.getObjects().find(o => o._component && o._component.id === existing.id));
+        designer.onChange(machine);
+        designer.canvas.requestRenderAll();
+        return;
+      }
+    }
+
     const partial = variant ? { variant } : {};
-    // Drop the new component near the canvas center.
     partial.x = Math.round((machine.canvas.width - 200) / 2);
     partial.y = Math.round((machine.canvas.height - 200) / 2);
     designer.addComponent(type, partial);
   });
+
+  // Keyboard delete: Delete or Backspace removes the selected component
+  // unless the user is typing into a form field.
+  window.addEventListener('keydown', (e) => {
+    if (e.key !== 'Delete' && e.key !== 'Backspace') return;
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    e.preventDefault();
+    designer.removeActive();
+  });
+
+  refreshPalette();
+  refreshProps();
 
   // Toolbar
   document.getElementById('btnDelete').addEventListener('click', () => designer.removeActive());

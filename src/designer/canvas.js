@@ -21,16 +21,28 @@ const RENDERERS = {
 };
 
 export class DesignerCanvas {
-  constructor(canvasEl, machine, { onChange } = {}) {
+  constructor(canvasEl, machine, { onChange, onSelection } = {}) {
     this.machine = machine;
     this.onChange = onChange || (() => {});
+    this.onSelection = onSelection || (() => {});
     this.canvas = new fabric.Canvas(canvasEl, {
       width: machine.canvas.width,
       height: machine.canvas.height,
       backgroundColor: machine.canvas.bg || '#FFFFFF',
       preserveObjectStacking: true,
     });
+    // Bigger, more visible control handles — defaults are easy to miss.
+    fabric.Object.prototype.set({
+      cornerSize: 10,
+      cornerColor: '#FF6B9D',
+      cornerStrokeColor: '#FFFFFF',
+      borderColor: '#FF6B9D',
+      transparentCorners: false,
+      cornerStyle: 'circle',
+      padding: 2,
+    });
     this._wireSelectionSync();
+    this._wireSelectionEvents();
     this.rebuild();
   }
 
@@ -95,17 +107,53 @@ export class DesignerCanvas {
       c.y = Math.round(obj.top);
       c.rotation = Math.round(obj.angle || 0);
       // Resize: Fabric reports scaleX/scaleY relative to original width/height.
-      // Bake the scale into the schema width/height and reset the scale so
-      // future moves don't compound.
+      // Bake the scale into the schema width/height and rebuild the Fabric
+      // shape from scratch so things like ellipse rx/ry, polygon vertices,
+      // group children, etc. all redraw at their new size correctly.
       if (obj.scaleX !== 1 || obj.scaleY !== 1) {
-        if (typeof c.width === 'number') c.width = Math.round(c.width * obj.scaleX);
-        if (typeof c.height === 'number') c.height = Math.round(c.height * obj.scaleY);
-        if (c.type === 'crank' && typeof c.size === 'number') c.size = Math.round(c.size * obj.scaleX);
-        obj.scaleX = 1; obj.scaleY = 1;
+        if (typeof c.width === 'number') c.width = Math.max(8, Math.round(c.width * obj.scaleX));
+        if (typeof c.height === 'number') c.height = Math.max(8, Math.round(c.height * obj.scaleY));
+        if (c.type === 'crank' && typeof c.size === 'number') c.size = Math.max(8, Math.round(c.size * obj.scaleX));
+        // Replace the Fabric object with a freshly-rendered one at the new
+        // size. Keeps inner geometry (ellipse rx/ry, polygon points, group
+        // children) in sync with the schema.
+        this._replaceFabricFor(c);
       }
       this.onChange(this.machine);
     };
     this.canvas.on('object:modified', (e) => sync(e.target));
+  }
+
+  _wireSelectionEvents() {
+    const fire = () => {
+      const obj = this.canvas.getActiveObject();
+      this.onSelection(obj && obj._component ? obj._component : null);
+    };
+    this.canvas.on('selection:created', fire);
+    this.canvas.on('selection:updated', fire);
+    this.canvas.on('selection:cleared', fire);
+  }
+
+  // Replace the Fabric object for a component without losing selection or
+  // changing position. Used after a resize bake so inner geometry redraws.
+  _replaceFabricFor(component) {
+    const old = this.canvas.getObjects().find(o => o._component && o._component.id === component.id);
+    if (!old) return;
+    const wasActive = this.canvas.getActiveObject() === old;
+    this.canvas.remove(old);
+    const fresh = this._addFabricFor(component);
+    if (wasActive && fresh) this.canvas.setActiveObject(fresh);
+    this.canvas.requestRenderAll();
+  }
+
+  // Update a property on a component and refresh its Fabric representation.
+  // Called by the properties panel when the user edits a field.
+  updateActive(patch) {
+    const obj = this.canvas.getActiveObject();
+    if (!obj || !obj._component) return;
+    Object.assign(obj._component, patch);
+    this._replaceFabricFor(obj._component);
+    this.onChange(this.machine);
   }
 }
 
