@@ -1,35 +1,89 @@
-// Default 8 prizes seeded on first load. Chassis-independent: each carries
-// its own rarity and ball style. SVG bodies are fetched once from
-// ./src/data/default-svgs/*.svg so prizes are self-contained after seeding.
-const DEFS = [
-  { id: 'tanuki',  name: 'Tanuki Tobikichi', rarity: 'common', ballStyle: { type: 'capsule', color1: '#FFD166', color2: '#C49000', glow: null }, flavor: 'A raccoon dog who collects lost coins and swears each one is lucky. Has never been proven wrong.' },
-  { id: 'neko',    name: 'Neko Nana',        rarity: 'common', ballStyle: { type: 'capsule', color1: '#FFE6F4', color2: '#FF6B9D', glow: null }, flavor: 'A sleepy cat who has been "almost awake" for three years. Incredibly soft. Smells like vanilla.' },
-  { id: 'shiba',   name: 'Shiba Shin',       rarity: 'common', ballStyle: { type: 'plain',   color1: '#F7B731',                    glow: null }, flavor: 'Much wow. Very investible. Still waiting for the bone market to recover. Remains optimistic.' },
-  { id: 'usagi',   name: 'Usagi Umi',        rarity: 'rare',   ballStyle: { type: 'capsule', color1: '#EAE6FF', color2: '#A29BFE', glow: null }, flavor: 'A lavender rabbit with strong opinions about hot spring etiquette. Will correct you, gently but firmly.' },
-  { id: 'kappa',   name: 'Kappa Kenji',      rarity: 'rare',   ballStyle: { type: 'capsule', color1: '#C0FBF7', color2: '#4ECDC4', glow: null }, flavor: 'A water sprite who reviews ramen shops anonymously. Always 5 stars. Takes bowing extremely seriously.' },
-  { id: 'kitsune', name: 'Kitsune Kira',     rarity: 'rare',   ballStyle: { type: 'capsule', color1: '#C8EEFF', color2: '#74B9FF', glow: null }, flavor: 'A nine-tailed fox who DJs on weekends as "Foxy Freq." Impeccable taste. Refuses to play requests.' },
-  { id: 'oni',     name: 'Oni Osamu',        rarity: 'ultra',  ballStyle: { type: 'capsule', color1: '#FFFBE8', color2: '#FFD700', glow: 'rgba(255,200,0,0.65)' }, flavor: 'Technically a demon. Actually the most wholesome entity in any realm. Brings snacks to every battle.' },
-  { id: 'ryuu',    name: 'Ryuu Rei',         rarity: 'ultra',  ballStyle: { type: 'capsule', color1: '#FFE4AA', color2: '#FF8E3C', glow: 'rgba(255,142,60,0.6)' }, flavor: 'A baby dragon who hoards sticker collections, not gold. Has 3,000+. Trades duplicates fairly.' },
-];
+// Default prize library: the 694 Valkyrie X Truck chibis. Loaded on first
+// visit by fetching `images/chibi_prizes.csv` (the same file the creator's
+// CSV-import button consumes) and parsing it into prize objects.
+//
+// LEGACY_DEFAULT_PRIZE_IDS lets the boot seeder detect users who only have
+// the old 8 SVG defaults — those records can be safely wiped + replaced with
+// the chibi set without touching anyone who has imported their own library.
+
+// IDs of the original 8 SVG-based default prizes (pre-Valkyrie). Used by the
+// migration check in main.js / creator.js to recognize an untouched seed.
+export const LEGACY_DEFAULT_PRIZE_IDS = new Set([
+  'tanuki', 'neko', 'shiba', 'usagi', 'kappa', 'kitsune', 'oni', 'ryuu',
+]);
+
+const CSV_URL = './images/chibi_prizes.csv';
+
+// Minimal RFC-4180-ish CSV parser (quoted fields, "" escapes, CRLF/LF
+// tolerant). Mirrors the parser in src/creator/prize-csv.js but kept inline
+// so the play-page bundle doesn't need to pull in creator code.
+function parseCsv(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false, i = 0;
+  while (i < text.length) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i += 2; continue; }
+        inQuotes = false; i++;
+      } else { field += c; i++; }
+    } else {
+      if (c === '"') { inQuotes = true; i++; }
+      else if (c === ',') { row.push(field); field = ''; i++; }
+      else if (c === '\r') { i++; }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; i++; }
+      else { field += c; i++; }
+    }
+  }
+  if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+function rowsToPrizes(rows) {
+  const [header, ...data] = rows;
+  const idx = (name) => header.findIndex(h => (h || '').trim().toLowerCase() === name);
+  const I = {
+    id: idx('id'), name: idx('name'), rarity: idx('rarity'), flavor: idx('flavor'),
+    type: idx('ballstyletype'), c1: idx('color1'), c2: idx('color2'), glow: idx('glow'),
+    kind: idx('artkind'), source: idx('artsource'), value: idx('artvalue'),
+  };
+  const get = (r, k) => I[k] >= 0 ? (r[I[k]] || '').trim() : '';
+  const out = [];
+  data.forEach((r, i) => {
+    if (!r.some(v => (v || '').trim())) return;
+    const name = get(r, 'name');
+    const rarity = get(r, 'rarity');
+    if (!name || !rarity) return;
+    const type = (get(r, 'type') || 'capsule').toLowerCase();
+    const c1 = get(r, 'c1') || '#FFD166';
+    const c2 = get(r, 'c2') || '#FF6B9D';
+    const glow = get(r, 'glow') || null;
+    const ballStyle = type === 'plain'
+      ? { type: 'plain', color1: c1, glow }
+      : { type: 'capsule', color1: c1, color2: c2, glow };
+    out.push({
+      id: get(r, 'id') || `prize-default-${i}`,
+      name, rarity,
+      flavor: get(r, 'flavor') || '',
+      ballStyle,
+      art: {
+        kind: (get(r, 'kind') || 'svg').toLowerCase(),
+        source: (get(r, 'source') || 'inline').toLowerCase(),
+        value: get(r, 'value') || '',
+      },
+    });
+  });
+  return out;
+}
 
 export async function loadDefaultPrizes() {
-  const out = [];
-  for (const d of DEFS) {
-    let svgText = '';
-    try {
-      const resp = await fetch(`./src/data/default-svgs/${d.id}.svg`);
-      if (resp.ok) svgText = await resp.text();
-    } catch (e) {
-      console.warn(`[default-prizes] failed to load ${d.id}.svg`, e);
-    }
-    out.push({
-      id: d.id,
-      name: d.name,
-      rarity: d.rarity,
-      ballStyle: d.ballStyle,
-      flavor: d.flavor,
-      art: { kind: 'svg', source: 'inline', value: svgText },
-    });
+  try {
+    const resp = await fetch(CSV_URL);
+    if (!resp.ok) throw new Error(`fetch ${CSV_URL}: ${resp.status}`);
+    const text = await resp.text();
+    return rowsToPrizes(parseCsv(text));
+  } catch (err) {
+    console.warn('[default-prizes] could not load chibi CSV; seeding empty pool', err);
+    return [];
   }
-  return out;
 }

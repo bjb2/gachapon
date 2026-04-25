@@ -1,8 +1,8 @@
 // Boot: seed/migrate defaults, load machine + rarities + prizes, mount Machine.
 import { DEFAULT_MACHINES } from './machines/default-machines.js';
 import { getAllMachines, bulkPutMachines, getMachine } from './machines/machine-store.js';
-import { getAllPrizes, bulkPutPrizes, putPrize } from './prizes/prize-store.js';
-import { loadDefaultPrizes } from './prizes/default-prizes.js';
+import { getAllPrizes, bulkPutPrizes, putPrize, deletePrize } from './prizes/prize-store.js';
+import { loadDefaultPrizes, LEGACY_DEFAULT_PRIZE_IDS } from './prizes/default-prizes.js';
 import { migrateLegacyPrize } from './prizes/prize-schema.js';
 import { LEGACY_BALL_STYLES } from './prizes/legacy-ball-styles.js';
 import { DEFAULT_RARITIES } from './rarities/default-rarities.js';
@@ -24,7 +24,16 @@ async function ensureSeeded() {
   }
 
   const existingPrizes = await getAllPrizes();
-  if (existingPrizes.length === 0) {
+  // First-time visitor → seed chibis. Visitor who only has the legacy 8 SVG
+  // defaults → wipe + reseed (the 8-prize seed predates the chibi library;
+  // anyone still on it never imported their own prizes, so it's safe to
+  // upgrade them automatically). Anyone with custom prizes is left alone.
+  const isLegacyOnly = existingPrizes.length > 0
+    && existingPrizes.every(p => LEGACY_DEFAULT_PRIZE_IDS.has(p.id));
+  if (existingPrizes.length === 0 || isLegacyOnly) {
+    if (isLegacyOnly) {
+      for (const p of existingPrizes) await deletePrize(p.id);
+    }
     await bulkPutPrizes(await loadDefaultPrizes());
   } else {
     // Migrate any legacy v1 prizes in-place (string ballStyle or machineId present).

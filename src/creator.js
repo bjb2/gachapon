@@ -2,8 +2,8 @@
 // panels, and handles per-machine standalone-HTML export plus JSON export/import/reset.
 import { DEFAULT_MACHINES } from './machines/default-machines.js';
 import { getAllMachines, bulkPutMachines } from './machines/machine-store.js';
-import { getAllPrizes, bulkPutPrizes, openDB, putPrize } from './prizes/prize-store.js';
-import { loadDefaultPrizes } from './prizes/default-prizes.js';
+import { getAllPrizes, bulkPutPrizes, openDB, putPrize, deletePrize } from './prizes/prize-store.js';
+import { loadDefaultPrizes, LEGACY_DEFAULT_PRIZE_IDS } from './prizes/default-prizes.js';
 import { migrateLegacyPrize } from './prizes/prize-schema.js';
 import { LEGACY_BALL_STYLES } from './prizes/legacy-ball-styles.js';
 import { DEFAULT_RARITIES } from './rarities/default-rarities.js';
@@ -34,7 +34,13 @@ async function ensureSeeded() {
   }
 
   const existingPrizes = await getAllPrizes();
-  if (existingPrizes.length === 0) {
+  // Same first-visit / legacy-only migration as main.js.
+  const isLegacyOnly = existingPrizes.length > 0
+    && existingPrizes.every(p => LEGACY_DEFAULT_PRIZE_IDS.has(p.id));
+  if (existingPrizes.length === 0 || isLegacyOnly) {
+    if (isLegacyOnly) {
+      for (const p of existingPrizes) await deletePrize(p.id);
+    }
     await bulkPutPrizes(await loadDefaultPrizes());
   } else {
     for (const p of existingPrizes) {
