@@ -6,7 +6,11 @@
 // Thin Promise wrapper — no idb/dexie dependency.
 
 const DB_NAME = 'gachapon';
-const DB_VERSION = 3;
+// v4 — same schema as v3 but the version bump forces onupgradeneeded to
+// re-fire on browsers stuck at v3 without the customMachines store
+// (some users hit a partial-upgrade state during the v3 rollout that
+// ended up with v3 marked-installed but customMachines missing).
+const DB_VERSION = 4;
 let _dbPromise = null;
 
 export function openDB() {

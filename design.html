@@ -36,10 +36,17 @@
 
   .designer-main {
     display: grid;
-    grid-template-columns: 200px 1fr 320px;
+    grid-template-columns: 180px minmax(420px, 1fr) 300px;
     gap: 14px;
     padding: 14px;
-    align-items: start;
+    align-items: stretch;
+    min-height: calc(100vh - 60px);
+  }
+  /* Right column scrolls independently when properties + layers + presets
+     get long, so the canvas stays visible no matter how packed the panel. */
+  .designer-main > aside:last-child {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
   }
   .panel {
     background: white;
@@ -77,6 +84,7 @@
     display: flex; align-items: flex-start; justify-content: center;
     min-height: 580px;
     padding: 16px;
+    overflow: auto;
     background:
       linear-gradient(45deg, #ECECEC 25%, transparent 25%),
       linear-gradient(-45deg, #ECECEC 25%, transparent 25%),
@@ -394,6 +402,6 @@
       if (section) section.classList.toggle('is-collapsed');
     });
   </script>
-  <script type="module" src="./src/designer/designer.js?t=14"></script>
+  <script type="module" src="./src/designer/designer.js?t=15"></script>
 </body>
 </html>
