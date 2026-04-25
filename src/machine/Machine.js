@@ -64,9 +64,32 @@ export class Machine {
     });
     this.state.on('pulls-changed', (n) => { this.$.led.textContent = `PULLS: ${n}`; });
     this.state.on('turns-changed', (t) => { this._updateDots(t); });
+    // Collection: collapsed by default so the user has to opt in to see what
+    // they've collected. Avoids spoiling future pulls with the chip strip
+    // sitting open under the machine.
+    this._wireCollectionToggle();
     this.state.on('collection-updated', (newId, collection) => {
       this.collectionHost.style.display = 'block';
-      renderChips(this.collectionHost.querySelector('[data-collection-chips]'), collection, newId);
+      const count = Object.keys(collection).length;
+      const countEl = this.collectionHost.querySelector('[data-collection-count]');
+      if (countEl) countEl.textContent = String(count);
+      const toggle = this.collectionHost.querySelector('[data-collection-toggle]');
+      if (toggle) {
+        // Pulse the toggle so the user knows something new landed without
+        // revealing what.
+        toggle.classList.remove('has-new');
+        void toggle.offsetWidth;
+        toggle.classList.add('has-new');
+      }
+      // Render the chips inside the (possibly hidden) panel so it's ready
+      // when expanded. The `[hidden]` attribute on the panel keeps it from
+      // showing until the user clicks the toggle. Each chip re-opens the
+      // reveal card so the user can revisit any prize they've collected.
+      renderChips(
+        this.collectionHost.querySelector('[data-collection-chips]'),
+        collection, newId,
+        (prize) => this.reveal.open(prize),
+      );
     });
 
     // 6. Wire user controls.
@@ -74,6 +97,26 @@ export class Machine {
     this.controlBus.on('crank', () => this._onCrank());
     this.controlBus.on('ball-click', () => runBallClick(this));
     this.controlBus.on('refill', () => this._onRefill());
+  }
+
+  _wireCollectionToggle() {
+    if (!this.collectionHost) return;
+    const toggle = this.collectionHost.querySelector('[data-collection-toggle]');
+    const chips = this.collectionHost.querySelector('[data-collection-chips]');
+    if (!toggle || !chips) return;
+    toggle.addEventListener('click', () => {
+      const open = chips.hasAttribute('hidden') ? false : true;
+      if (open) {
+        chips.setAttribute('hidden', '');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.classList.remove('open');
+      } else {
+        chips.removeAttribute('hidden');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.classList.add('open');
+        toggle.classList.remove('has-new');
+      }
+    });
   }
 
   _spawnPool() {

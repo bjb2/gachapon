@@ -1,0 +1,117 @@
+html[data-skin="valkyrie"] .machine-body {
+  width: 256px;
+  background: linear-gradient(175deg, #FAF9FA 0%, #F5F4F6 50%, #EEECEF 100%);
+  border: 2.5px solid #DCDADE;
+  border-top: none;
+  border-radius: 0 0 18px 18px;
+  padding: 14px 18px 18px;
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+  position: relative; z-index: 2;
+}
+
+/* Black circle "eyes" flanking the brand strip — like headlights */
+html[data-skin="valkyrie"] .machine-body::before,
+html[data-skin="valkyrie"] .machine-body::after {
+  content: '';
+  position: absolute;
+  top: 13px;
+  width: 20px; height: 20px;
+  background: radial-gradient(circle at 38% 32%, #666, #111);
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.28), inset 0 1px 2px rgba(255,255,255,0.1);
+}
+html[data-skin="valkyrie"] .machine-body::before { left: 9px; }
+html[data-skin="valkyrie"] .machine-body::after  { right: 9px; }
+
+/* ISUZU nameplate — full-width black band spanning edge-to-edge, like the grille badge */
+html[data-skin="valkyrie"] .brand-strip {
+  margin: -14px -18px 14px -18px;
+}
+html[data-skin="valkyrie"] .brand-label {
+  display: block;
+  background: #111111;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.45em;
+  text-indent: 0.45em; /* optical: compensate for trailing letter-spacing gap */
+  padding: 7px 18px;
+  border-radius: 0;
+  text-align: center;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.4);
+}
+
+/* LED display: dark screen, green pixel readout */
+html[data-skin="valkyrie"] .led-display {
+  background: #12110E;
+  border: 2px solid #2A261E;
+  border-radius: 4px;
+  padding: 4px 9px;
+  font-family: 'DotGothic16', monospace;
+  font-size: 10px;
+  color: #88FF44;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.6), 0 0 5px rgba(136,255,68,0.12);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+html[data-skin="valkyrie"] .lucky-circle {
+  background: white;
+  border: 2px solid #E0DEDE;
+}
+html[data-skin="valkyrie"] .lucky-text { color: #808080; font-size: 7px; font-weight: 900; }
+
+html[data-skin="valkyrie"] .crank-label { color: #909090; font-size: 7.5px; }
+
+/* Large chrome/silver crank */
+html[data-skin="valkyrie"] .crank-btn {
+  width: 72px; height: 72px;
+  background: radial-gradient(circle at 36% 30%,
+    #FFFFFF 0%,
+    #D8D0DC 25%,
+    #B8B0BC 50%,
+    #A0989E 75%,
+    #888090 100%
+  );
+  border: 3px solid #C0B8C8;
+  border-radius: 50%;
+  color: #666;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.22),
+    0 2px 4px rgba(0,0,0,0.12),
+    inset 0 2px 4px rgba(255,255,255,0.8),
+    inset 0 -2px 4px rgba(0,0,0,0.12);
+}
+html[data-skin="valkyrie"] .crank-btn:hover {
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.28),
+    inset 0 2px 4px rgba(255,255,255,0.8),
+    inset 0 -2px 4px rgba(0,0,0,0.12);
+}
+html[data-skin="valkyrie"] .crank-btn:active { transform: scale(0.94); }
+html[data-skin="valkyrie"] .crank-inner { transition: transform 0.32s cubic-bezier(0.34,1.4,0.64,1); color: #555; }
+
+html[data-skin="valkyrie"] .pdot {
+  background: #E4E0E0;
+  border-color: #CCCACA;
+}
+html[data-skin="valkyrie"] .pdot.lit {
+  background: #CC0000;
+  border-color: #990000;
+  box-shadow: 0 0 7px rgba(204,0,0,0.65);
+}
+
+@keyframes valkyrie-shake {
+  0%,100% { transform: translateX(0); }
+  15% { transform: translateX(-4px) rotate(-0.4deg); }
+  35% { transform: translateX(4px) rotate(0.4deg); }
+  55% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+html[data-skin="valkyrie"] .machine-wrap.shaking { animation: valkyrie-shake 0.35s ease; }

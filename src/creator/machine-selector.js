@@ -150,11 +150,12 @@ function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 function _skinAccent(skin) {
   switch (skin) {
-    case 'classic': return '#FF6B9D';
-    case 'noir':    return '#F7B731';
-    case 'cyber':   return '#00D9FF';
-    case 'forest':  return '#7CB342';
-    case 'modern':  return '#FFB8D4';
-    default:        return '#999999';
+    case 'classic':  return '#FF6B9D';
+    case 'noir':     return '#F7B731';
+    case 'cyber':    return '#00D9FF';
+    case 'forest':   return '#7CB342';
+    case 'modern':   return '#FFB8D4';
+    case 'valkyrie': return '#FBBF24';
+    default:         return '#999999';
   }
 }

@@ -60,15 +60,64 @@ body {
 }
 
 .collection-wrap { margin-top: 18px; text-align: center; max-width: 340px; }
-.collection-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; color: var(--mid); margin-bottom: 8px; font-family: 'DotGothic16', monospace; }
-.collection-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.collection-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; color: var(--mid); font-family: 'DotGothic16', monospace; }
+
+/* Collapsed toggle — collection stays hidden until clicked so the chip strip
+   doesn't spoil future pulls. */
+.collection-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  background: white;
+  border: 1.5px solid #DDD4C8;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.collection-toggle:hover { border-color: var(--pink); color: var(--pink); }
+.collection-toggle:hover .collection-label { color: var(--pink); }
+.collection-toggle .collection-count {
+  display: inline-block;
+  min-width: 22px; padding: 1px 6px;
+  background: var(--pink); color: white;
+  border-radius: 10px;
+  font-size: 10px; font-weight: 900;
+  font-family: 'DotGothic16', monospace;
+}
+.collection-toggle .collection-caret {
+  font-size: 9px; color: var(--mid);
+  transition: transform 0.2s;
+}
+.collection-toggle.open .collection-caret { transform: rotate(180deg); }
+@keyframes collectionPulse {
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(255,107,157,0.55); }
+  50%  { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(255,107,157,0); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(255,107,157,0); }
+}
+.collection-toggle.has-new {
+  animation: collectionPulse 0.9s ease-out;
+  border-color: var(--pink);
+}
+
+.collection-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+.collection-chips[hidden] { display: none !important; }
 .chip {
   background: white; border: 2px solid #E0D8CE;
   border-radius: 20px; padding: 4px 11px;
   font-size: 11px; font-weight: 700; color: var(--mid);
-  display: flex; align-items: center; gap: 5px;
+  display: inline-flex; align-items: center; gap: 5px;
   box-shadow: 0 2px 5px rgba(0,0,0,.07);
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s, color 0.12s;
 }
+.chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--pink);
+  color: var(--pink);
+  box-shadow: 0 4px 10px rgba(0,0,0,.10);
+}
+.chip:active { transform: translateY(0); }
 .chip.new-chip { border-color: var(--pink); color: var(--pink); animation: chipPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
 .chip-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
 @keyframes chipPop { from { transform: scale(0.5); } to { transform: scale(1); } }

@@ -1,3 +1,14 @@
 node_modules/
 *.log
 .DS_Store
+
+# Source images for the Valkyrie X Truck demo: chibi_clean/ is shipped, but the
+# 130 MB green-screened originals are regenerable via scripts/chroma_key_chibi.py
+# and shouldn't bloat the repo.
+images/chibi_images/
+images/*.csv.bak
+
+# Standalone exports built by the creator UI — produced on demand, not source.
+/*.html
+!/index.html
+!/create.html

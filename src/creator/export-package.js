@@ -138,6 +138,22 @@ export async function buildExportHtml({ machine, prizes, rarities }) {
   const payloadJson = safeJson(payload);
   const title = `${machine.name} · Gachapon`;
 
+  // Per-skin header / footer customization. Valkyrie X Truck gets a styled
+  // wordmark linking back to valkyriextruck.com instead of the plain h1.
+  const isValk = skin === 'valkyrie';
+  const titleBlock = isValk
+    ? `<h1 class="site-title">
+         <a href="https://valkyriextruck.com" target="_blank" rel="noopener">
+           <span>Valkyrie</span><span class="valk-x">✕</span><span>Truck</span>
+         </a>
+       </h1>
+       <p class="site-sub">CAPSULE × CHARACTER GACHA</p>`
+    : `<h1 class="site-title">${esc(machine.brandLabel || machine.name)}</h1>
+       <p class="site-sub">CAPSULE TOY MACHINE</p>`;
+  const valkCredit = isValk
+    ? `<p class="valk-credit">A promotional gacha for <a href="https://valkyriextruck.com" target="_blank" rel="noopener">valkyriextruck.com</a></p>`
+    : '';
+
   return `<!DOCTYPE html>
 <html lang="en" data-skin="${esc(skin)}">
 <head>
@@ -162,17 +178,22 @@ ${skinCss}
 </style>
 </head>
 <body>
-  <h1 class="site-title">${esc(machine.brandLabel || machine.name)}</h1>
-  <p class="site-sub">CAPSULE TOY MACHINE</p>
+  ${titleBlock}
 
   <div id="machineWrap"></div>
 
   <p class="hint-line" id="hintLine"></p>
 
   <div class="collection-wrap" id="collectionWrap" style="display:none">
-    <div class="collection-label">YOUR COLLECTION</div>
-    <div class="collection-chips" data-collection-chips></div>
+    <button type="button" class="collection-toggle" data-collection-toggle aria-expanded="false">
+      <span class="collection-label">YOUR COLLECTION</span>
+      <span class="collection-count" data-collection-count>0</span>
+      <span class="collection-caret" aria-hidden="true">▾</span>
+    </button>
+    <div class="collection-chips" data-collection-chips hidden></div>
   </div>
+
+  ${valkCredit}
 
   <p class="made-with">
     Built with <a href="https://github.com/bjb2/gachapon" target="_blank" rel="noopener">bjb2/gachapon</a>

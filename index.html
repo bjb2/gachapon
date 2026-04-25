@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>ガチャポン ✦ Capsule Toy</title>
 <!-- Apply skin + embed mode before any CSS renders to avoid flash of wrong theme. -->
 <script>
@@ -10,7 +13,7 @@
     var params = new URLSearchParams(location.search);
     document.documentElement.dataset.skin =
       params.get('machine') ||
-      localStorage.getItem('gachapon:selectedMachine') || 'classic';
+      localStorage.getItem('gachapon:selectedMachine') || 'valkyrie';
     if (params.get('embed') === '1') document.documentElement.classList.add('embed-mode');
   })();
 </script>
@@ -44,12 +47,14 @@
 <link rel="stylesheet" href="./src/skins/cyber/index.css">
 <link rel="stylesheet" href="./src/skins/forest/index.css">
 <link rel="stylesheet" href="./src/skins/modern/index.css">
+<link rel="stylesheet" href="./src/skins/valkyrie/index.css">
 </head>
 <body>
   <h1 class="site-title">ガチャポン</h1>
   <p class="site-sub">CAPSULE TOY MACHINE</p>
 
   <nav class="machine-nav">
+    <a class="mnav-btn" href="?machine=valkyrie" data-machine="valkyrie">valkyrie ✕ truck</a>
     <a class="mnav-btn" href="?machine=classic" data-machine="classic">kawaii</a>
     <a class="mnav-btn" href="?machine=noir"    data-machine="noir">noir</a>
     <a class="mnav-btn" href="?machine=cyber"   data-machine="cyber">cyber</a>
@@ -62,6 +67,17 @@
       document.querySelectorAll('.mnav-btn[data-machine]').forEach(function(a) {
         if (a.dataset.machine === s) a.classList.add('active');
       });
+      // Valkyrie skin: replace site title with the Valkyrie ✕ Truck wordmark
+      // (links to the source site) and append a small valkyriextruck.com credit.
+      if (s === 'valkyrie') {
+        var t = document.querySelector('.site-title');
+        if (t) {
+          t.innerHTML = '<a href="https://valkyriextruck.com" target="_blank" rel="noopener">' +
+            '<span>Valkyrie</span><span class="valk-x">✕</span><span>Truck</span></a>';
+        }
+        var sub = document.querySelector('.site-sub');
+        if (sub) sub.textContent = 'CAPSULE × CHARACTER GACHA';
+      }
     })();
   </script>
 
@@ -70,9 +86,22 @@
   <p class="hint-line" id="hintLine"></p>
 
   <div class="collection-wrap" id="collectionWrap" style="display:none">
-    <div class="collection-label">YOUR COLLECTION</div>
-    <div class="collection-chips" data-collection-chips></div>
+    <button type="button" class="collection-toggle" data-collection-toggle aria-expanded="false">
+      <span class="collection-label">YOUR COLLECTION</span>
+      <span class="collection-count" data-collection-count>0</span>
+      <span class="collection-caret" aria-hidden="true">▾</span>
+    </button>
+    <div class="collection-chips" data-collection-chips hidden></div>
   </div>
+
+  <p class="valk-credit" id="valkCredit" style="display:none">
+    A promotional gacha for <a href="https://valkyriextruck.com" target="_blank" rel="noopener">valkyriextruck.com</a>
+  </p>
+  <script>
+    if (document.documentElement.dataset.skin === 'valkyrie') {
+      document.getElementById('valkCredit').style.display = 'block';
+    }
+  </script>
 
   <p style="margin-top:24px;font-size:10px;color:#999;font-family:'DotGothic16',monospace;letter-spacing:0.15em;">
     <a href="./create.html" style="color:#999;text-decoration:none;">✎ CREATE YOUR OWN</a>

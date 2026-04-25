@@ -42,13 +42,18 @@ async function pickMachineId() {
   const q = params.get('machine');
   if (q) return q;
   const stored = localStorage.getItem('gachapon:selectedMachine');
-  return stored || 'classic';
+  return stored || 'valkyrie';
 }
 
 async function boot() {
   await ensureSeeded();
   const machineId = await pickMachineId();
-  const storedDef = (await getMachine(machineId)) || DEFAULT_MACHINES[0];
+  // Prefer stored, else DEFAULT_MACHINES by id, else first default. The middle
+  // case matters when a fresh DEFAULT_MACHINES entry hasn't yet been picked up
+  // by the seeder (e.g. browser cached an older default-machines.js).
+  const storedDef = (await getMachine(machineId))
+    || DEFAULT_MACHINES.find(d => d.id === machineId)
+    || DEFAULT_MACHINES[0];
   // Merge: live DEFAULT_MACHINES entry provides any fields added since this record
   // was seeded; stored def preserves user customisations (they take precedence).
   const liveDef = DEFAULT_MACHINES.find(d => d.id === storedDef.id);

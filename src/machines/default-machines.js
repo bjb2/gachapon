@@ -6,6 +6,41 @@
 // creator UI to keep physics stable in the smaller domes.
 export const DEFAULT_MACHINES = [
   {
+    id: 'valkyrie',
+    name: 'Valkyrie X Truck',
+    version: 2,
+    skin: 'valkyrie',
+    layout: 'box',
+    brandLabel: 'VALKYRIE',
+    poolSize: 60,
+    dome: {
+      widthPx: 256,
+      heightPx: 190,
+      borderRadiusPx: 8,
+      wallArcSegments: 22,
+      ballRadiusPx: 14,
+      ballSpawnGridCols: 5,
+    },
+    physics: {
+      gravity: 1.6,
+      ballRestitution: 0.22,
+      ballFriction: 0.25,
+      ballFrictionAir: 0.038,
+      funnelDropPx: 32,
+      chuteHeightPx: 52,
+    },
+    controls: {
+      turnsNeeded: 3,
+      crankRotationPerTurn: 120,
+    },
+    audio: {
+      click:    { freq: 440, dur: 0.06, type: 'sine', gain: 0.09 },
+      dispense: [{ freq: 330, dur: 0.14, type: 'sine', gain: 0.12 }, { freq: 260, dur: 0.18, type: 'sine', gain: 0.09, delayMs: 80 }],
+      pop:      [{ freq: 550, dur: 0.04, type: 'sine', gain: 0.11 }, { freq: 740, dur: 0.10, type: 'sine', gain: 0.14, delayMs: 40 }],
+    },
+  },
+
+  {
     id: 'classic',
     name: 'Lucky Gacha',
     version: 3,
@@ -148,11 +183,11 @@ export const DEFAULT_MACHINES = [
   {
     id: 'modern',
     name: 'Capsule World',
-    version: 3,
+    version: 4,
     skin: 'modern',
     layout: 'box',
     brandLabel: 'ISUZU',
-    poolSize: 15,
+    poolSize: 60,
     dome: {
       widthPx: 256,
       heightPx: 190,
@@ -181,5 +216,5 @@ export const DEFAULT_MACHINES = [
   },
 ];
 
-export const MAX_POOL_SIZE = 40;
+export const MAX_POOL_SIZE = 60;
 export const MIN_POOL_SIZE = 3;

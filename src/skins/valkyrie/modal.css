@@ -1,0 +1,65 @@
+html[data-skin="valkyrie"] .modal-overlay {
+  background: rgba(80,70,70,0.45);
+  backdrop-filter: blur(6px);
+}
+
+html[data-skin="valkyrie"] .reveal-card {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8F6F6 100%);
+  border: 2px solid #E0DCDC;
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px rgba(80,60,60,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+html[data-skin="valkyrie"] .reveal-card::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(204,0,0,0.07) 0%, transparent 60%);
+}
+
+html[data-skin="valkyrie"] .rarity-banner {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+html[data-skin="valkyrie"] .rarity-banner.common {
+  background: #EEF8FF;
+  color: #4080B0;
+  border: 2px solid #ADE8FF;
+}
+html[data-skin="valkyrie"] .rarity-banner.rare {
+  background: #FFFBEE;
+  color: #886000;
+  border: 2px solid #F0C840;
+}
+html[data-skin="valkyrie"] .rarity-banner.ultra {
+  background: linear-gradient(90deg, #CC0000, #FF6600);
+  color: white;
+  border: 2px solid #AA0000;
+  box-shadow: 0 2px 12px rgba(204,0,0,0.5);
+  animation: valkyrieUltraBanner 1.5s ease-in-out infinite alternate;
+}
+@keyframes valkyrieUltraBanner {
+  from { box-shadow: 0 2px 12px rgba(204,0,0,0.5); }
+  to   { box-shadow: 0 2px 24px rgba(204,0,0,0.85), 0 0 40px rgba(255,100,0,0.3); }
+}
+
+html[data-skin="valkyrie"] .rarity-stars { color: #CC0000; }
+
+html[data-skin="valkyrie"] .char-name {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #1A1A1A;
+  font-weight: 900;
+}
+html[data-skin="valkyrie"] .char-flavor {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: #707070;
+}
+
+html[data-skin="valkyrie"] .close-btn {
+  background: #CC0000;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  box-shadow: 0 5px 14px rgba(180,0,0,0.4);
+}
+html[data-skin="valkyrie"] .close-btn:hover {
+  box-shadow: 0 8px 20px rgba(180,0,0,0.55);
+}

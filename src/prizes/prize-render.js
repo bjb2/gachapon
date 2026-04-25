@@ -29,6 +29,8 @@ export async function renderPrizeArt(container, prize) {
   if (kind === 'image' && source === 'url') {
     const img = document.createElement('img');
     img.alt = prize.name;
+    img.loading = 'lazy';
+    img.decoding = 'async';
     img.src = value;
     container.innerHTML = '';
     container.appendChild(img);
