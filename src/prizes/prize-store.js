@@ -6,7 +6,7 @@
 // Thin Promise wrapper — no idb/dexie dependency.
 
 const DB_NAME = 'gachapon';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 let _dbPromise = null;
 
 export function openDB() {
@@ -25,6 +25,8 @@ export function openDB() {
       if (!db.objectStoreNames.contains('blobs')) db.createObjectStore('blobs');
       if (!db.objectStoreNames.contains('state')) db.createObjectStore('state');
       if (!db.objectStoreNames.contains('rarities')) db.createObjectStore('rarities', { keyPath: 'id' });
+      // v3 — WYSIWYG machine designer (feat/machine-designer).
+      if (!db.objectStoreNames.contains('customMachines')) db.createObjectStore('customMachines', { keyPath: 'id' });
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);

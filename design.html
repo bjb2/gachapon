@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Machine Designer · Gachapon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+<style>
+  /* Phase 1 chrome — minimal. Polish lands in phase 6. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    background: #F5F4F6;
+    color: #2D2A26;
+    min-height: 100vh;
+  }
+  .designer-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px; background: #1A1A1A; color: white;
+  }
+  .designer-header h1 {
+    margin: 0; font-size: 14px; font-weight: 900;
+    font-family: 'Orbitron', sans-serif; letter-spacing: 0.18em;
+  }
+  .designer-header nav a {
+    color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px;
+    margin-left: 14px; letter-spacing: 0.1em;
+  }
+  .designer-header nav a:hover { color: white; }
+
+  .designer-main {
+    display: grid;
+    grid-template-columns: 200px 1fr 320px;
+    gap: 14px;
+    padding: 14px;
+    align-items: start;
+  }
+  .panel {
+    background: white;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .panel h2 {
+    margin: 0 0 8px;
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #888;
+  }
+  .panel-section { margin-bottom: 14px; }
+  .panel-section:last-child { margin-bottom: 0; }
+  .panel-section h3 {
+    margin: 0 0 6px;
+    font-size: 10px; letter-spacing: 0.1em; color: #888;
+    font-weight: 700; text-transform: uppercase;
+  }
+
+  .palette-btn {
+    display: block; width: 100%;
+    margin-bottom: 4px; padding: 8px 10px;
+    background: #F8F7F8; border: 1px solid #DDD; border-radius: 4px;
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    text-align: left; cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .palette-btn:hover { background: #FFE8F0; border-color: #FF6B9D; color: #FF6B9D; }
+  .palette-btn .req { color: #CC0000; margin-left: 4px; font-weight: 900; }
+
+  #canvasStage {
+    display: flex; align-items: flex-start; justify-content: center;
+    min-height: 580px;
+    padding: 16px;
+    background:
+      linear-gradient(45deg, #ECECEC 25%, transparent 25%),
+      linear-gradient(-45deg, #ECECEC 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ECECEC 75%),
+      linear-gradient(-45deg, transparent 75%, #ECECEC 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    border-radius: 8px;
+  }
+  #designerCanvas { background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+  .toolbar { display: flex; gap: 6px; flex-wrap: wrap; }
+  .toolbar button {
+    padding: 6px 10px; font-size: 11px; font-weight: 700;
+    background: white; border: 1px solid #DDD; border-radius: 4px;
+    cursor: pointer; font-family: inherit;
+  }
+  .toolbar button:hover { border-color: #FF6B9D; color: #FF6B9D; }
+  .toolbar button.danger:hover { border-color: #CC0000; color: #CC0000; }
+
+  .saved-row {
+    display: flex; gap: 4px; align-items: center;
+    padding: 4px 0; font-size: 12px;
+    border-bottom: 1px solid #EEE;
+  }
+  .saved-row:last-child { border-bottom: none; }
+  .saved-name { flex: 1; }
+  .saved-row button {
+    padding: 3px 6px; font-size: 10px; cursor: pointer;
+    border: 1px solid #DDD; background: white; border-radius: 3px;
+  }
+  .saved-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 6px; margin-bottom: 4px;
+    border-bottom: 1px solid #EEE;
+  }
+  .danger-link {
+    background: none; border: none; color: #CC0000;
+    font-size: 11px; cursor: pointer; padding: 2px 4px;
+    font-family: inherit; text-decoration: underline;
+  }
+  .danger-link:hover { color: #FF1744; }
+  .muted { color: #888; font-size: 11px; }
+
+  .palette-btn:disabled {
+    opacity: 0.4; cursor: not-allowed;
+    background: #F0F0F0;
+  }
+  .palette-btn:disabled:hover { background: #F0F0F0; border-color: #DDD; color: inherit; }
+
+  .props-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 8px; margin-bottom: 8px;
+    border-bottom: 1px solid #EEE;
+  }
+  .props-type {
+    font-size: 11px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: #FF6B9D;
+  }
+  .props-id {
+    font-size: 9px; font-family: monospace; color: #BBB;
+  }
+  .props-field {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .props-field > span {
+    flex: 0 0 110px;
+    font-size: 11px; color: #555;
+    text-transform: none; letter-spacing: 0;
+    font-weight: 400;
+  }
+  .props-field > input,
+  .props-field > select {
+    flex: 1; min-width: 0;
+    padding: 4px 6px; font-size: 12px;
+    border: 1px solid #DDD; border-radius: 3px;
+    font-family: inherit;
+  }
+  .props-field > input[type="color"] {
+    padding: 0; height: 28px; cursor: pointer;
+  }
+  .props-field > input[type="number"] {
+    flex: 0 0 80px;
+  }
+
+  /* Collapsible sections */
+  .section-toggle {
+    cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 6px;
+    margin: 0 0 8px;
+    transition: color 0.1s;
+  }
+  .section-toggle:hover { color: #FF6B9D; }
+  .section-toggle .caret {
+    display: inline-block; font-size: 11px; line-height: 1;
+    transition: transform 0.15s;
+  }
+  .collapsible.is-collapsed .caret { transform: rotate(-90deg); }
+  .collapsible.is-collapsed .section-body { display: none; }
+
+  /* Snap + alignment */
+  .align-tools { display: flex; flex-direction: column; gap: 6px; }
+  .snap-toggle {
+    font-size: 11px; color: #555; cursor: pointer;
+    text-transform: none; letter-spacing: 0; font-weight: 400;
+  }
+  .snap-toggle input { vertical-align: middle; margin-right: 4px; }
+  .align-row {
+    display: flex; align-items: center; gap: 4px;
+    flex-wrap: wrap;
+  }
+  .align-label {
+    font-size: 11px; color: #888; margin-right: 4px;
+  }
+  .align-row button {
+    width: 26px; height: 24px; padding: 0;
+    font-size: 14px; line-height: 1; cursor: pointer;
+    background: white; border: 1px solid #DDD; border-radius: 3px;
+  }
+  .align-row button:hover { border-color: #FF6B9D; color: #FF6B9D; }
+
+  /* Layers panel */
+  .layers-list {
+    list-style: none; margin: 0; padding: 0;
+    max-height: 300px; overflow-y: auto;
+    border: 1px solid #EEE; border-radius: 4px;
+  }
+  .layer-row {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 6px;
+    font-size: 11px;
+    border-bottom: 1px solid #F0F0F0;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .layer-row:last-child { border-bottom: none; }
+  .layer-row:hover { background: #FFF0F4; }
+  .layer-row.is-active { background: #FFE0EA; border-left: 3px solid #FF6B9D; padding-left: 3px; }
+  .layer-row.is-hidden { opacity: 0.4; }
+  .layer-row.is-locked .layer-label { color: #888; }
+  .layer-row.dragging { opacity: 0.5; }
+  .layer-row.drag-over { border-top: 2px solid #FF6B9D; }
+  .layer-grip {
+    color: #BBB; font-size: 10px; cursor: grab;
+    user-select: none;
+  }
+  .layer-icon {
+    color: #888; font-size: 14px; line-height: 1;
+    width: 16px; text-align: center;
+  }
+  .layer-label {
+    flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .layer-controls {
+    display: flex; gap: 2px;
+  }
+  .layer-controls button {
+    padding: 2px 5px; font-size: 10px;
+    background: white; border: 1px solid #DDD; border-radius: 2px;
+    cursor: pointer; line-height: 1;
+  }
+  .layer-controls button:hover { border-color: #FF6B9D; }
+  .layer-controls button.on { background: #FFE0EA; border-color: #FF6B9D; color: #FF6B9D; }
+  .layer-controls button.danger:hover { border-color: #CC0000; color: #CC0000; }
+
+  .preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .preset-btn {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 2px;
+    padding: 8px 10px;
+    background: linear-gradient(135deg, #FFFAFA 0%, #F8F4F8 100%);
+    border: 1px solid #DDD; border-radius: 6px;
+    cursor: pointer; font-family: inherit; text-align: left;
+    transition: all 0.12s;
+  }
+  .preset-btn:hover {
+    border-color: #FF6B9D; transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(255,107,157,0.18);
+  }
+  .preset-name {
+    font-size: 12px; font-weight: 700; color: #2D2A26;
+  }
+  .preset-meta {
+    font-size: 9px; color: #888; letter-spacing: 0.05em;
+  }
+
+  .help {
+    font-size: 11px; color: #888; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <header class="designer-header">
+    <h1>MACHINE DESIGNER</h1>
+    <nav>
+      <a href="./index.html">← Play</a>
+      <a href="./create.html">Prizes / Skins</a>
+    </nav>
+  </header>
+
+  <main class="designer-main">
+    <!-- Left: component palette -->
+    <aside class="panel" id="palette">
+      <h2>Components</h2>
+      <div class="panel-section">
+        <h3>Hopper <span style="color:#CC0000">required</span></h3>
+        <button class="palette-btn" data-add="hopper" data-variant="dome">+ Dome (full)</button>
+        <button class="palette-btn" data-add="hopper" data-variant="half-dome">+ Half-dome cap</button>
+        <button class="palette-btn" data-add="hopper" data-variant="box">+ Box hopper</button>
+        <button class="palette-btn" data-add="hopper" data-variant="funnel">+ Funnel hopper</button>
+        <button class="palette-btn" data-add="hopper" data-variant="cylinder">+ Cylinder hopper</button>
+        <button class="palette-btn" data-add="hopper" data-variant="hourglass">+ Hourglass hopper</button>
+      </div>
+      <div class="panel-section">
+        <h3>Chute <span style="color:#CC0000">exactly 1</span></h3>
+        <button class="palette-btn" data-add="chute">+ Chute marker</button>
+      </div>
+      <div class="panel-section">
+        <h3>Engine parts</h3>
+        <button class="palette-btn" data-add="crank">+ Crank</button>
+        <button class="palette-btn" data-add="brand-strip">+ Brand strip</button>
+        <button class="palette-btn" data-add="led">+ LED display</button>
+        <button class="palette-btn" data-add="turn-dots">+ Turn dots</button>
+        <button class="palette-btn" data-add="tray">+ Tray</button>
+      </div>
+      <div class="panel-section">
+        <h3>Decoration</h3>
+        <button class="palette-btn" data-add="decoration">+ Rectangle</button>
+      </div>
+    </aside>
+
+    <!-- Center: Fabric canvas -->
+    <section class="panel" id="canvasStage">
+      <canvas id="designerCanvas"></canvas>
+    </section>
+
+    <!-- Right: properties + tools + save/load -->
+    <aside class="panel">
+      <h2>Properties</h2>
+      <div class="panel-section" id="propertiesPanel">
+        <p class="muted">Select a component on the canvas to edit its properties.</p>
+      </div>
+      <div class="panel-section toolbar">
+        <button id="btnTestDrive" style="background:#FF6B9D;color:white;border-color:#FF6B9D;">▶ Test Drive</button>
+        <button id="btnUndo" title="Ctrl+Z">↶ Undo</button>
+        <button id="btnRedo" title="Ctrl+Shift+Z / Ctrl+Y">↷ Redo</button>
+        <button id="btnDuplicate" title="Ctrl+D">Duplicate ⎘</button>
+        <button id="btnDelete" class="danger" title="Delete or Backspace">Delete</button>
+      </div>
+      <div class="panel-section align-tools">
+        <label class="snap-toggle">
+          <input type="checkbox" id="toggleSnap"> Snap to 8px grid
+        </label>
+        <div class="align-row" title="Align selected component">
+          <span class="align-label">Align:</span>
+          <button data-align="left"     title="Left edge">⇤</button>
+          <button data-align="h-center" title="Horizontal center">⇔</button>
+          <button data-align="right"    title="Right edge">⇥</button>
+          <button data-align="top"      title="Top edge">⇡</button>
+          <button data-align="v-center" title="Vertical center">⇕</button>
+          <button data-align="bottom"   title="Bottom edge">⇣</button>
+        </div>
+      </div>
+      <div class="panel-section toolbar">
+        <button id="btnValidate">Validate</button>
+        <button id="btnDumpJson">View JSON</button>
+        <button id="btnImportJson">Import JSON ↑</button>
+        <button id="btnImportPaste" title="Paste a customMachine JSON record">Paste JSON</button>
+        <input type="file" id="importJsonFile" accept=".json,application/json" style="display:none">
+        <button id="btnSaveAs">Rename / Save as…</button>
+        <button id="btnNew" class="danger">New machine</button>
+      </div>
+      <div class="panel-section collapsible" data-collapsible>
+        <h2 class="section-toggle" data-toggle>
+          <span class="caret">▾</span>
+          Layers <span class="muted" style="font-weight:400">(top of stack first)</span>
+        </h2>
+        <div class="section-body">
+          <div id="layersPanel" class="muted">Loading…</div>
+        </div>
+      </div>
+      <div class="panel-section">
+        <h2>Start from preset</h2>
+        <div id="presetGallery" class="preset-grid"></div>
+      </div>
+      <div class="panel-section">
+        <h2>Saved machines</h2>
+        <div id="savedList" class="muted">Loading…</div>
+      </div>
+      <div class="panel-section">
+        <h2>Tips</h2>
+        <p class="help">
+          Click a component to select it. Drag corner handles to resize,
+          rotation handle to spin. <kbd>Delete</kbd> or <kbd>Backspace</kbd>
+          removes the selection. Hopper button swaps the variant in place.
+        </p>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Tiny inline handler — collapsing a panel section doesn't need any
+    // module logic, just toggle a class on click.
+    document.addEventListener('click', (e) => {
+      const toggle = e.target.closest('[data-toggle]');
+      if (!toggle) return;
+      const section = toggle.closest('[data-collapsible]');
+      if (section) section.classList.toggle('is-collapsed');
+    });
+  </script>
+  <script type="module" src="./src/designer/designer.js?t=14"></script>
+</body>
+</html>

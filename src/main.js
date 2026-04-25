@@ -8,6 +8,8 @@ import { LEGACY_BALL_STYLES } from './prizes/legacy-ball-styles.js';
 import { DEFAULT_RARITIES } from './rarities/default-rarities.js';
 import { getAllRarities, bulkPutRarities } from './rarities/rarity-store.js';
 import { Machine } from './machine/Machine.js';
+import { CustomMachine } from './machine/CustomMachine.js';
+import { getCustomMachine } from './designer/custom-machine-store.js';
 
 async function ensureSeeded() {
   // Version-aware machine upsert.
@@ -56,6 +58,28 @@ async function pickMachineId() {
 
 async function boot() {
   await ensureSeeded();
+
+  const params = new URLSearchParams(location.search);
+  const customId = params.get('customMachine');
+  const rarities = await getAllRarities();
+  const prizes = await getAllPrizes();
+  const host = document.getElementById('machineWrap');
+  const collectionHost = document.getElementById('collectionWrap');
+  const hintHost = document.getElementById('hintLine');
+
+  // ── Custom designer-authored machine ────────────────────────────────
+  if (customId) {
+    const custom = await getCustomMachine(customId);
+    if (custom) {
+      const m = new CustomMachine({ machineDef: custom, prizes, rarities, host, collectionHost, hintHost });
+      m.mount();
+      window.__gacha = m;
+      return;
+    }
+    console.warn('[boot] custom machine not found:', customId);
+  }
+
+  // ── Built-in machine path ───────────────────────────────────────────
   const machineId = await pickMachineId();
   // Prefer stored, else DEFAULT_MACHINES by id, else first default. The middle
   // case matters when a fresh DEFAULT_MACHINES entry hasn't yet been picked up
@@ -67,13 +91,6 @@ async function boot() {
   // was seeded; stored def preserves user customisations (they take precedence).
   const liveDef = DEFAULT_MACHINES.find(d => d.id === storedDef.id);
   const machineDef = liveDef ? { ...liveDef, ...storedDef } : storedDef;
-
-  const rarities = await getAllRarities();
-  const prizes = await getAllPrizes();
-
-  const host = document.getElementById('machineWrap');
-  const collectionHost = document.getElementById('collectionWrap');
-  const hintHost = document.getElementById('hintLine');
 
   const m = new Machine({ machineDef, prizes, rarities, host, collectionHost, hintHost });
   m.mount();
