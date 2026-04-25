@@ -108,11 +108,11 @@ const TABBY_CAT = {
       cornerRadius: 6, labelColor: '#FFB347' },
 
     // ─── Tray ────────────────────────────────────────────────────────
-    { type: 'tray', x: 60, y: 422, width: 240, height: 28,
+    { type: 'tray', x: 60, y: 392, width: 240, height: 56,
       fill: '#3A2410', stroke: '#1A0F06',
       fillGradient: { type: 'linear', coords: 'topToBottom',
         stops: [{ offset: 0, color: '#5A3820' }, { offset: 1, color: '#2A1808' }] },
-      cornerRadius: 6 },
+      cornerRadius: 8 },
 
     // ─── Crank (knob on right) ───────────────────────────────────────
     { type: 'crank', x: 312, y: 230, size: 36, accent: '#A6724A',
@@ -211,9 +211,9 @@ const BUNNY_HOP = {
       cornerRadius: 6, labelColor: '#FFC2D4' },
 
     // Tray with cute scallop look (rounded heavily)
-    { type: 'tray', x: 60, y: 422, width: 240, height: 28,
+    { type: 'tray', x: 60, y: 388, width: 240, height: 56,
       fill: '#FFFFFF', stroke: '#E87BA0',
-      cornerRadius: 14 },
+      cornerRadius: 18 },
 
     // Crank (pink with white center)
     { type: 'crank', x: 314, y: 224, size: 36, accent: '#E87BA0',
@@ -320,11 +320,11 @@ const BEARS_DEN = {
       cornerRadius: 6, labelColor: '#FFB347' },
 
     // Tray
-    { type: 'tray', x: 60, y: 408, width: 240, height: 36,
+    { type: 'tray', x: 60, y: 388, width: 240, height: 60,
       fill: '#3A2010', stroke: '#1A0F06',
       fillGradient: { type: 'linear', coords: 'topToBottom',
         stops: [{ offset: 0, color: '#6B4423' }, { offset: 1, color: '#2A1808' }] },
-      cornerRadius: 6 },
+      cornerRadius: 8 },
 
     // Crank (brass)
     { type: 'crank', x: 314, y: 220, size: 36, accent: '#C9A14A',
@@ -450,11 +450,11 @@ const NINJA_CAT = {
       cornerRadius: 6, labelColor: '#E04830' },
 
     // Tray
-    { type: 'tray', x: 60, y: 426, width: 240, height: 28,
+    { type: 'tray', x: 60, y: 390, width: 240, height: 60,
       fill: '#1A1F26', stroke: '#0F141B',
       fillGradient: { type: 'linear', coords: 'topToBottom',
         stops: [{ offset: 0, color: '#2A323C' }, { offset: 1, color: '#0A0E14' }] },
-      cornerRadius: 6 },
+      cornerRadius: 8 },
 
     // Cat tail (curling from right side)
     { type: 'decoration', shape: 'rect', x: 312, y: 200, width: 8, height: 70,

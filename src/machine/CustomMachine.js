@@ -38,9 +38,9 @@ export class CustomMachine {
     document.documentElement.dataset.skin = 'custom';
     this.host.classList.add('machine-wrap', 'cm-wrap');
 
-    // 1. Paint the SVG chassis. The renderer leaves a <canvas data-dome-canvas>
-    // inside the hopper, clipped to the hopper shape.
-    this.host.innerHTML = renderMachineSvg(this.def);
+    // 1. Paint the SVG chassis. playMode hides the chute marker (the
+    // dispense flow handles ball-exit visualization via the tray-ball).
+    this.host.innerHTML = renderMachineSvg(this.def, { playMode: true });
 
     this.$ = {
       svg:        this.host.querySelector('svg.cm-svg'),
@@ -63,6 +63,14 @@ export class CustomMachine {
     this.physics = new CustomPhysics(this.def);
     this.renderer = new SimpleBallRenderer(this.$.canvas, this.physics);
     this._spawnPool();
+
+    // 3. Size the tray ball from the actual ball diameter so it visually
+    // matches the balls bouncing in the hopper.
+    if (this.$.trayBall) {
+      const d = this.physics.geometry().ballR * 2;
+      this.$.trayBall.style.width = d + 'px';
+      this.$.trayBall.style.height = d + 'px';
+    }
 
     // 3. Reveal modal + state subs.
     this.reveal = new RevealModal(this.rarities);

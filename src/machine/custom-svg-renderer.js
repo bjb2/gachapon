@@ -212,12 +212,15 @@ function emitTray(c, gRef, fRef) {
   const stroke = c.stroke || '#D4D2D2';
   const sw = c.strokeWidth ?? 2;
   const r = c.cornerRadius ?? 8;
-  return `<g transform="${t}" data-tray${fRef ? ` filter="${fRef}"` : ''}>
-    <rect width="${c.width}" height="${c.height}" rx="${r}" ry="${r}" fill="${escAttr(fill)}" stroke="${escAttr(stroke)}" stroke-width="${sw}"/>
-    <foreignObject x="0" y="0" width="${c.width}" height="${c.height}">
-      <div xmlns="http://www.w3.org/1999/xhtml" class="cm-tray-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;color:#888;pointer-events:none;">
+  // Reserve room for the dispensed ball — sized from the ball diameter, not
+  // the tray height, so a thin "lip" tray can still hold a real-looking ball.
+  // Falls back to a sensible default; will be overridden at mount time.
+  return `<g transform="${t}" data-tray-group${fRef ? ` filter="${fRef}"` : ''}>
+    <rect width="${c.width}" height="${c.height}" rx="${r}" ry="${r}" fill="${escAttr(fill)}" stroke="${escAttr(stroke)}" stroke-width="${sw}" data-tray/>
+    <foreignObject x="0" y="0" width="${c.width}" height="${c.height}" overflow="visible">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="cm-tray-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'M PLUS Rounded 1c',monospace;font-size:11px;color:rgba(0,0,0,0.45);pointer-events:none;">
         <span data-tray-hint>Turn to dispense!</span>
-        <div data-tray-ball style="display:none;width:${(c.height || 60) * 0.5}px;height:${(c.height || 60) * 0.5}px;border-radius:50%;pointer-events:auto;cursor:pointer;"></div>
+        <div data-tray-ball style="display:none;border-radius:50%;pointer-events:auto;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.25);"></div>
       </div>
     </foreignObject>
   </g>`;
@@ -248,7 +251,12 @@ function buildHopperClip(hopper, machineId) {
 }
 
 // Render the entire custom machine to an SVG string.
-export function renderMachineSvg(machine) {
+// Options:
+//   playMode (bool, default false) — if true, hides the chute marker (built-in
+//   machines have no visible chute; the tray catches the ball after the
+//   dispense flow plays). The designer keeps the chute visible so the user
+//   can position it.
+export function renderMachineSvg(machine, { playMode = false } = {}) {
   const { canvas, components, id } = machine;
   let defs = '';
   let body = '';
@@ -263,6 +271,11 @@ export function renderMachineSvg(machine) {
   body += `<rect x="0" y="0" width="${canvas.width}" height="${canvas.height}" fill="${escAttr(canvas.bg || '#fff')}"/>`;
 
   for (const c of components) {
+    // Chute is design-only — in play mode the dispense flow handles the
+    // ball-exit visualization (tray-ball appears after popBottom). Rendering
+    // the chute as a black slot would conflict with the chassis art.
+    if (playMode && c.type === 'chute') continue;
+
     let gRef = null, fRef = null;
     if (c.fillGradient) {
       const id = gradId(gIdx++);
