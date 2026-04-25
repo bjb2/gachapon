@@ -128,6 +128,29 @@ async function boot() {
     w.document.write('<pre>' + json.replace(/[<>]/g, c => c === '<' ? '&lt;' : '&gt;') + '</pre>');
     w.document.close();
   });
+  // Import JSON: paste a customMachine record (same format as preset entries)
+  // or upload a .json file; clones into a fresh draft and reloads.
+  document.getElementById('btnImportJson').addEventListener('click', () => {
+    document.getElementById('importJsonFile').click();
+  });
+  document.getElementById('importJsonFile').addEventListener('change', async (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!f) return;
+    try {
+      const text = await f.text();
+      await importMachineJson(text);
+    } catch (err) {
+      alert('Import failed:\n' + err.message);
+    }
+  });
+  document.getElementById('btnImportPaste').addEventListener('click', async () => {
+    const text = prompt('Paste a customMachine JSON record:');
+    if (!text) return;
+    try { await importMachineJson(text); }
+    catch (err) { alert('Import failed:\n' + err.message); }
+  });
+
   document.getElementById('btnTestDrive').addEventListener('click', async () => {
     // Save current draft so the play page reads the latest, then open it.
     const errors = validateCustomMachine(designer.machine);
@@ -151,6 +174,32 @@ async function boot() {
 
 async function save(machine) {
   await putCustomMachine(machine);
+}
+
+async function importMachineJson(text) {
+  let parsed;
+  try { parsed = JSON.parse(text); }
+  catch (e) { throw new Error('Not valid JSON: ' + e.message); }
+  if (!parsed || typeof parsed !== 'object') throw new Error('Expected an object.');
+  if (!parsed.canvas || !Array.isArray(parsed.components)) {
+    throw new Error('Missing required fields: canvas {width,height,bg} and components [...].');
+  }
+  // Re-key everything via newComponent / newCustomMachine so any extra fields
+  // (gradient, shadow, etc.) survive but ids are regenerated to avoid clashes
+  // with whatever the user already has saved.
+  const clone = newCustomMachine({
+    name: parsed.name || 'Imported Machine',
+    canvas: { ...parsed.canvas },
+    components: parsed.components.map(c => newComponent(c.type, c)),
+  });
+  const errors = validateCustomMachine(clone);
+  if (errors.length) {
+    if (!confirm('Imported machine has validation issues:\n' +
+      errors.map(e => '- ' + e).join('\n') + '\n\nLoad anyway?')) return;
+  }
+  await putCustomMachine(clone);
+  localStorage.setItem(DRAFT_ID_KEY, clone.id);
+  location.reload();
 }
 
 function renderPresetGallery() {

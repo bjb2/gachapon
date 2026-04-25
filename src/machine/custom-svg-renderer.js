@@ -337,7 +337,8 @@ export function renderMachineSvg(machine, { playMode = false } = {}) {
 
   return `<svg class="cm-svg" xmlns="http://www.w3.org/2000/svg"
     width="${canvas.width}" height="${canvas.height}"
-    viewBox="0 0 ${canvas.width} ${canvas.height}">
+    viewBox="0 0 ${canvas.width} ${canvas.height}"
+    overflow="visible">
     <defs>${defs}</defs>
     ${body}
   </svg>`;
