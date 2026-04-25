@@ -273,20 +273,28 @@ function renderHopper(c) {
 }
 
 function renderChute(c) {
+  // Designer-only marker — kept subtle so it doesn't clobber the chassis
+  // visuals while you're laying things out. Hidden entirely in play mode.
+  // Dashed outline + small lowercase label reads as "this is the dispense
+  // exit" without competing with the brand / window / etc.
+  const stroke = c.labelColor || c.stroke || 'rgba(255,255,255,0.55)';
   const grp = new fabric.Group([
     new fabric.Rect({
-      width: c.width, height: c.height, fill: c.openingColor || '#222',
-      stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 0,
-      rx: c.cornerRadius ?? 4, ry: c.cornerRadius ?? 4,
+      width: c.width, height: c.height,
+      fill: 'rgba(0,0,0,0)',
+      stroke, strokeWidth: 1,
+      strokeDashArray: [3, 3],
+      rx: c.cornerRadius ?? 3, ry: c.cornerRadius ?? 3,
       originX: 'left', originY: 'top',
     }),
-    new fabric.Text('CHUTE', {
-      fontSize: 10, fontFamily: 'monospace',
-      fill: c.labelColor || '#FFFFFF', left: c.width / 2, top: c.height / 2,
+    new fabric.Text('↓ chute', {
+      fontSize: 8, fontFamily: 'monospace', fontWeight: 'bold',
+      fill: stroke, opacity: 0.85,
+      left: c.width / 2, top: c.height / 2,
       originX: 'center', originY: 'center',
     }),
   ]);
-  return enhance(grp, c, c.width, c.height);
+  return grp;
 }
 
 function renderCrank(c) {
