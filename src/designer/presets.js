@@ -464,124 +464,200 @@ const NINJA_CAT = {
 };
 
 // ── 5. KENISY-style Capsule Vending Machine ────────────────────────────
-//   Modeled after the real "Kenisy Capsule Vending Machine": cream/white
-//   plastic body, light gray top with a clear box window, red curved
-//   wordmark, prominent white knob crank on the right, small viewer
-//   window on the left, large chute-mouth at the front-bottom.
+//   Modeled directly on the real "Kenisy Capsule Vending Machine" reference
+//   photo: tall white plastic body, gray hood with KENISY chip, large
+//   square window full of capsules with a curved red CAPSULE sash on the
+//   glass, control plate with coin slot + viewer porthole + big white knob,
+//   visible cream chute alcove above a wide catch tray.
+//
+//   Component order matters — anything after the hopper renders on top of
+//   the live balls, mimicking how decals on the real glass sit in front
+//   of the capsules behind them.
 const KENISY = {
   name: 'Kenisy Capsule Vending',
   canvas: { ...CANVAS, bg: '#E8E5E0' },
   components: [
-    // ─── Soft floor shadow under the machine ─────────────────────────
-    { type: 'decoration', shape: 'ellipse', x: 50, y: 488, width: 260, height: 18,
-      fill: 'rgba(0,0,0,0.15)', opacity: 0.6 },
+    // ─── Floor shadow (sits under everything) ────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 40, y: 510, width: 280, height: 20,
+      fill: 'rgba(0,0,0,0.22)', opacity: 0.7 },
 
-    // ─── Light-gray top hood (above the dome window) ─────────────────
-    { type: 'decoration', shape: 'rect', x: 50, y: 30, width: 260, height: 60,
-      fill: '#D4D2CE', cornerRadius: 18,
+    // ─── Light-gray hood with vents ──────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 56, y: 12, width: 248, height: 46,
+      fill: '#D4D2CE', cornerRadius: 14,
       fillGradient: { type: 'linear', coords: 'topToBottom',
-        stops: [{ offset: 0, color: '#E0DED9' }, { offset: 1, color: '#BCB9B3' }] },
-      shadow: { color: 'rgba(0,0,0,0.2)', blur: 8, offsetY: 4 } },
-    // KENISY brand chip on hood
-    { type: 'decoration', shape: 'rect', x: 154, y: 44, width: 52, height: 16,
-      fill: '#1A1A1A', cornerRadius: 2 },
-    { type: 'decoration', shape: 'text', x: 158, y: 47, text: 'KENISY',
-      fill: '#FFFFFF', font: 'Arial', fontWeight: 'bold', fontSize: 10,
-      letterSpacing: 0.1 },
-    // Hood vents
-    { type: 'decoration', shape: 'rect', x: 70, y: 70, width: 60, height: 3,
-      fill: '#A8A6A1', cornerRadius: 1 },
-    { type: 'decoration', shape: 'rect', x: 230, y: 70, width: 60, height: 3,
-      fill: '#A8A6A1', cornerRadius: 1 },
+        stops: [{ offset: 0, color: '#E2E0DA' }, { offset: 1, color: '#B6B2AC' }] },
+      shadow: { color: 'rgba(0,0,0,0.2)', blur: 6, offsetY: 3 } },
+    // KENISY plate
+    { type: 'decoration', shape: 'rect', x: 152, y: 24, width: 56, height: 18,
+      fill: '#0E0E0C', cornerRadius: 2,
+      shadow: { color: 'rgba(0,0,0,0.4)', blur: 2, offsetY: 1 } },
+    { type: 'decoration', shape: 'text', x: 157, y: 27, text: 'KENISY',
+      fill: '#FFFFFF', font: 'Arial', fontWeight: 'bold', fontSize: 11,
+      letterSpacing: 0.16 },
+    // Hood vent slots
+    { type: 'decoration', shape: 'rect', x: 70, y: 46, width: 70, height: 3,
+      fill: '#9A9893', cornerRadius: 1, opacity: 0.7 },
+    { type: 'decoration', shape: 'rect', x: 220, y: 46, width: 70, height: 3,
+      fill: '#9A9893', cornerRadius: 1, opacity: 0.7 },
 
-    // ─── White main body ─────────────────────────────────────────────
-    { type: 'decoration', shape: 'rect', x: 50, y: 80, width: 260, height: 400,
+    // ─── White plastic main body ─────────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 50, y: 50, width: 260, height: 460,
       fill: '#FFFFFF', cornerRadius: 16,
-      fillGradient: { type: 'linear', coords: 'leftToRight',
-        stops: [{ offset: 0, color: '#F0EDE6' }, { offset: 0.5, color: '#FFFFFF' }, { offset: 1, color: '#E8E5DE' }] },
-      shadow: { color: 'rgba(0,0,0,0.25)', blur: 14, offsetY: 6 } },
+      fillGradient: { type: 'linear', coords: 'diag135',
+        stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 0.5, color: '#F4F1EA' }, { offset: 1, color: '#DCD9D0' }] },
+      shadow: { color: 'rgba(0,0,0,0.22)', blur: 16, offsetY: 8 } },
+    // Vertical edge highlight (left)
+    { type: 'decoration', shape: 'rect', x: 56, y: 60, width: 3, height: 440,
+      fill: '#FFFFFF', opacity: 0.7 },
+    // Vertical shadow edge (right)
+    { type: 'decoration', shape: 'rect', x: 302, y: 60, width: 4, height: 440,
+      fill: 'rgba(0,0,0,0.07)' },
 
-    // ─── Capsule window (box hopper) ─────────────────────────────────
-    // Window inset frame
-    { type: 'decoration', shape: 'rect', x: 64, y: 96, width: 232, height: 184,
-      fill: '#1A1A1A', cornerRadius: 8 },
-    { type: 'hopper', variant: 'box', x: 70, y: 102, width: 220, height: 172,
-      wallColor: '#888', wallThickness: 2, cornerRadius: 6,
-      windowFill: 'rgba(220,230,240,0.35)',
-      shadow: { color: 'rgba(0,0,0,0.3)', blur: 6, offsetY: 3 } },
-    // Glass highlight overlay
-    { type: 'decoration', shape: 'rect', x: 70, y: 106, width: 220, height: 26,
-      fill: '#FFFFFF', opacity: 0.32, cornerRadius: 4 },
+    // ─── Capsule window: deep recessed dark frame ────────────────────
+    // Outer dark frame
+    { type: 'decoration', shape: 'rect', x: 64, y: 70, width: 232, height: 218,
+      fill: '#0E0E0C', cornerRadius: 8,
+      shadow: { color: 'rgba(0,0,0,0.3)', blur: 4, offsetY: 2 } },
+    // Inner mid-gray plate (the shelf you see capsules sitting on)
+    { type: 'decoration', shape: 'rect', x: 70, y: 76, width: 220, height: 206,
+      fill: '#454343', cornerRadius: 5,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#5A5755' }, { offset: 1, color: '#2A2826' }] } },
 
-    // ─── Curved red CAPSULE wordmark on the window glass ─────────────
-    // Pink halo behind the wordmark
-    { type: 'decoration', shape: 'ellipse', x: 100, y: 154, width: 160, height: 38,
-      fill: '#FFF8F4', opacity: 0.85, rotation: -6 },
-    { type: 'decoration', shape: 'text', x: 110, y: 152, text: 'CAPSULE',
+    // ─── Static capsules visible inside the window ───────────────────
+    // (These render BEHIND the hopper so live balls cover them in play.)
+    ...staticCapsules([
+      [86, 90, 22, '#FFB6C1', '#E08CA0'],
+      [120, 110, 24, '#FFD966', '#C8A030'],
+      [200, 100, 22, '#87CEEB', '#5BA8D0'],
+      [240, 130, 20, '#C8A2C8', '#A075A0'],
+      [98, 240, 24, '#FFFFFF', '#C0C0C0'],
+      [150, 250, 22, '#98FB98', '#6FCC6F'],
+      [220, 245, 24, '#FFA07A', '#D8704A'],
+      [264, 220, 20, '#E6E6FA', '#B0B0E0'],
+    ]),
+
+    // ─── The actual hopper (clipped, holds the live ball canvas) ─────
+    { type: 'hopper', variant: 'box', x: 70, y: 76, width: 220, height: 206,
+      wallColor: '#454343', wallThickness: 0, cornerRadius: 5,
+      windowFill: 'rgba(120,150,180,0.0)' },
+
+    // ─── Glass reflection overlay (renders ON TOP of capsules + balls) ─
+    { type: 'decoration', shape: 'rect', x: 70, y: 78, width: 220, height: 30,
+      fill: '#FFFFFF', opacity: 0.3, cornerRadius: 4 },
+    { type: 'decoration', shape: 'rect', x: 70, y: 110, width: 90, height: 4,
+      fill: '#FFFFFF', opacity: 0.18 },
+
+    // ─── Curved CAPSULE wordmark sash ────────────────────────────────
+    // Cream sash backing
+    { type: 'decoration', shape: 'ellipse', x: 76, y: 138, width: 208, height: 56,
+      fill: '#FFF8F4', opacity: 0.92, rotation: -8,
+      shadow: { color: 'rgba(0,0,0,0.25)', blur: 4, offsetY: 2 } },
+    // CAPSULE — large italic red
+    { type: 'decoration', shape: 'text', x: 92, y: 144, text: 'CAPSULE',
       fill: '#D8242C', font: 'Crimson Pro', fontStyle: 'italic',
-      fontWeight: 'bold', fontSize: 30, letterSpacing: 0.05, rotation: -6,
-      shadow: { color: 'rgba(0,0,0,0.3)', blur: 2, offsetY: 1 } },
-    { type: 'decoration', shape: 'text', x: 130, y: 188, text: 'VENDING MACHINE',
-      fill: '#D8242C', font: 'Inter', fontWeight: 'bold', fontSize: 9,
-      letterSpacing: 0.18, rotation: -6 },
+      fontWeight: 'bold', fontSize: 36, letterSpacing: 0.04, rotation: -8 },
+    // VENDING MACHINE — tucked underneath
+    { type: 'decoration', shape: 'text', x: 116, y: 184, text: 'VENDING MACHINE',
+      fill: '#A8242C', font: 'Inter', fontWeight: 'bold', fontSize: 10,
+      letterSpacing: 0.22, rotation: -8 },
 
-    // ─── Mid panel: viewer window left, big crank right ──────────────
-    // Inset darker band across mid (separates window area from controls)
-    { type: 'decoration', shape: 'rect', x: 64, y: 290, width: 232, height: 80,
-      fill: '#F4F2EC', cornerRadius: 6 },
-    // Viewer window (small round porthole on the left)
-    { type: 'decoration', shape: 'circle', x: 78, y: 304, width: 50, height: 50,
+    // ─── Control plate (mid section) ─────────────────────────────────
+    { type: 'decoration', shape: 'rect', x: 60, y: 296, width: 240, height: 76,
+      fill: '#F4F2EC', cornerRadius: 6,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#FAF8F2' }, { offset: 1, color: '#E4E1D8' }] } },
+    // Subtle inner shadow at top
+    { type: 'decoration', shape: 'rect', x: 60, y: 296, width: 240, height: 4,
+      fill: 'rgba(0,0,0,0.1)' },
+
+    // Coin acceptor (vertical slot with ring around it)
+    { type: 'decoration', shape: 'circle', x: 78, y: 308, width: 44, height: 44,
       fill: '#1A1A1A',
-      shadow: { color: 'rgba(0,0,0,0.4)', blur: 4, offsetY: 2 } },
-    { type: 'decoration', shape: 'circle', x: 84, y: 310, width: 38, height: 38,
-      fill: '#FFFAF0',
-      fillGradient: { type: 'radial', cx: 14, cy: 12, innerR: 0, outerR: 24,
-        stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 1, color: '#C8C2B6' }] } },
+      shadow: { color: 'rgba(0,0,0,0.45)', blur: 3, offsetY: 2 } },
+    { type: 'decoration', shape: 'circle', x: 82, y: 312, width: 36, height: 36,
+      fill: '#252525',
+      fillGradient: { type: 'radial', cx: 14, cy: 12, innerR: 0, outerR: 22,
+        stops: [{ offset: 0, color: '#3A3A3A' }, { offset: 1, color: '#0E0E0C' }] } },
+    // Vertical coin slot
+    { type: 'decoration', shape: 'rect', x: 96, y: 318, width: 8, height: 24,
+      fill: '#FFFFFF', cornerRadius: 2 },
+    { type: 'decoration', shape: 'rect', x: 97, y: 319, width: 6, height: 22,
+      fill: '#0A0A0A', cornerRadius: 1 },
 
-    // Coin slot below viewer
-    { type: 'decoration', shape: 'rect', x: 78, y: 358, width: 50, height: 8,
-      fill: '#1A1A1A', cornerRadius: 2 },
+    // Instructions
+    { type: 'decoration', shape: 'text', x: 134, y: 308, text: 'INSERT 1 COIN',
+      fill: '#3A3A3A', font: 'Arial', fontWeight: 'bold', fontSize: 9,
+      letterSpacing: 0.16 },
+    { type: 'decoration', shape: 'text', x: 134, y: 326, text: 'TURN HANDLE →',
+      fill: '#888', font: 'Arial', fontWeight: 'bold', fontSize: 9,
+      letterSpacing: 0.16 },
 
-    // Instructions text
-    { type: 'decoration', shape: 'text', x: 142, y: 296, text: 'INSERT 1 COIN',
-      fill: '#666', font: 'Arial', fontWeight: 'bold', fontSize: 8,
-      letterSpacing: 0.18 },
-    { type: 'decoration', shape: 'text', x: 142, y: 312, text: 'TURN HANDLE',
-      fill: '#666', font: 'Arial', fontWeight: 'bold', fontSize: 8,
-      letterSpacing: 0.18 },
+    // Big white knob crank — sits in the right side of the control plate
+    { type: 'crank', x: 224, y: 300, size: 64, accent: '#FFFFFF',
+      stroke: '#A8A39A', strokeWidth: 3, iconColor: '#444',
+      fillGradient: { type: 'radial', cx: 22, cy: 18, innerR: 4, outerR: 56,
+        stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 0.5, color: '#F4F0E6' }, { offset: 1, color: '#A8A39A' }] },
+      shadow: { color: 'rgba(0,0,0,0.4)', blur: 6, offsetY: 4 } },
 
-    // ─── Big crank knob on the right ─────────────────────────────────
-    { type: 'crank', x: 222, y: 296, size: 70, accent: '#FFFFFF',
-      stroke: '#888', strokeWidth: 3, iconColor: '#444',
-      fillGradient: { type: 'radial', cx: 26, cy: 22, innerR: 4, outerR: 60,
-        stops: [{ offset: 0, color: '#FFFFFF' }, { offset: 0.5, color: '#F0EDE6' }, { offset: 1, color: '#A8A39A' }] },
-      shadow: { color: 'rgba(0,0,0,0.35)', blur: 6, offsetY: 4 } },
-
-    // Small red warning label
-    { type: 'decoration', shape: 'rect', x: 200, y: 372, width: 90, height: 22,
+    // ─── LED counter + turn dots tucked under the control plate ──────
+    { type: 'led', x: 64, y: 380, width: 96, height: 20,
+      color: '#88FF44', bg: '#0E0E08', cornerRadius: 3 },
+    { type: 'turn-dots', x: 168, y: 386, count: 3, dotSize: 9,
+      litColor: '#D8242C', dimColor: '#D8D5CE' },
+    // Compact NO REFUND label
+    { type: 'decoration', shape: 'rect', x: 218, y: 378, width: 78, height: 22,
       fill: '#D8242C', cornerRadius: 2,
       shadow: { color: 'rgba(0,0,0,0.25)', blur: 3, offsetY: 1 } },
-    { type: 'decoration', shape: 'text', x: 210, y: 376, text: 'NO REFUND',
+    { type: 'decoration', shape: 'text', x: 226, y: 382, text: 'NO REFUND',
       fill: '#FFFFFF', font: 'Arial', fontWeight: 'bold', fontSize: 10,
-      letterSpacing: 0.12 },
+      letterSpacing: 0.08 },
 
-    // ─── LED + turn dots strip (between mid panel and chute) ─────────
-    { type: 'led', x: 70, y: 380, width: 100, height: 18,
-      color: '#88FF44', bg: '#0E0E08', cornerRadius: 3 },
-    { type: 'turn-dots', x: 178, y: 384, count: 3, dotSize: 9,
-      litColor: '#D8242C', dimColor: '#D8D5CE' },
+    // ─── Visible chute alcove (deep dark cutout above the tray) ──────
+    // This is the *visible* opening you'd reach into. The chute marker
+    // (hidden in play) just tells the dispense flow where to place the
+    // ball — the alcove decoration provides the chassis cutout look.
+    { type: 'decoration', shape: 'rect', x: 70, y: 408, width: 220, height: 38,
+      fill: '#0A0A08', cornerRadius: 4,
+      fillGradient: { type: 'linear', coords: 'topToBottom',
+        stops: [{ offset: 0, color: '#000000' }, { offset: 1, color: '#1F1F1C' }] },
+      shadow: { color: 'rgba(0,0,0,0.5)', blur: 4, offsetY: 2 } },
+    // Inner depth gradient (faux 3D recess)
+    { type: 'decoration', shape: 'rect', x: 74, y: 412, width: 212, height: 8,
+      fill: '#000000', opacity: 0.7, cornerRadius: 2 },
+    // Cream "lip" above the alcove
+    { type: 'decoration', shape: 'rect', x: 68, y: 404, width: 224, height: 4,
+      fill: '#E8DDC8', cornerRadius: 2 },
 
-    // ─── Chute opening (large rectangular mouth at the front) ────────
-    { type: 'chute', x: 100, y: 400, width: 160, height: 36,
-      openingColor: '#1A1A1A', stroke: '#888', strokeWidth: 1, cornerRadius: 4 },
+    // ─── Hidden chute marker (positions the dispense exit) ───────────
+    { type: 'chute', x: 130, y: 416, width: 100, height: 26,
+      openingColor: '#000000', cornerRadius: 0 },
 
-    // ─── Tray (cream-colored catch tray) ─────────────────────────────
-    { type: 'tray', x: 60, y: 414, width: 240, height: 60,
+    // ─── Cream catch tray ────────────────────────────────────────────
+    { type: 'tray', x: 60, y: 446, width: 240, height: 50,
       fill: '#E8DDC8', stroke: '#A89E84',
       fillGradient: { type: 'linear', coords: 'topToBottom',
         stops: [{ offset: 0, color: '#F0E6D0' }, { offset: 1, color: '#C8BCA0' }] },
-      cornerRadius: 6 },
+      cornerRadius: 6,
+      shadow: { color: 'rgba(0,0,0,0.18)', blur: 4, offsetY: 2 } },
   ],
 };
+
+// Helper: spawn a row of "static capsule" decorations (each is two stacked
+// circles to suggest a capsule top + bottom). Used to fill the window in
+// design view; live balls render on top of these in play mode.
+function staticCapsules(specs) {
+  const out = [];
+  for (const [x, y, d, top, bot] of specs) {
+    // Top half (lighter)
+    out.push({ type: 'decoration', shape: 'circle', x, y, width: d, height: d,
+      fill: top, opacity: 0.92,
+      shadow: { color: 'rgba(0,0,0,0.25)', blur: 2, offsetY: 1 } });
+    // Bottom half (darker, slight offset)
+    out.push({ type: 'decoration', shape: 'circle', x: x + d * 0.04, y: y + d * 0.4, width: d * 0.95, height: d * 0.6,
+      fill: bot, opacity: 0.85 });
+  }
+  return out;
+}
 
 export const PRESETS = [TABBY_CAT, BUNNY_HOP, BEARS_DEN, NINJA_CAT, KENISY];

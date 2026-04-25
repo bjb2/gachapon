@@ -300,10 +300,11 @@ function renderCrank(c) {
     originX: 'left', originY: 'top',
     scaleX: arrowScale, scaleY: arrowScale,
   });
-  // Center the icon inside the button.
+  // Center the icon's visual bounding box (≈17.5, 13.75 in viewbox coords),
+  // not the viewbox midpoint — arc bulges left, arrowhead extends right.
   iconGroup.set({
-    left: half - (15 * arrowScale),
-    top: half - (15 * arrowScale),
+    left: half - (17.5 * arrowScale),
+    top: half - (13.75 * arrowScale),
   });
   return new fabric.Group([button, iconGroup], {
     originX: 'left', originY: 'top',
