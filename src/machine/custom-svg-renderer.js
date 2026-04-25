@@ -8,6 +8,8 @@
 // top of where balls visually "fall in" — exactly like the modern truck
 // shell hides its funnel.
 
+import { CRANK_ICONS } from './crank-icons.js';
+
 function escAttr(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
@@ -176,19 +178,17 @@ function emitCrank(c, gRef, fRef) {
   const iconColor = c.iconColor || '#FFFFFF';
   const half = c.size / 2;
   const scale = (c.size * 0.65) / 30;
-  // Arrow icon = built-in crank SVG (3/4 arc + arrowhead, 30x30 viewbox).
-  // The icon's visual bounding box is centered near (17.5, 13.75) — not the
-  // viewbox midpoint — because the arc bulges left while the arrowhead
-  // extends right. Translate by that bbox center so the icon sits centered
-  // in the crank button. Three nested transforms so data-crank-inner can
-  // hold a clean rotate(deg) we can update without touching scale/translate.
+  const icon = CRANK_ICONS[c.style] || CRANK_ICONS.chrome;
+  // Three nested transforms so data-crank-inner can hold a clean rotate(deg)
+  // updated per turn — wrapping groups handle position + scale.
+  // The inner-most translate uses the icon's bbox center so each style sits
+  // visually centered in the button (the chrome arrow's bbox isn't at 15,15).
   return `<g transform="${t}" data-crank style="cursor:pointer"${fRef ? ` filter="${fRef}"` : ''}>
     <circle cx="${half}" cy="${half}" r="${half}" fill="${escAttr(fill)}" stroke="${escAttr(stroke)}" stroke-width="${sw}"/>
     <g transform="translate(${half} ${half})">
       <g data-crank-inner transform="rotate(0)" style="transition:transform 0.32s cubic-bezier(0.34,1.4,0.64,1);">
-        <g transform="scale(${scale}) translate(-17.5 -13.75)">
-          <path d="M 22 22 A 9.5 9.5 0 1 1 22 8" stroke="${escAttr(iconColor)}" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-          <polygon points="22,3 22,13 29,8" fill="${escAttr(iconColor)}"/>
+        <g transform="scale(${scale}) translate(${-icon.bboxCx} ${-icon.bboxCy})">
+          ${icon.svg(iconColor)}
         </g>
       </g>
     </g>

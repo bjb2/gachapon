@@ -11,6 +11,7 @@ import {
   getCustomMachine, putCustomMachine, getAllCustomMachines, deleteCustomMachine,
 } from './custom-machine-store.js';
 import { renderPropertiesPanel } from './properties-panel.js';
+import { renderLayersPanel } from './layers-panel.js';
 import { PRESETS } from './presets.js';
 
 const DRAFT_ID_KEY = 'gachapon:designer:draftId';
@@ -31,9 +32,10 @@ async function boot() {
   // Mount canvas.
   const canvasEl = document.getElementById('designerCanvas');
   const propsHost = document.getElementById('propertiesPanel');
+  const layersHost = document.getElementById('layersPanel');
   const designer = new DesignerCanvas(canvasEl, machine, {
-    onChange: (m) => { save(m); refreshPalette(); refreshProps(); },
-    onSelection: (component) => refreshProps(component),
+    onChange: (m) => { save(m); refreshPalette(); refreshProps(); refreshLayers(); },
+    onSelection: (component) => { refreshProps(component); refreshLayers(); },
   });
   window.__designer = designer;
 
@@ -43,6 +45,12 @@ async function boot() {
       component = obj && obj._component ? obj._component : null;
     }
     renderPropertiesPanel(propsHost, component, (patch) => designer.updateActive(patch));
+  }
+
+  function refreshLayers() {
+    const obj = designer.canvas.getActiveObject();
+    const activeId = obj && obj._component ? obj._component.id : null;
+    renderLayersPanel(layersHost, designer.machine, designer, activeId);
   }
 
   // Disable palette buttons for singleton types whose slot is taken.
@@ -95,21 +103,27 @@ async function boot() {
     designer.addComponent(type, partial);
   });
 
-  // Keyboard delete: Delete or Backspace removes the selected component
-  // unless the user is typing into a form field.
+  // Keyboard shortcuts: Delete/Backspace removes the selected component;
+  // Ctrl+D duplicates it. Skip while typing in a form field.
   window.addEventListener('keydown', (e) => {
-    if (e.key !== 'Delete' && e.key !== 'Backspace') return;
     const tag = (document.activeElement && document.activeElement.tagName) || '';
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-    e.preventDefault();
-    designer.removeActive();
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      e.preventDefault();
+      designer.removeActive();
+    } else if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
+      e.preventDefault();
+      designer.duplicateActive();
+    }
   });
 
   refreshPalette();
   refreshProps();
+  refreshLayers();
 
   // Toolbar
   document.getElementById('btnDelete').addEventListener('click', () => designer.removeActive());
+  document.getElementById('btnDuplicate').addEventListener('click', () => designer.duplicateActive());
   document.getElementById('btnNew').addEventListener('click', async () => {
     if (!confirm('Discard current draft and start a new machine?')) return;
     const fresh = newCustomMachine();

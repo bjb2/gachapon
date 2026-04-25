@@ -120,11 +120,72 @@ export class DesignerCanvas {
   removeActive() {
     const obj = this.canvas.getActiveObject();
     if (!obj || !obj._component) return;
-    const id = obj._component.id;
+    this.removeComponent(obj._component.id);
+  }
+
+  removeComponent(id) {
+    const obj = this.canvas.getObjects().find(o => o._component && o._component.id === id);
     this.machine.components = this.machine.components.filter(c => c.id !== id);
-    this.canvas.remove(obj);
+    if (obj) this.canvas.remove(obj);
     this.canvas.discardActiveObject();
     this.canvas.requestRenderAll();
+    this.onChange(this.machine);
+  }
+
+  // Duplicate the active component, offset slightly so it's visible.
+  duplicateActive() {
+    const obj = this.canvas.getActiveObject();
+    if (!obj || !obj._component) return;
+    const c = obj._component;
+    // Build a new component with a fresh id + minor offset; preserve every
+    // other field via spread so gradients / shadows / variant survive.
+    const partial = { ...c, id: undefined, x: (c.x || 0) + 14, y: (c.y || 0) + 14 };
+    const fresh = newComponent(c.type, partial);
+    this.machine.components.push(fresh);
+    const newObj = this._addFabricFor(fresh);
+    if (newObj) this.canvas.setActiveObject(newObj);
+    this.canvas.requestRenderAll();
+    this.onChange(this.machine);
+    return fresh;
+  }
+
+  // Move a component's z-index in the components array AND in the Fabric
+  // canvas. Both representations are kept in lockstep.
+  reorderComponent(id, direction) {
+    const idx = this.machine.components.findIndex(c => c.id === id);
+    if (idx < 0) return;
+    let newIdx = idx;
+    if (direction === 'top')      newIdx = this.machine.components.length - 1;
+    else if (direction === 'bottom') newIdx = 0;
+    else if (direction === 'up')     newIdx = Math.min(this.machine.components.length - 1, idx + 1);
+    else if (direction === 'down')   newIdx = Math.max(0, idx - 1);
+    else if (typeof direction === 'number') newIdx = Math.max(0, Math.min(this.machine.components.length - 1, direction));
+    if (newIdx === idx) return;
+    const [moved] = this.machine.components.splice(idx, 1);
+    this.machine.components.splice(newIdx, 0, moved);
+    // Rebuild the canvas so the Fabric z-order matches.
+    this.rebuild();
+    // Reselect the moved component.
+    const obj = this.canvas.getObjects().find(o => o._component && o._component.id === id);
+    if (obj) this.canvas.setActiveObject(obj);
+    this.canvas.requestRenderAll();
+    this.onChange(this.machine);
+  }
+
+  selectComponent(id) {
+    const obj = this.canvas.getObjects().find(o => o._component && o._component.id === id);
+    if (obj) {
+      this.canvas.setActiveObject(obj);
+      this.canvas.requestRenderAll();
+    }
+  }
+
+  // Toggle hidden/locked flags on a component and refresh its Fabric obj.
+  setComponentFlag(id, flag, value) {
+    const c = this.machine.components.find(c => c.id === id);
+    if (!c) return;
+    c[flag] = value;
+    this._replaceFabricFor(c);
     this.onChange(this.machine);
   }
 
@@ -300,40 +361,105 @@ function renderChute(c) {
 function renderCrank(c) {
   const half = c.size / 2;
   const iconColor = c.iconColor || '#FFFFFF';
-  // Group of: round button + 3/4 arc with arrowhead (matches the built-in
-  // crank icon). Scaled to fit inside the button.
+  const style = c.style || 'chrome';
   const button = new fabric.Circle({
     radius: half, fill: c.accent || '#888090',
     stroke: c.stroke || '#666', strokeWidth: c.strokeWidth ?? 2,
     originX: 'left', originY: 'top',
   });
-  // Apply gradient/shadow to the button itself if present.
   enhance(button, c, c.size, c.size);
-  const arrowScale = (c.size * 0.65) / 30;
-  const arc = new fabric.Path('M 22 22 A 9.5 9.5 0 1 1 22 8', {
-    stroke: iconColor, strokeWidth: 2.8, fill: '', strokeLineCap: 'round',
-    originX: 'left', originY: 'top',
-  });
-  const head = new fabric.Polygon(
-    [{ x: 22, y: 3 }, { x: 22, y: 13 }, { x: 29, y: 8 }],
-    { fill: iconColor, originX: 'left', originY: 'top' },
-  );
-  const iconGroup = new fabric.Group([arc, head], {
-    originX: 'left', originY: 'top',
-    scaleX: arrowScale, scaleY: arrowScale,
-  });
-  // Fabric Group.left/.top points at the bbox top-left, NOT the viewbox
-  // origin. Path bbox starts at ~(6, 3) (arc bulges left to x=6, arrowhead
-  // tip at y=3). The icon's visual center is at viewbox (17.5, 13.75), so
-  // the offset from bbox top-left to visual center is (11.5, 10.75).
-  // To center that visual center inside the button: button-half - that.
-  iconGroup.set({
-    left: half - (11.5 * arrowScale),
-    top: half - (10.75 * arrowScale),
-  });
+
+  // Build the inner icon by injecting the catalog's SVG fragment into a
+  // tiny SVG document and converting to a Fabric.Group via loadSVGFromString.
+  // Falls back to the chrome arrow if the style isn't in the catalog yet.
+  const iconScale = (c.size * 0.65) / 30;
+  const iconGroup = _buildCrankIcon(style, iconColor, iconScale, half);
+
   return new fabric.Group([button, iconGroup], {
     originX: 'left', originY: 'top',
   });
+}
+
+// Build the icon as Fabric primitives matching the SVG catalog. Doing it
+// imperatively (vs parsing SVG) is simpler and async-free.
+function _buildCrankIcon(style, color, scale, half) {
+  const cap = 'round';
+  let parts;
+  let bboxCx = 15, bboxCy = 15;
+
+  switch (style) {
+    case 'cross':
+      parts = [
+        new fabric.Line([3, 15, 27, 15], { stroke: color, strokeWidth: 3.2, strokeLineCap: cap }),
+        new fabric.Line([15, 3, 15, 27], { stroke: color, strokeWidth: 3.2, strokeLineCap: cap }),
+        new fabric.Circle({ left: 12.8, top: 12.8, radius: 2.2, fill: color, originX: 'left', originY: 'top' }),
+      ];
+      break;
+    case 'star':
+      parts = [
+        new fabric.Line([3, 15, 27, 15],   { stroke: color, strokeWidth: 2.4, strokeLineCap: cap }),
+        new fabric.Line([15, 3, 15, 27],   { stroke: color, strokeWidth: 2.4, strokeLineCap: cap }),
+        new fabric.Line([6, 6, 24, 24],    { stroke: color, strokeWidth: 2.4, strokeLineCap: cap }),
+        new fabric.Line([6, 24, 24, 6],    { stroke: color, strokeWidth: 2.4, strokeLineCap: cap }),
+        new fabric.Circle({ left: 13, top: 13, radius: 2, fill: color, originX: 'left', originY: 'top' }),
+      ];
+      break;
+    case 'wheel':
+      parts = [
+        new fabric.Circle({ left: 4, top: 4, radius: 11, fill: '', stroke: color, strokeWidth: 2.4, originX: 'left', originY: 'top' }),
+        new fabric.Circle({ left: 12.2, top: 3.2, radius: 2.8, fill: color, originX: 'left', originY: 'top' }),
+      ];
+      break;
+    case 'lever':
+      parts = [
+        new fabric.Rect({ left: 15, top: 13, width: 12, height: 4, rx: 2, ry: 2, fill: color, originX: 'left', originY: 'top' }),
+        new fabric.Circle({ left: 23.5, top: 11.5, radius: 3.5, fill: color, originX: 'left', originY: 'top' }),
+        new fabric.Circle({ left: 12, top: 12, radius: 3, fill: color, originX: 'left', originY: 'top' }),
+      ];
+      bboxCx = 17;
+      break;
+    case 'pushbutton':
+      parts = [
+        new fabric.Circle({ left: 9, top: 9, radius: 6, fill: color, originX: 'left', originY: 'top' }),
+        new fabric.Circle({ left: 12, top: 12, radius: 3, fill: 'rgba(255,255,255,0.35)', originX: 'left', originY: 'top' }),
+      ];
+      break;
+    case 'chrome':
+    default: {
+      const arc = new fabric.Path('M 22 22 A 9.5 9.5 0 1 1 22 8', {
+        stroke: color, strokeWidth: 2.8, fill: '', strokeLineCap: cap,
+        originX: 'left', originY: 'top',
+      });
+      const head = new fabric.Polygon(
+        [{ x: 22, y: 3 }, { x: 22, y: 13 }, { x: 29, y: 8 }],
+        { fill: color, originX: 'left', originY: 'top' },
+      );
+      parts = [arc, head];
+      bboxCx = 17.5; bboxCy = 13.75;
+    }
+  }
+  const grp = new fabric.Group(parts, {
+    originX: 'left', originY: 'top',
+    scaleX: scale, scaleY: scale,
+  });
+  // Center bbox center on the button center. Fabric Group .left points at
+  // its bbox top-left, so we have to subtract the offset from bbox-top-left
+  // to icon-visual-center, then position so that lands on the button center.
+  const bboxTopLeftX = grp.left ?? 0;
+  const bboxTopLeftY = grp.top ?? 0;
+  // After group construction Fabric computes left/top from contained bbox.
+  // We need: center of icon (in unscaled coords) at (half, half). The icon
+  // bbox starts at (bboxTopLeftX, bboxTopLeftY) — but that's already in
+  // unscaled coords because contained primitives are in the 30x30 viewbox.
+  // The group's scale will scale around its origin (top-left). So the
+  // visual-center of the icon, after scaling, ends up at:
+  //   group.left + (bboxCx - bboxTopLeftX) * scale
+  // We want that = half. So group.left = half - (bboxCx - bboxTopLeftX) * scale.
+  grp.set({
+    left: half - (bboxCx - bboxTopLeftX) * scale,
+    top:  half - (bboxCy - bboxTopLeftY) * scale,
+  });
+  return grp;
 }
 
 function renderBrandStrip(c) {

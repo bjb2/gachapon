@@ -164,6 +164,51 @@
     flex: 0 0 80px;
   }
 
+  /* Layers panel */
+  .layers-list {
+    list-style: none; margin: 0; padding: 0;
+    max-height: 300px; overflow-y: auto;
+    border: 1px solid #EEE; border-radius: 4px;
+  }
+  .layer-row {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 6px;
+    font-size: 11px;
+    border-bottom: 1px solid #F0F0F0;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .layer-row:last-child { border-bottom: none; }
+  .layer-row:hover { background: #FFF0F4; }
+  .layer-row.is-active { background: #FFE0EA; border-left: 3px solid #FF6B9D; padding-left: 3px; }
+  .layer-row.is-hidden { opacity: 0.4; }
+  .layer-row.is-locked .layer-label { color: #888; }
+  .layer-row.dragging { opacity: 0.5; }
+  .layer-row.drag-over { border-top: 2px solid #FF6B9D; }
+  .layer-grip {
+    color: #BBB; font-size: 10px; cursor: grab;
+    user-select: none;
+  }
+  .layer-icon {
+    color: #888; font-size: 14px; line-height: 1;
+    width: 16px; text-align: center;
+  }
+  .layer-label {
+    flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .layer-controls {
+    display: flex; gap: 2px;
+  }
+  .layer-controls button {
+    padding: 2px 5px; font-size: 10px;
+    background: white; border: 1px solid #DDD; border-radius: 2px;
+    cursor: pointer; line-height: 1;
+  }
+  .layer-controls button:hover { border-color: #FF6B9D; }
+  .layer-controls button.on { background: #FFE0EA; border-color: #FF6B9D; color: #FF6B9D; }
+  .layer-controls button.danger:hover { border-color: #CC0000; color: #CC0000; }
+
   .preset-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -247,7 +292,8 @@
       </div>
       <div class="panel-section toolbar">
         <button id="btnTestDrive" style="background:#FF6B9D;color:white;border-color:#FF6B9D;">▶ Test Drive</button>
-        <button id="btnDelete" class="danger">Delete selected</button>
+        <button id="btnDuplicate" title="Ctrl+D">Duplicate ⎘</button>
+        <button id="btnDelete" class="danger" title="Delete or Backspace">Delete</button>
         <button id="btnValidate">Validate</button>
         <button id="btnDumpJson">View JSON</button>
         <button id="btnImportJson">Import JSON ↑</button>
@@ -255,6 +301,10 @@
         <input type="file" id="importJsonFile" accept=".json,application/json" style="display:none">
         <button id="btnSaveAs">Rename / Save as…</button>
         <button id="btnNew" class="danger">New machine</button>
+      </div>
+      <div class="panel-section">
+        <h2>Layers <span class="muted" style="font-weight:400">(top of stack first)</span></h2>
+        <div id="layersPanel" class="muted">Loading…</div>
       </div>
       <div class="panel-section">
         <h2>Start from preset</h2>
@@ -275,6 +325,6 @@
     </aside>
   </main>
 
-  <script type="module" src="./src/designer/designer.js?t=11"></script>
+  <script type="module" src="./src/designer/designer.js?t=12"></script>
 </body>
 </html>

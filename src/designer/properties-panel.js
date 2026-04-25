@@ -69,8 +69,10 @@ function fieldsFor(c) {
       return [
         ...common,
         { key: 'size', label: 'Size', kind: 'number', value: c.size },
-        { key: 'accent', label: 'Accent color', kind: 'color', value: c.accent || '#888090' },
-        { key: 'style', label: 'Style', kind: 'select', value: c.style, options: ['chrome', 'matte', 'soft', 'glow'] },
+        { key: 'accent', label: 'Button fill', kind: 'color', value: c.accent || '#888090' },
+        { key: 'iconColor', label: 'Icon color', kind: 'color', value: c.iconColor || '#FFFFFF' },
+        { key: 'style', label: 'Icon style', kind: 'select', value: c.style || 'chrome',
+          options: ['chrome', 'cross', 'star', 'wheel', 'lever', 'pushbutton'] },
       ];
     case 'brand-strip':
       return [
