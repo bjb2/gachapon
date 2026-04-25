@@ -906,10 +906,10 @@ const NOIR_DEPOT = {
 //   bezel and cyan/purple highlights, cyan glow crank, cyan dots.
 const CYBER_SYNTH = {
   name: 'SYNTH-X 404',
-  canvas: { width: 360, height: 500, bg: '#050810' },
+  canvas: { width: 360, height: 420, bg: '#050810' },
   components: [
-    // ─── Floor glow ──────────────────────────────────────────────────
-    { type: 'decoration', shape: 'ellipse', x: 50, y: 470, width: 260, height: 14,
+    // ─── Floor glow (right under the tray) ───────────────────────────
+    { type: 'decoration', shape: 'ellipse', x: 50, y: 408, width: 260, height: 12,
       fill: 'rgba(0,217,255,0.14)', opacity: 0.75 },
 
     // ─── Dome (half-dome cap with glowing cyan rim) ──────────────────
