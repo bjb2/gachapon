@@ -153,6 +153,31 @@
     flex: 0 0 80px;
   }
 
+  .preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .preset-btn {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 2px;
+    padding: 8px 10px;
+    background: linear-gradient(135deg, #FFFAFA 0%, #F8F4F8 100%);
+    border: 1px solid #DDD; border-radius: 6px;
+    cursor: pointer; font-family: inherit; text-align: left;
+    transition: all 0.12s;
+  }
+  .preset-btn:hover {
+    border-color: #FF6B9D; transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(255,107,157,0.18);
+  }
+  .preset-name {
+    font-size: 12px; font-weight: 700; color: #2D2A26;
+  }
+  .preset-meta {
+    font-size: 9px; color: #888; letter-spacing: 0.05em;
+  }
+
   .help {
     font-size: 11px; color: #888; line-height: 1.5;
   }
@@ -216,6 +241,10 @@
         <button id="btnNew" class="danger">New machine</button>
       </div>
       <div class="panel-section">
+        <h2>Start from preset</h2>
+        <div id="presetGallery" class="preset-grid"></div>
+      </div>
+      <div class="panel-section">
         <h2>Saved machines</h2>
         <div id="savedList" class="muted">Loading…</div>
       </div>
@@ -230,6 +259,6 @@
     </aside>
   </main>
 
-  <script type="module" src="./src/designer/designer.js?t=2"></script>
+  <script type="module" src="./src/designer/designer.js?t=3"></script>
 </body>
 </html>

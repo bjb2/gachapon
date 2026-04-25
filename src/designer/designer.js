@@ -5,12 +5,13 @@
 // physics tuning + preset gallery + standalone export integration land in
 // later phases.
 
-import { newCustomMachine, validateCustomMachine, SINGLETON_TYPES } from './schema.js';
+import { newCustomMachine, newComponent, validateCustomMachine, SINGLETON_TYPES } from './schema.js';
 import { DesignerCanvas } from './canvas.js';
 import {
   getCustomMachine, putCustomMachine, getAllCustomMachines, deleteCustomMachine,
 } from './custom-machine-store.js';
 import { renderPropertiesPanel } from './properties-panel.js';
+import { PRESETS } from './presets.js';
 
 const DRAFT_ID_KEY = 'gachapon:designer:draftId';
 
@@ -128,6 +129,7 @@ async function boot() {
     w.document.close();
   });
   await renderSavedList(designer);
+  renderPresetGallery();
   document.getElementById('btnSaveAs').addEventListener('click', async () => {
     const name = prompt('Name this machine:', designer.machine.name);
     if (!name) return;
@@ -139,6 +141,34 @@ async function boot() {
 
 async function save(machine) {
   await putCustomMachine(machine);
+}
+
+function renderPresetGallery() {
+  const host = document.getElementById('presetGallery');
+  if (!host) return;
+  host.innerHTML = PRESETS.map((p, i) => `
+    <button class="preset-btn" data-preset="${i}" title="${escapeHtml(p.name)}">
+      <span class="preset-name">${escapeHtml(p.name)}</span>
+      <span class="preset-meta">${p.components.length} parts</span>
+    </button>
+  `).join('');
+  host.querySelectorAll('[data-preset]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Load this preset as a new draft? Your current draft stays saved separately.')) return;
+      const idx = Number(btn.dataset.preset);
+      const preset = PRESETS[idx];
+      // Clone components with fresh ids so the preset itself is never mutated
+      // and the new draft has its own component identities.
+      const clone = newCustomMachine({
+        name: preset.name,
+        canvas: { ...preset.canvas },
+        components: preset.components.map(c => newComponent(c.type, c)),
+      });
+      await putCustomMachine(clone);
+      localStorage.setItem('gachapon:designer:draftId', clone.id);
+      location.reload();
+    });
+  });
 }
 
 async function renderSavedList(designer) {
