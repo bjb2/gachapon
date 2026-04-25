@@ -69,34 +69,75 @@ export class Machine {
     // sitting open under the machine.
     this._wireCollectionToggle();
     this.state.on('collection-updated', (newId, collection) => {
-      this.collectionHost.style.display = 'block';
-      const count = Object.keys(collection).length;
-      const countEl = this.collectionHost.querySelector('[data-collection-count]');
-      if (countEl) countEl.textContent = String(count);
-      const toggle = this.collectionHost.querySelector('[data-collection-toggle]');
-      if (toggle) {
-        // Pulse the toggle so the user knows something new landed without
-        // revealing what.
-        toggle.classList.remove('has-new');
-        void toggle.offsetWidth;
-        toggle.classList.add('has-new');
-      }
-      // Render the chips inside the (possibly hidden) panel so it's ready
-      // when expanded. The `[hidden]` attribute on the panel keeps it from
-      // showing until the user clicks the toggle. Each chip re-opens the
-      // reveal card so the user can revisit any prize they've collected.
-      renderChips(
-        this.collectionHost.querySelector('[data-collection-chips]'),
-        collection, newId,
-        (prize) => this.reveal.open(prize),
-      );
+      this._renderCollection(collection, newId, /* pulse */ true);
+      this._saveCollection();
     });
+    // Restore any previously-collected prizes from localStorage so the
+    // collection survives page refresh / coming back later.
+    this._restoreCollection();
 
     // 6. Wire user controls.
     wireControls(this.host, this.controlBus);
     this.controlBus.on('crank', () => this._onCrank());
     this.controlBus.on('ball-click', () => runBallClick(this));
     this.controlBus.on('refill', () => this._onRefill());
+  }
+
+  // Single shared key — the prize library is chassis-independent, so a pull
+  // from any machine should show up in the collection on every machine.
+  static COLLECTION_KEY = 'gachapon:collection';
+
+  _renderCollection(collection, newId, pulse) {
+    if (!this.collectionHost) return;
+    this.collectionHost.style.display = 'block';
+    const count = Object.keys(collection).length;
+    const countEl = this.collectionHost.querySelector('[data-collection-count]');
+    if (countEl) countEl.textContent = String(count);
+    if (pulse) {
+      const toggle = this.collectionHost.querySelector('[data-collection-toggle]');
+      if (toggle) {
+        toggle.classList.remove('has-new');
+        void toggle.offsetWidth;
+        toggle.classList.add('has-new');
+      }
+    }
+    renderChips(
+      this.collectionHost.querySelector('[data-collection-chips]'),
+      collection, newId,
+      (prize) => this.reveal.open(prize),
+    );
+  }
+
+  _saveCollection() {
+    try {
+      const counts = {};
+      for (const [id, entry] of Object.entries(this.state.collection)) {
+        counts[id] = entry.count;
+      }
+      localStorage.setItem(Machine.COLLECTION_KEY, JSON.stringify(counts));
+    } catch (e) { /* quota / serialization — ignore */ }
+  }
+
+  _restoreCollection() {
+    let counts;
+    try {
+      const raw = localStorage.getItem(Machine.COLLECTION_KEY);
+      if (!raw) return;
+      counts = JSON.parse(raw);
+    } catch (e) { return; }
+    if (!counts || typeof counts !== 'object') return;
+    let restored = 0;
+    for (const [id, count] of Object.entries(counts)) {
+      const prize = this.prizeById.get(id);
+      // Skip prizes that no longer exist in the library (deleted / renamed).
+      if (!prize || !Number.isFinite(count) || count <= 0) continue;
+      this.state.collection[id] = { count, prize };
+      this.state.totalPulls += count;
+      restored++;
+    }
+    if (restored === 0) return;
+    this.$.led.textContent = `PULLS: ${this.state.totalPulls}`;
+    this._renderCollection(this.state.collection, null, /* pulse */ false);
   }
 
   _wireCollectionToggle() {
