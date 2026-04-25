@@ -7,6 +7,60 @@
 
 import { newComponent } from './schema.js';
 
+// ── Visual helpers ─────────────────────────────────────────────────────
+// Build a Fabric Gradient from a schema spec. Spec shape:
+//   { type: 'linear', coords: 'topToBottom'|'leftToRight'|'diag135'|{x1,y1,x2,y2},
+//     stops: [{offset, color}, ...] }
+//   { type: 'radial', innerR: 0, outerR: 50, cx, cy, stops: [...] }
+function buildGradient(spec, w, h) {
+  if (!spec) return null;
+  if (spec.type === 'linear') {
+    let coords;
+    if (spec.coords === 'topToBottom' || !spec.coords) coords = { x1: 0, y1: 0, x2: 0, y2: h };
+    else if (spec.coords === 'leftToRight') coords = { x1: 0, y1: 0, x2: w, y2: 0 };
+    else if (spec.coords === 'diag135') coords = { x1: 0, y1: 0, x2: w, y2: h };
+    else if (spec.coords === 'diag45') coords = { x1: 0, y1: h, x2: w, y2: 0 };
+    else coords = spec.coords;
+    return new fabric.Gradient({ type: 'linear', coords, colorStops: spec.stops });
+  }
+  if (spec.type === 'radial') {
+    return new fabric.Gradient({
+      type: 'radial',
+      coords: {
+        x1: spec.cx ?? w / 2, y1: spec.cy ?? h / 2, r1: spec.innerR ?? 0,
+        x2: spec.cx ?? w / 2, y2: spec.cy ?? h / 2, r2: spec.outerR ?? Math.max(w, h) / 2,
+      },
+      colorStops: spec.stops,
+    });
+  }
+  return null;
+}
+
+function buildShadow(spec) {
+  if (!spec) return null;
+  return new fabric.Shadow({
+    color: spec.color || 'rgba(0,0,0,0.3)',
+    blur: spec.blur ?? 6,
+    offsetX: spec.offsetX ?? 0,
+    offsetY: spec.offsetY ?? 4,
+  });
+}
+
+// Apply optional visual enhancements (gradient fill, shadow) to a Fabric
+// object. Components opt in via fillGradient / shadow fields in schema.
+function enhance(obj, c, w, h) {
+  if (c.fillGradient) {
+    const g = buildGradient(c.fillGradient, w, h);
+    if (g) obj.set('fill', g);
+  }
+  if (c.shadow) {
+    const s = buildShadow(c.shadow);
+    if (s) obj.set('shadow', s);
+  }
+  if (c.opacity !== undefined) obj.set('opacity', c.opacity);
+  return obj;
+}
+
 // Phase 1: just hopper (dome/box) and chute have visual templates. More
 // component renderers land in phases 2-4.
 const RENDERERS = {
@@ -163,67 +217,95 @@ function renderHopper(c) {
   const stroke = c.wallColor || '#DDD8E0';
   const fill = c.windowFill || 'rgba(222,234,250,0.5)';
   const strokeWidth = c.wallThickness || 3;
+  let obj;
   switch (c.variant) {
     case 'box':
-      return new fabric.Rect({
+      obj = new fabric.Rect({
         width: c.width, height: c.height, fill, stroke, strokeWidth,
-        rx: 6, ry: 6, originX: 'left', originY: 'top',
+        rx: c.cornerRadius ?? 6, ry: c.cornerRadius ?? 6,
+        originX: 'left', originY: 'top',
       });
+      break;
     case 'cylinder':
-      return new fabric.Rect({
+      obj = new fabric.Rect({
         width: c.width, height: c.height, fill, stroke, strokeWidth,
         rx: c.width / 2, ry: c.width / 2,
+        originX: 'left', originY: 'top',
       });
+      break;
     case 'funnel':
-      return new fabric.Polygon([
+      obj = new fabric.Polygon([
         { x: 0, y: 0 }, { x: c.width, y: 0 },
         { x: c.width * 0.65, y: c.height }, { x: c.width * 0.35, y: c.height },
       ], { fill, stroke, strokeWidth });
+      break;
     case 'hourglass':
-      return new fabric.Polygon([
+      obj = new fabric.Polygon([
         { x: 0, y: 0 }, { x: c.width, y: 0 },
         { x: c.width * 0.55, y: c.height / 2 }, { x: c.width, y: c.height },
         { x: 0, y: c.height }, { x: c.width * 0.45, y: c.height / 2 },
       ], { fill, stroke, strokeWidth });
+      break;
     case 'dome':
     default:
-      return new fabric.Ellipse({
+      obj = new fabric.Ellipse({
         rx: c.width / 2, ry: c.height / 2, fill, stroke, strokeWidth,
+        originX: 'left', originY: 'top',
       });
   }
+  return enhance(obj, c, c.width, c.height);
 }
 
 function renderChute(c) {
-  return new fabric.Group([
+  const grp = new fabric.Group([
     new fabric.Rect({
       width: c.width, height: c.height, fill: c.openingColor || '#222',
-      rx: 4, ry: 4, originX: 'left', originY: 'top',
+      stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 0,
+      rx: c.cornerRadius ?? 4, ry: c.cornerRadius ?? 4,
+      originX: 'left', originY: 'top',
     }),
     new fabric.Text('CHUTE', {
       fontSize: 10, fontFamily: 'monospace',
-      fill: '#FFFFFF', left: c.width / 2, top: c.height / 2,
+      fill: c.labelColor || '#FFFFFF', left: c.width / 2, top: c.height / 2,
       originX: 'center', originY: 'center',
     }),
   ]);
+  return enhance(grp, c, c.width, c.height);
 }
 
 function renderCrank(c) {
-  return new fabric.Circle({
+  const obj = new fabric.Circle({
     radius: c.size / 2, fill: c.accent || '#888090',
-    stroke: '#666', strokeWidth: 2,
+    stroke: c.stroke || '#666', strokeWidth: c.strokeWidth ?? 2,
+    originX: 'left', originY: 'top',
   });
+  return enhance(obj, c, c.size, c.size);
 }
 
 function renderBrandStrip(c) {
-  return new fabric.Group([
-    new fabric.Rect({ width: c.width, height: c.height, fill: c.bg, originX: 'left', originY: 'top' }),
+  const bgRect = new fabric.Rect({
+    width: c.width, height: c.height, fill: c.bg,
+    stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 0,
+    rx: c.cornerRadius ?? 0, ry: c.cornerRadius ?? 0,
+    originX: 'left', originY: 'top',
+  });
+  if (c.bgGradient) {
+    const g = buildGradient(c.bgGradient, c.width, c.height);
+    if (g) bgRect.set('fill', g);
+  }
+  const grp = new fabric.Group([
+    bgRect,
     new fabric.Text(c.text || 'BRAND', {
-      fontSize: c.height * 0.5, fontFamily: c.font || 'Orbitron',
+      fontSize: c.fontSize || c.height * 0.5,
+      fontFamily: c.font || 'Orbitron',
+      fontWeight: c.fontWeight || 'bold',
+      fontStyle: c.fontStyle || 'normal',
       fill: c.fg, left: c.width / 2, top: c.height / 2,
       originX: 'center', originY: 'center',
       charSpacing: (c.letterSpacing || 0.3) * 1000,
     }),
   ]);
+  return enhance(grp, c, c.width, c.height);
 }
 
 function renderLed(c) {
@@ -249,21 +331,69 @@ function renderTurnDots(c) {
 }
 
 function renderTray(c) {
-  return new fabric.Rect({
+  const obj = new fabric.Rect({
     width: c.width, height: c.height, fill: c.fill,
-    stroke: c.stroke, strokeWidth: 2, rx: 8, ry: 8,
+    stroke: c.stroke, strokeWidth: c.strokeWidth ?? 2,
+    rx: c.cornerRadius ?? 8, ry: c.cornerRadius ?? 8,
     originX: 'left', originY: 'top',
   });
+  return enhance(obj, c, c.width, c.height);
 }
 
 function renderDecoration(c) {
+  let obj;
   switch (c.shape) {
     case 'circle':
-      return new fabric.Circle({ radius: c.width / 2, fill: c.fill, stroke: c.stroke || undefined });
+      obj = new fabric.Circle({
+        radius: c.width / 2, fill: c.fill,
+        stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 1,
+        originX: 'left', originY: 'top',
+      });
+      break;
+    case 'ellipse':
+      obj = new fabric.Ellipse({
+        rx: c.width / 2, ry: c.height / 2, fill: c.fill,
+        stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 1,
+        originX: 'left', originY: 'top',
+      });
+      break;
+    case 'triangle':
+      obj = new fabric.Triangle({
+        width: c.width, height: c.height, fill: c.fill,
+        stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 1,
+        originX: 'left', originY: 'top',
+      });
+      break;
+    case 'line':
+      obj = new fabric.Line(
+        [0, 0, c.width, c.height || 0],
+        { stroke: c.fill || c.stroke, strokeWidth: c.strokeWidth ?? 2 },
+      );
+      break;
     case 'text':
-      return new fabric.Text(c.text || 'TEXT', { fontSize: c.height || 16, fill: c.fill });
+      obj = new fabric.Text(c.text || 'TEXT', {
+        fontSize: c.fontSize || c.height || 16,
+        fontFamily: c.font || 'Inter',
+        fontWeight: c.fontWeight || 'normal',
+        fontStyle: c.fontStyle || 'normal',
+        fill: c.fill,
+        charSpacing: (c.letterSpacing || 0) * 1000,
+        originX: 'left', originY: 'top',
+      });
+      break;
+    case 'polygon':
+      obj = new fabric.Polygon(c.points || [], {
+        fill: c.fill, stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 1,
+      });
+      break;
     case 'rect':
     default:
-      return new fabric.Rect({ width: c.width, height: c.height, fill: c.fill, stroke: c.stroke || undefined, originX: 'left', originY: 'top' });
+      obj = new fabric.Rect({
+        width: c.width, height: c.height, fill: c.fill,
+        stroke: c.stroke || undefined, strokeWidth: c.strokeWidth ?? 1,
+        rx: c.cornerRadius ?? 0, ry: c.cornerRadius ?? 0,
+        originX: 'left', originY: 'top',
+      });
   }
+  return enhance(obj, c, c.width, c.height);
 }

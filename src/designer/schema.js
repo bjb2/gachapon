@@ -41,61 +41,40 @@ export function newComponent(type, partial = {}) {
     locked: partial.locked ?? false,
     hidden: partial.hidden ?? false,
   };
+  // Type defaults — partial overrides these and may include extra optional
+  // fields (fillGradient, shadow, opacity, cornerRadius, font*, etc.) that
+  // the renderer applies via enhance(). Spread partial last so anything the
+  // caller passes in survives.
+  let typeDefaults;
   switch (type) {
     case 'hopper':
-      return {
-        ...base,
-        variant: partial.variant || 'dome',
-        width: partial.width ?? 240,
-        height: partial.height ?? 180,
-        wallColor: partial.wallColor || '#DDD8E0',
-        wallThickness: partial.wallThickness ?? 3,
-        windowFill: partial.windowFill || 'rgba(222,234,250,0.5)',
-      };
+      typeDefaults = {
+        variant: 'dome', width: 240, height: 180,
+        wallColor: '#DDD8E0', wallThickness: 3,
+        windowFill: 'rgba(222,234,250,0.5)',
+      }; break;
     case 'chute':
-      // Visual marker; the renderer auto-builds a funnel from the nearest
-      // hopper exit to this chute opening.
-      return {
-        ...base,
-        width: partial.width ?? 80,
-        height: partial.height ?? 60,
-        openingColor: partial.openingColor || '#222',
-      };
+      typeDefaults = { width: 80, height: 60, openingColor: '#222' }; break;
     case 'crank':
-      return {
-        ...base, size: partial.size ?? 64, accent: partial.accent || '#888090',
-        style: partial.style || 'chrome',
-      };
+      typeDefaults = { size: 64, accent: '#888090', style: 'chrome' }; break;
     case 'brand-strip':
-      return {
-        ...base, width: partial.width ?? 240, height: partial.height ?? 28,
-        text: partial.text || 'BRAND',
-        fg: partial.fg || '#FFFFFF', bg: partial.bg || '#111111',
-        font: partial.font || 'Orbitron', letterSpacing: partial.letterSpacing ?? 0.45,
-      };
+      typeDefaults = {
+        width: 240, height: 28, text: 'BRAND',
+        fg: '#FFFFFF', bg: '#111111',
+        font: 'Orbitron', letterSpacing: 0.45,
+      }; break;
     case 'led':
-      return {
-        ...base, width: partial.width ?? 80, height: partial.height ?? 22,
-        color: partial.color || '#88FF44', bg: partial.bg || '#12110E',
-      };
+      typeDefaults = { width: 80, height: 22, color: '#88FF44', bg: '#12110E' }; break;
     case 'turn-dots':
-      return {
-        ...base, count: partial.count ?? 3, dotSize: partial.dotSize ?? 8,
-        litColor: partial.litColor || '#CC0000', dimColor: partial.dimColor || '#E4E0E0',
-      };
+      typeDefaults = { count: 3, dotSize: 8, litColor: '#CC0000', dimColor: '#E4E0E0' }; break;
     case 'tray':
-      return {
-        ...base, width: partial.width ?? 240, height: partial.height ?? 70,
-        fill: partial.fill || '#EDECEC', stroke: partial.stroke || '#D4D2D2',
-      };
+      typeDefaults = { width: 240, height: 70, fill: '#EDECEC', stroke: '#D4D2D2' }; break;
     case 'decoration':
-      return {
-        ...base,
-        shape: partial.shape || 'rect',
-        width: partial.width ?? 80, height: partial.height ?? 80,
-        fill: partial.fill || '#FF6B9D', stroke: partial.stroke || null,
-      };
+      typeDefaults = { shape: 'rect', width: 80, height: 80, fill: '#FF6B9D', stroke: null }; break;
+    default:
+      typeDefaults = {};
   }
+  return { ...typeDefaults, ...partial, ...base };
 }
 
 // Validation — used by save / export to refuse invalid machines.
