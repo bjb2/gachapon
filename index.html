@@ -11,9 +11,10 @@
 <script>
   (function() {
     var params = new URLSearchParams(location.search);
-    document.documentElement.dataset.skin =
-      params.get('machine') ||
-      localStorage.getItem('gachapon:selectedMachine') || 'valkyrie';
+    document.documentElement.dataset.skin = params.get('customMachine')
+      ? 'custom'
+      : (params.get('machine') ||
+         localStorage.getItem('gachapon:selectedMachine') || 'valkyrie');
     if (params.get('embed') === '1') document.documentElement.classList.add('embed-mode');
   })();
 </script>
@@ -48,6 +49,29 @@
 <link rel="stylesheet" href="./src/skins/forest/index.css">
 <link rel="stylesheet" href="./src/skins/modern/index.css">
 <link rel="stylesheet" href="./src/skins/valkyrie/index.css">
+<style>
+  /* Neutral page chrome for designer-authored custom machines. The custom
+     chassis is fully self-contained in its SVG; the page just needs a clean
+     stage so it renders centered with no built-in skin styling intruding. */
+  html[data-skin="custom"] body {
+    background: #F4F4F8;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.06) 0%, transparent 50%);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+  }
+  html[data-skin="custom"] .site-title {
+    font-family: 'Orbitron', sans-serif;
+    color: #2A2A2A; font-weight: 900; letter-spacing: 0.18em;
+  }
+  html[data-skin="custom"] .site-sub { color: #888; letter-spacing: 0.25em; }
+  html[data-skin="custom"] .machine-nav .mnav-btn { color: #777; border-color: #DDD; background: white; }
+  html[data-skin="custom"] .machine-nav .mnav-btn.active { background: #2A2A2A; color: white; border-color: #2A2A2A; }
+  /* Make sure the SVG chassis sits cleanly in the wrap. */
+  html[data-skin="custom"] .machine-wrap { display: inline-block; }
+  html[data-skin="custom"] .machine-wrap.cm-wrap svg.cm-svg { display: block; }
+  html[data-skin="custom"] .hint-line { color: #555; font-size: 12px; margin-top: 12px; }
+</style>
 </head>
 <body>
   <h1 class="site-title">ガチャポン</h1>

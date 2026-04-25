@@ -128,6 +128,16 @@ async function boot() {
     w.document.write('<pre>' + json.replace(/[<>]/g, c => c === '<' ? '&lt;' : '&gt;') + '</pre>');
     w.document.close();
   });
+  document.getElementById('btnTestDrive').addEventListener('click', async () => {
+    // Save current draft so the play page reads the latest, then open it.
+    const errors = validateCustomMachine(designer.machine);
+    if (errors.length) {
+      alert('Cannot test drive — fix these first:\n' + errors.map(e => '- ' + e).join('\n'));
+      return;
+    }
+    await save(designer.machine);
+    window.open(`./index.html?customMachine=${encodeURIComponent(designer.machine.id)}`, '_blank');
+  });
   await renderSavedList(designer);
   renderPresetGallery();
   document.getElementById('btnSaveAs').addEventListener('click', async () => {
